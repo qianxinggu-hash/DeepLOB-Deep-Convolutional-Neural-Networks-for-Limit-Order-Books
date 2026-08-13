@@ -1,7 +1,9 @@
-
 .DS_Store
-.DS_Store
-.DS_Store
-.DS_Store
-.DS_Store
-.DS_Store
+.venv/
+__pycache__/
+artifacts/
+data.zip
+Train_Dst_NoAuction_DecPre_CF_7.txt
+Test_Dst_NoAuction_DecPre_CF_7.txt
+Test_Dst_NoAuction_DecPre_CF_8.txt
+Test_Dst_NoAuction_DecPre_CF_9.txt
