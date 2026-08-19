@@ -1,7 +1,17 @@
 .DS_Store
 .venv/
 __pycache__/
+*.py[cod]
+
+# Large local datasets and generated training arrays.
+7709_tickdata/
+data/processed/
+data/raw/lobster_samples/
+
+# Local scratch/rendering artifacts.
 artifacts/
+tmp/
+
 data.zip
 Train_Dst_NoAuction_DecPre_CF_7.txt
 Test_Dst_NoAuction_DecPre_CF_7.txt

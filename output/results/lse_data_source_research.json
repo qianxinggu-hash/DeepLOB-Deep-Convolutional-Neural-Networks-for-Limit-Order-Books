@@ -1,0 +1,95 @@
+{
+  "as_of": "2026-08-17",
+  "search_scope": "DeepLOB author repository, other public DeepLOB implementations, London Stock Exchange Data Shop, LSEG Tick History, public research repositories and dataset platforms",
+  "conclusion": "No legitimately public download matching the paper's full 2017 LSE dataset was found. The data can be sourced commercially from LSE/LSEG, and an institutional LSEG entitlement may provide an alternative route.",
+  "original_experiment": {
+    "period": "2017-01-03 to 2017-12-24",
+    "session": "08:30:00 to 16:00:00 London time",
+    "training_stocks": ["LLOY", "BARC", "TSCO", "BT", "VOD"],
+    "transfer_stocks": ["GLEN", "HSBC", "CNA", "BP", "ITV"],
+    "levels": 10,
+    "features": 40,
+    "samples": ">134 million",
+    "average_events_per_day_per_stock": 150000,
+    "average_seconds_between_events": 0.192,
+    "split": "first 6 months train, next 3 months validation, final 3 months test",
+    "normalization": "per-instrument z-score using the previous five trading days",
+    "input_states": 100,
+    "benchmarks": [
+      {"scope": "trained LSE stocks", "horizon": 20, "accuracy": 0.7017, "precision": 0.7017, "recall": 0.7017, "macro_f1": 0.7015},
+      {"scope": "trained LSE stocks", "horizon": 50, "accuracy": 0.6393, "precision": 0.6343, "recall": 0.6393, "macro_f1": 0.6349},
+      {"scope": "trained LSE stocks", "horizon": 100, "accuracy": 0.6152, "precision": 0.6073, "recall": 0.6152, "macro_f1": 0.6105},
+      {"scope": "unseen LSE transfer stocks", "horizon": 20, "accuracy": 0.6862, "precision": 0.6864, "recall": 0.6863, "macro_f1": 0.6848},
+      {"scope": "unseen LSE transfer stocks", "horizon": 50, "accuracy": 0.6344, "precision": 0.6281, "recall": 0.6345, "macro_f1": 0.6284},
+      {"scope": "unseen LSE transfer stocks", "horizon": 100, "accuracy": 0.6146, "precision": 0.6068, "recall": 0.6146, "macro_f1": 0.6077}
+    ]
+  },
+  "acquisition_routes": [
+    {
+      "route": "LSE Data Shop - Rebuild Order Book",
+      "provider": "London Stock Exchange",
+      "match": "Best official match",
+      "content": "Full-depth order lifecycle data: opening snapshot, visible order adds, modifications, deletions and trades",
+      "access": "One-off historical purchase or daily subscription",
+      "published_price": "GBP 1,615 per historical month; GBP 19,379 annual subscription",
+      "price_as_of": "August 2025 schedule; request a current quote",
+      "risk": "The official technical specification says pre-Q2-2022 files use an older format; request the 2017 schema before purchase",
+      "status": "Available commercially",
+      "url": "https://marketdata.londonstockexchange.com/historical-home"
+    },
+    {
+      "route": "LSEG Tick History",
+      "provider": "LSEG Data & Analytics",
+      "match": "Strong alternative; equivalence must be checked",
+      "content": "Historical market depth including Level 2/3, Market By Price and Raw Market By Order; selectable instruments and dates",
+      "access": "Commercial entitlement, REST extract, BigQuery or cloud delivery; free-trial request is offered",
+      "published_price": "No public fixed quote found",
+      "price_as_of": "Request quote or check institutional entitlement",
+      "risk": "Confirm that 2017 XLON coverage, raw event semantics and timestamps reproduce the DeepLOB 10-level state sequence",
+      "status": "Available commercially/institutionally",
+      "url": "https://www.lseg.com/en/data-analytics/market-data/data-feeds/tick-history"
+    },
+    {
+      "route": "DeepLOB authors' GitHub repository",
+      "provider": "DeepLOB authors",
+      "match": "Code and FI-2010 only",
+      "content": "TensorFlow/PyTorch demonstrations and FI-2010 files",
+      "access": "Public GitHub",
+      "published_price": "Free",
+      "price_as_of": "Current repository state checked 2026-08-17",
+      "risk": "Does not include the one-year LSE dataset",
+      "status": "Not a source for LSE data",
+      "url": "https://github.com/zcakhaa/DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books"
+    },
+    {
+      "route": "Other public LOB code repositories",
+      "provider": "Independent researchers",
+      "match": "Reusable pipeline, different data",
+      "content": "LOBFrame/deepOBs use LOBSTER/Nasdaq-style data; another DeepLOB replication describes a restricted JNJ dataset",
+      "access": "Public code; underlying datasets may be paid or restricted",
+      "published_price": "Varies",
+      "price_as_of": "Checked 2026-08-17",
+      "risk": "Useful for implementation ideas but cannot claim exact LSE reproduction",
+      "status": "Alternative experiments only",
+      "url": "https://github.com/FinancialComputingUCL/LOBFrame"
+    }
+  ],
+  "recommended_path": [
+    "Ask the user's university or employer whether LSEG Tick History with XLON Level 2/3 or Raw Market By Order is already licensed.",
+    "If not, buy or request a one-month 2017 LSE Rebuild Order Book pilot and the pre-Q2-2022 technical schema to validate reconstruction.",
+    "After parser validation, obtain the full 2017 period and the ten paper instruments, preserving the paper's chronological split and previous-five-day normalization.",
+    "Do not substitute OHLCV, trades-only tick data, best-price-only data, or delayed snapshots for a full-depth event stream."
+  ],
+  "sources": [
+    "https://www.oxford-man.ox.ac.uk/wp-content/uploads/2020/03/DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books.pdf",
+    "https://marketdata.londonstockexchange.com/historical-home",
+    "https://docs.londonstockexchange.com/sites/default/files/documents/HDP_Rebuild_Order_Technical_Specification.pdf",
+    "https://cdn.databp.com/tenants/lseg/documents/2eaab360-831b-11f0-9cc7-cde78a53dc05/7%20Data%20Shop%20-%202025%20%28cc21361a-6464-4421-8e13-cc313741fb5c%29.pdf",
+    "https://www.lseg.com/en/data-analytics/market-data/data-feeds/tick-history",
+    "https://developers.lseg.com/en/api-catalog/refinitiv-tick-history/refinitiv-tick-history-rth-rest-api/",
+    "https://github.com/zcakhaa/DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books",
+    "https://github.com/FinancialComputingUCL/LOBFrame",
+    "https://github.com/lorenzolucchese/deepOBs",
+    "https://github.com/yuxiangalvin/DeepLOB-Model-Implementation-Project"
+  ]
+}

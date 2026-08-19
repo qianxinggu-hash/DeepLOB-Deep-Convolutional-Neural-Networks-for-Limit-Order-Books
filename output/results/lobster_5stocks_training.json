@@ -1,0 +1,1044 @@
+{
+  "experiment": "DeepLOB trained on public LOBSTER NASDAQ samples",
+  "status": "completed",
+  "dataset_scope": {
+    "symbols": [
+      "AAPL",
+      "AMZN",
+      "GOOG",
+      "INTC",
+      "MSFT"
+    ],
+    "date": "2012-06-21",
+    "levels": 10,
+    "official_sample_page": "https://data.lobsterdata.com/info/DataSamples.php",
+    "mirror_repository": "https://huggingface.co/datasets/totalorganfailure/lobster-data",
+    "not_equivalent_to_paper_lse_data": true
+  },
+  "sources": [
+    {
+      "symbol": "AAPL",
+      "date": "2012-06-21",
+      "levels": 10,
+      "raw_path": "/Users/jiaqianxing/Documents/GitHub/DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books/data/raw/lobster_samples/AAPL_2012-06-21_34200000_57600000_orderbook_10.csv",
+      "download_url": "https://huggingface.co/datasets/totalorganfailure/lobster-data/resolve/main/LOBSTER_SampleFile_AAPL_2012-06-21_10/AAPL_2012-06-21_34200000_57600000_orderbook_10.csv",
+      "bytes": 93481244,
+      "sha256": "ed75450031996e81bdc5fc985f6afe6851c81d7b2b39bccf13c56d845fe6ff5d"
+    },
+    {
+      "symbol": "AMZN",
+      "date": "2012-06-21",
+      "levels": 10,
+      "raw_path": "/Users/jiaqianxing/Documents/GitHub/DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books/data/raw/lobster_samples/AMZN_2012-06-21_34200000_57600000_orderbook_10.csv",
+      "download_url": "https://huggingface.co/datasets/totalorganfailure/lobster-data/resolve/main/LOBSTER_SampleFile_AMZN_2012-06-21_10/AMZN_2012-06-21_34200000_57600000_orderbook_10.csv",
+      "bytes": 63216242,
+      "sha256": "decfe952b3fa06c9922dc8fba763a37a0fb032d4231767997e4abf2aa0d29b50"
+    },
+    {
+      "symbol": "GOOG",
+      "date": "2012-06-21",
+      "levels": 10,
+      "raw_path": "/Users/jiaqianxing/Documents/GitHub/DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books/data/raw/lobster_samples/GOOG_2012-06-21_34200000_57600000_orderbook_10.csv",
+      "download_url": "https://huggingface.co/datasets/totalorganfailure/lobster-data/resolve/main/LOBSTER_SampleFile_GOOG_2012-06-21_10/GOOG_2012-06-21_34200000_57600000_orderbook_10.csv",
+      "bytes": 34073243,
+      "sha256": "9ebe00b4f1aee57aa73dcb979e1074d16554296ca32b87440ce756c60974bb53"
+    },
+    {
+      "symbol": "INTC",
+      "date": "2012-06-21",
+      "levels": 10,
+      "raw_path": "/Users/jiaqianxing/Documents/GitHub/DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books/data/raw/lobster_samples/INTC_2012-06-21_34200000_57600000_orderbook_10.csv",
+      "download_url": "https://huggingface.co/datasets/totalorganfailure/lobster-data/resolve/main/LOBSTER_SampleFile_INTC_2012-06-21_10/INTC_2012-06-21_34200000_57600000_orderbook_10.csv",
+      "bytes": 158466105,
+      "sha256": "6bc4c4dc1e92d78e46d04f9e7914df2d8c2a9231928493e7395a9085e1fc91ab"
+    },
+    {
+      "symbol": "MSFT",
+      "date": "2012-06-21",
+      "levels": 10,
+      "raw_path": "/Users/jiaqianxing/Documents/GitHub/DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books/data/raw/lobster_samples/MSFT_2012-06-21_34200000_57600000_orderbook_10.csv",
+      "download_url": "https://huggingface.co/datasets/totalorganfailure/lobster-data/resolve/main/LOBSTER_SampleFile_MSFT_2012-06-21_10/MSFT_2012-06-21_34200000_57600000_orderbook_10.csv",
+      "bytes": 170192771,
+      "sha256": "ec2f53467cf7bfb00b5702381bea7b4a061bb4c1730454df3679b272b3561c0e"
+    }
+  ],
+  "data_quality": [
+    {
+      "symbol": "AAPL",
+      "rows": 400391,
+      "columns": 40,
+      "invalid_rows_removed": 0,
+      "finite": true,
+      "best_ask_strictly_above_best_bid": true,
+      "ask_levels_monotone": true,
+      "bid_levels_monotone": true,
+      "mid_price_min_fixed_point": 5774800.0,
+      "mid_price_max_fixed_point": 5881850.0,
+      "processed_feature_path": "/Users/jiaqianxing/Documents/GitHub/DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books/data/processed/lobster_samples/AAPL_2012-06-21_features.npy",
+      "processed_mid_price_path": "/Users/jiaqianxing/Documents/GitHub/DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books/data/processed/lobster_samples/AAPL_2012-06-21_mid_prices.npy",
+      "duration_seconds": 0.6971484169989708
+    },
+    {
+      "symbol": "AMZN",
+      "rows": 269748,
+      "columns": 40,
+      "invalid_rows_removed": 0,
+      "finite": true,
+      "best_ask_strictly_above_best_bid": true,
+      "ask_levels_monotone": true,
+      "bid_levels_monotone": true,
+      "mid_price_min_fixed_point": 2205200.0,
+      "mid_price_max_fixed_point": 2260250.0,
+      "processed_feature_path": "/Users/jiaqianxing/Documents/GitHub/DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books/data/processed/lobster_samples/AMZN_2012-06-21_features.npy",
+      "processed_mid_price_path": "/Users/jiaqianxing/Documents/GitHub/DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books/data/processed/lobster_samples/AMZN_2012-06-21_mid_prices.npy",
+      "duration_seconds": 0.45761491599841975
+    },
+    {
+      "symbol": "GOOG",
+      "rows": 147916,
+      "columns": 40,
+      "invalid_rows_removed": 0,
+      "finite": true,
+      "best_ask_strictly_above_best_bid": true,
+      "ask_levels_monotone": true,
+      "bid_levels_monotone": true,
+      "mid_price_min_fixed_point": 5637300.0,
+      "mid_price_max_fixed_point": 5798150.0,
+      "processed_feature_path": "/Users/jiaqianxing/Documents/GitHub/DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books/data/processed/lobster_samples/GOOG_2012-06-21_features.npy",
+      "processed_mid_price_path": "/Users/jiaqianxing/Documents/GitHub/DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books/data/processed/lobster_samples/GOOG_2012-06-21_mid_prices.npy",
+      "duration_seconds": 0.2516648750024615
+    },
+    {
+      "symbol": "INTC",
+      "rows": 624040,
+      "columns": 40,
+      "invalid_rows_removed": 0,
+      "finite": true,
+      "best_ask_strictly_above_best_bid": true,
+      "ask_levels_monotone": true,
+      "bid_levels_monotone": true,
+      "mid_price_min_fixed_point": 266150.0,
+      "mid_price_max_fixed_point": 275950.0,
+      "processed_feature_path": "/Users/jiaqianxing/Documents/GitHub/DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books/data/processed/lobster_samples/INTC_2012-06-21_features.npy",
+      "processed_mid_price_path": "/Users/jiaqianxing/Documents/GitHub/DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books/data/processed/lobster_samples/INTC_2012-06-21_mid_prices.npy",
+      "duration_seconds": 1.081581875001575
+    },
+    {
+      "symbol": "MSFT",
+      "rows": 668765,
+      "columns": 40,
+      "invalid_rows_removed": 0,
+      "finite": true,
+      "best_ask_strictly_above_best_bid": true,
+      "ask_levels_monotone": true,
+      "bid_levels_monotone": true,
+      "mid_price_min_fixed_point": 300650.0,
+      "mid_price_max_fixed_point": 311400.0,
+      "processed_feature_path": "/Users/jiaqianxing/Documents/GitHub/DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books/data/processed/lobster_samples/MSFT_2012-06-21_features.npy",
+      "processed_mid_price_path": "/Users/jiaqianxing/Documents/GitHub/DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books/data/processed/lobster_samples/MSFT_2012-06-21_mid_prices.npy",
+      "duration_seconds": 1.1849320419969445
+    }
+  ],
+  "split_method": "per-symbol chronological 70%/15%/15%; windows and targets stay inside each split",
+  "split_bounds": {
+    "AAPL": {
+      "train": [
+        0,
+        280273
+      ],
+      "validation": [
+        280273,
+        340332
+      ],
+      "test": [
+        340332,
+        400391
+      ]
+    },
+    "AMZN": {
+      "train": [
+        0,
+        188823
+      ],
+      "validation": [
+        188823,
+        229285
+      ],
+      "test": [
+        229285,
+        269748
+      ]
+    },
+    "GOOG": {
+      "train": [
+        0,
+        103541
+      ],
+      "validation": [
+        103541,
+        125728
+      ],
+      "test": [
+        125728,
+        147916
+      ]
+    },
+    "INTC": {
+      "train": [
+        0,
+        436828
+      ],
+      "validation": [
+        436828,
+        530434
+      ],
+      "test": [
+        530434,
+        624040
+      ]
+    },
+    "MSFT": {
+      "train": [
+        0,
+        468135
+      ],
+      "validation": [
+        468135,
+        568450
+      ],
+      "test": [
+        568450,
+        668765
+      ]
+    }
+  },
+  "label_summaries": {
+    "train": {
+      "counts": [
+        24104,
+        27911,
+        21818
+      ],
+      "shares": [
+        0.3264664851760053,
+        0.3780287947123915,
+        0.2955047201116032
+      ],
+      "by_symbol": {
+        "AAPL": [
+          7164,
+          85,
+          6755
+        ],
+        "AMZN": [
+          4901,
+          79,
+          4452
+        ],
+        "GOOG": [
+          2827,
+          50,
+          2291
+        ],
+        "INTC": [
+          4033,
+          14062,
+          3737
+        ],
+        "MSFT": [
+          5179,
+          13635,
+          4583
+        ]
+      }
+    },
+    "validation": {
+      "counts": [
+        4771,
+        6764,
+        4249
+      ],
+      "shares": [
+        0.3022681196147998,
+        0.42853522554485557,
+        0.26919665484034466
+      ],
+      "by_symbol": {
+        "AAPL": [
+          1549,
+          31,
+          1413
+        ],
+        "AMZN": [
+          1044,
+          17,
+          953
+        ],
+        "GOOG": [
+          607,
+          3,
+          490
+        ],
+        "INTC": [
+          596,
+          3530,
+          545
+        ],
+        "MSFT": [
+          975,
+          3183,
+          848
+        ]
+      }
+    },
+    "test": {
+      "counts": [
+        4651,
+        6857,
+        4276
+      ],
+      "shares": [
+        0.2946654840344653,
+        0.4344272681196148,
+        0.2709072478459199
+      ],
+      "by_symbol": {
+        "AAPL": [
+          1621,
+          6,
+          1366
+        ],
+        "AMZN": [
+          1025,
+          4,
+          985
+        ],
+        "GOOG": [
+          559,
+          1,
+          540
+        ],
+        "INTC": [
+          615,
+          3416,
+          640
+        ],
+        "MSFT": [
+          831,
+          3430,
+          745
+        ]
+      }
+    }
+  },
+  "preprocessing": {
+    "feature_order": "ask_price,ask_size,bid_price,bid_size repeated for levels 1..10",
+    "price_transform": "(price / current_mid_price - 1) * 10000 basis points",
+    "size_transform": "log1p(size)",
+    "zscore_mean": [
+      2.191429615020752,
+      7.204120635986328,
+      -2.191429615020752,
+      7.308049201965332,
+      4.630625247955322,
+      7.305987358093262,
+      -4.677468299865723,
+      7.4354248046875,
+      7.013649940490723,
+      7.338996410369873,
+      -7.086066246032715,
+      7.468388080596924,
+      9.389474868774414,
+      7.41874885559082,
+      -9.467211723327637,
+      7.535213947296143,
+      11.758792877197266,
+      7.433799743652344,
+      -11.837183952331543,
+      7.535531044006348,
+      14.127082824707031,
+      7.4112653732299805,
+      -14.198463439941406,
+      7.507898330688477,
+      16.4958438873291,
+      7.392828941345215,
+      -16.556774139404297,
+      7.463462829589844,
+      18.865339279174805,
+      7.362893104553223,
+      -18.911733627319336,
+      7.417486667633057,
+      21.241376876831055,
+      7.296937465667725,
+      -21.26537322998047,
+      7.32373571395874,
+      23.623004913330078,
+      7.20167350769043,
+      -23.621999740600586,
+      7.2226338386535645
+    ],
+    "zscore_std": [
+      1.0113600492477417,
+      2.5989787578582764,
+      1.0113600492477417,
+      2.5261712074279785,
+      1.795830249786377,
+      2.846116781234741,
+      1.7441303730010986,
+      2.7512800693511963,
+      3.021681785583496,
+      2.8776016235351562,
+      2.9373342990875244,
+      2.7817187309265137,
+      4.362115383148193,
+      2.827361822128296,
+      4.258354663848877,
+      2.7601561546325684,
+      5.737449645996094,
+      2.720010995864868,
+      5.6241326332092285,
+      2.695528507232666,
+      7.116881847381592,
+      2.6021430492401123,
+      7.011904716491699,
+      2.586610794067383,
+      8.503981590270996,
+      2.5031347274780273,
+      8.40770149230957,
+      2.495573043823242,
+      9.89377498626709,
+      2.416246175765991,
+      9.81617259979248,
+      2.404771089553833,
+      11.313236236572266,
+      2.317692518234253,
+      11.234213829040527,
+      2.3037471771240234,
+      12.774579048156738,
+      2.2044620513916016,
+      12.659955024719238,
+      2.202807903289795
+    ],
+    "zscore_fit_scope": "pooled chronological training segments only"
+  },
+  "labeling": {
+    "method": "DeepLOB Equation (3): mean of next h mid-prices / current mid-price - 1",
+    "horizon_events": 100,
+    "alpha": 0.0,
+    "alpha_fit_scope": "pooled chronological training targets only",
+    "classes": {
+      "0": "down",
+      "1": "stationary",
+      "2": "up"
+    }
+  },
+  "training": {
+    "device": "mps",
+    "class_weights": [
+      1.0210338533023564,
+      0.8817670452509763,
+      1.128013566779723
+    ],
+    "best_epoch": 5,
+    "best_validation_loss": 0.6770361795137815,
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.773139915139453,
+        "validation_loss": 0.7078375015171784,
+        "train": {
+          "samples": 73833,
+          "accuracy": 0.6074654964582233,
+          "balanced_accuracy": 0.5918851604581735,
+          "macro_f1": 0.5884556381895278,
+          "confusion_matrix": [
+            [
+              11902,
+              4474,
+              7728
+            ],
+            [
+              2591,
+              22817,
+              2503
+            ],
+            [
+              7594,
+              4092,
+              10132
+            ]
+          ],
+          "per_class": [
+            {
+              "class": "down",
+              "precision": 0.538869017974374,
+              "recall": 0.49377696647859276,
+              "f1": 0.5153384858522223,
+              "support": 24104
+            },
+            {
+              "class": "stationary",
+              "precision": 0.7270496765764904,
+              "recall": 0.8174913116692344,
+              "f1": 0.7696225587749183,
+              "support": 27911
+            },
+            {
+              "class": "up",
+              "precision": 0.4975691204635859,
+              "recall": 0.4643872032266936,
+              "f1": 0.4804058699414428,
+              "support": 21818
+            }
+          ],
+          "duration_seconds": 40.54626999999891
+        },
+        "validation": {
+          "samples": 15784,
+          "accuracy": 0.6652306132792701,
+          "balanced_accuracy": 0.6223294789291263,
+          "macro_f1": 0.608231129363933,
+          "confusion_matrix": [
+            [
+              3413,
+              893,
+              465
+            ],
+            [
+              537,
+              5900,
+              327
+            ],
+            [
+              2340,
+              722,
+              1187
+            ]
+          ],
+          "per_class": [
+            {
+              "class": "down",
+              "precision": 0.5426073131955484,
+              "recall": 0.7153636554181513,
+              "f1": 0.617123225748124,
+              "support": 4771
+            },
+            {
+              "class": "stationary",
+              "precision": 0.7850964737192282,
+              "recall": 0.8722649319929036,
+              "f1": 0.8263884025491981,
+              "support": 6764
+            },
+            {
+              "class": "up",
+              "precision": 0.5997978777160182,
+              "recall": 0.27935984937632385,
+              "f1": 0.3811817597944766,
+              "support": 4249
+            }
+          ],
+          "duration_seconds": 2.420750916000543
+        }
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.731394146143871,
+        "validation_loss": 0.7374972298069165,
+        "train": {
+          "samples": 73833,
+          "accuracy": 0.6434521149079679,
+          "balanced_accuracy": 0.6299494321167268,
+          "macro_f1": 0.6283134591476548,
+          "confusion_matrix": [
+            [
+              13270,
+              3874,
+              6960
+            ],
+            [
+              2289,
+              22981,
+              2641
+            ],
+            [
+              7407,
+              3154,
+              11257
+            ]
+          ],
+          "per_class": [
+            {
+              "class": "down",
+              "precision": 0.5778106766524428,
+              "recall": 0.5505310321938267,
+              "f1": 0.5638410877416614,
+              "support": 24104
+            },
+            {
+              "class": "stationary",
+              "precision": 0.7658035922556566,
+              "recall": 0.8233671312385797,
+              "f1": 0.793542817679558,
+              "support": 27911
+            },
+            {
+              "class": "up",
+              "precision": 0.5396969987534759,
+              "recall": 0.5159501329177744,
+              "f1": 0.5275564720217452,
+              "support": 21818
+            }
+          ],
+          "duration_seconds": 35.92803695799739
+        },
+        "validation": {
+          "samples": 15784,
+          "accuracy": 0.6318423720223011,
+          "balanced_accuracy": 0.6067295125001454,
+          "macro_f1": 0.5810568405815557,
+          "confusion_matrix": [
+            [
+              1226,
+              695,
+              2850
+            ],
+            [
+              513,
+              5661,
+              590
+            ],
+            [
+              398,
+              765,
+              3086
+            ]
+          ],
+          "per_class": [
+            {
+              "class": "down",
+              "precision": 0.5737014506317267,
+              "recall": 0.2569691888492978,
+              "f1": 0.354950781702374,
+              "support": 4771
+            },
+            {
+              "class": "stationary",
+              "precision": 0.7949726162055891,
+              "recall": 0.8369308101714962,
+              "f1": 0.8154123154483256,
+              "support": 6764
+            },
+            {
+              "class": "up",
+              "precision": 0.4728777198896721,
+              "recall": 0.7262885384796423,
+              "f1": 0.5728074245939675,
+              "support": 4249
+            }
+          ],
+          "duration_seconds": 2.0991254590007884
+        }
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.7232562647069217,
+        "validation_loss": 0.6904643131160397,
+        "train": {
+          "samples": 73833,
+          "accuracy": 0.6473934419568486,
+          "balanced_accuracy": 0.6336381637670088,
+          "macro_f1": 0.6317951351185607,
+          "confusion_matrix": [
+            [
+              13224,
+              3720,
+              7160
+            ],
+            [
+              2302,
+              23228,
+              2381
+            ],
+            [
+              7226,
+              3245,
+              11347
+            ]
+          ],
+          "per_class": [
+            {
+              "class": "down",
+              "precision": 0.5812236286919831,
+              "recall": 0.5486226352472618,
+              "f1": 0.5644527915315007,
+              "support": 24104
+            },
+            {
+              "class": "stationary",
+              "precision": 0.769317391448349,
+              "recall": 0.8322166887607036,
+              "f1": 0.7995318738813162,
+              "support": 27911
+            },
+            {
+              "class": "up",
+              "precision": 0.5432305630026809,
+              "recall": 0.5200751672930608,
+              "f1": 0.5314007399428651,
+              "support": 21818
+            }
+          ],
+          "duration_seconds": 35.59551629199996
+        },
+        "validation": {
+          "samples": 15784,
+          "accuracy": 0.6589584389254942,
+          "balanced_accuracy": 0.6350380496206504,
+          "macro_f1": 0.6083629486139486,
+          "confusion_matrix": [
+            [
+              1313,
+              835,
+              2623
+            ],
+            [
+              490,
+              5816,
+              458
+            ],
+            [
+              395,
+              582,
+              3272
+            ]
+          ],
+          "per_class": [
+            {
+              "class": "down",
+              "precision": 0.597361237488626,
+              "recall": 0.27520435967302453,
+              "f1": 0.3768115942028985,
+              "support": 4771
+            },
+            {
+              "class": "stationary",
+              "precision": 0.8040923544863818,
+              "recall": 0.8598462448255471,
+              "f1": 0.8310352218332501,
+              "support": 6764
+            },
+            {
+              "class": "up",
+              "precision": 0.5150322682197387,
+              "recall": 0.7700635443633796,
+              "f1": 0.6172420298056971,
+              "support": 4249
+            }
+          ],
+          "duration_seconds": 2.116739042001427
+        }
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.7138039930407062,
+        "validation_loss": 0.6810140218821746,
+        "train": {
+          "samples": 73833,
+          "accuracy": 0.6527704414015413,
+          "balanced_accuracy": 0.6389225373947919,
+          "macro_f1": 0.636963684739278,
+          "confusion_matrix": [
+            [
+              13275,
+              3730,
+              7099
+            ],
+            [
+              2223,
+              23440,
+              2248
+            ],
+            [
+              7156,
+              3181,
+              11481
+            ]
+          ],
+          "per_class": [
+            {
+              "class": "down",
+              "precision": 0.5859892292751832,
+              "recall": 0.5507384666445403,
+              "f1": 0.5678172719106891,
+              "support": 24104
+            },
+            {
+              "class": "stationary",
+              "precision": 0.7722974531316925,
+              "recall": 0.8398122603991258,
+              "f1": 0.8046411039785796,
+              "support": 27911
+            },
+            {
+              "class": "up",
+              "precision": 0.5512291146533512,
+              "recall": 0.5262168851407095,
+              "f1": 0.5384326783285653,
+              "support": 21818
+            }
+          ],
+          "duration_seconds": 35.44786162500168
+        },
+        "validation": {
+          "samples": 15784,
+          "accuracy": 0.6674480486568677,
+          "balanced_accuracy": 0.6274336725699173,
+          "macro_f1": 0.6204686440564161,
+          "confusion_matrix": [
+            [
+              3196,
+              867,
+              708
+            ],
+            [
+              441,
+              5883,
+              440
+            ],
+            [
+              2056,
+              737,
+              1456
+            ]
+          ],
+          "per_class": [
+            {
+              "class": "down",
+              "precision": 0.5613911821535219,
+              "recall": 0.6698805281911548,
+              "f1": 0.6108562691131498,
+              "support": 4771
+            },
+            {
+              "class": "stationary",
+              "precision": 0.7857619874449046,
+              "recall": 0.8697516262566529,
+              "f1": 0.8256262718405726,
+              "support": 6764
+            },
+            {
+              "class": "up",
+              "precision": 0.5591397849462365,
+              "recall": 0.342668863261944,
+              "f1": 0.424923391215526,
+              "support": 4249
+            }
+          ],
+          "duration_seconds": 2.042738708001707
+        }
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.7072784398805363,
+        "validation_loss": 0.6770361795137815,
+        "train": {
+          "samples": 73833,
+          "accuracy": 0.6581474408462341,
+          "balanced_accuracy": 0.6439466434713429,
+          "macro_f1": 0.6419832774360128,
+          "confusion_matrix": [
+            [
+              13600,
+              3750,
+              6754
+            ],
+            [
+              2121,
+              23611,
+              2179
+            ],
+            [
+              7292,
+              3144,
+              11382
+            ]
+          ],
+          "per_class": [
+            {
+              "class": "down",
+              "precision": 0.5909703211228436,
+              "recall": 0.5642217059409227,
+              "f1": 0.577286329774816,
+              "support": 24104
+            },
+            {
+              "class": "stationary",
+              "precision": 0.7740042615964596,
+              "recall": 0.8459388771452115,
+              "f1": 0.8083744179676802,
+              "support": 27911
+            },
+            {
+              "class": "up",
+              "precision": 0.560275658380507,
+              "recall": 0.5216793473278944,
+              "f1": 0.5402890845655424,
+              "support": 21818
+            }
+          ],
+          "duration_seconds": 34.149832750001224
+        },
+        "validation": {
+          "samples": 15784,
+          "accuracy": 0.6576279776989357,
+          "balanced_accuracy": 0.6324820190501524,
+          "macro_f1": 0.5977947375298652,
+          "confusion_matrix": [
+            [
+              1113,
+              838,
+              2820
+            ],
+            [
+              408,
+              5906,
+              450
+            ],
+            [
+              288,
+              600,
+              3361
+            ]
+          ],
+          "per_class": [
+            {
+              "class": "down",
+              "precision": 0.615257048092869,
+              "recall": 0.2332844267449172,
+              "f1": 0.3382978723404255,
+              "support": 4771
+            },
+            {
+              "class": "stationary",
+              "precision": 0.8041938997821351,
+              "recall": 0.8731519810762862,
+              "f1": 0.8372554578962291,
+              "support": 6764
+            },
+            {
+              "class": "up",
+              "precision": 0.5068617101492987,
+              "recall": 0.791009649329254,
+              "f1": 0.6178308823529411,
+              "support": 4249
+            }
+          ],
+          "duration_seconds": 2.0289873750007246
+        }
+      }
+    ]
+  },
+  "test": {
+    "loss": 0.6519324922404552,
+    "samples": 15784,
+    "accuracy": 0.6675114039533705,
+    "balanced_accuracy": 0.631108254367572,
+    "macro_f1": 0.5924668071989112,
+    "confusion_matrix": [
+      [
+        928,
+        761,
+        2962
+      ],
+      [
+        273,
+        6284,
+        300
+      ],
+      [
+        312,
+        640,
+        3324
+      ]
+    ],
+    "per_class": [
+      {
+        "class": "down",
+        "precision": 0.6133509583608724,
+        "recall": 0.19952698344442055,
+        "f1": 0.3011031797534069,
+        "support": 4651
+      },
+      {
+        "class": "stationary",
+        "precision": 0.8176968119713728,
+        "recall": 0.9164357590783141,
+        "f1": 0.8642552606243983,
+        "support": 6857
+      },
+      {
+        "class": "up",
+        "precision": 0.5047069541451564,
+        "recall": 0.7773620205799813,
+        "f1": 0.6120419812189284,
+        "support": 4276
+      }
+    ],
+    "duration_seconds": 2.0548386670016043
+  },
+  "majority_baseline": {
+    "samples": 15784,
+    "accuracy": 0.4344272681196148,
+    "balanced_accuracy": 0.3333333333333333,
+    "macro_f1": 0.20190509842027002,
+    "confusion_matrix": [
+      [
+        0,
+        4651,
+        0
+      ],
+      [
+        0,
+        6857,
+        0
+      ],
+      [
+        0,
+        4276,
+        0
+      ]
+    ],
+    "per_class": [
+      {
+        "class": "down",
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 4651
+      },
+      {
+        "class": "stationary",
+        "precision": 0.4344272681196148,
+        "recall": 1.0,
+        "f1": 0.60571529526081,
+        "support": 6857
+      },
+      {
+        "class": "up",
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 4276
+      }
+    ],
+    "predicted_class": "stationary"
+  },
+  "checkpoint": "/Users/jiaqianxing/Documents/GitHub/DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books/checkpoints/deeplob_lobster_5stocks_best.pt",
+  "checkpoint_bytes": 1826563,
+  "limitations": [
+    "All five symbols are from one NASDAQ trading day, so this is a pipeline and transfer baseline rather than a substitute for one year of LSE data.",
+    "The sample stride reduces correlated target windows for runtime, although every input window still contains consecutive raw order-book events.",
+    "The normalization differs from the paper because five preceding trading days are unavailable in the public sample."
+  ]
+}

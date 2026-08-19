@@ -1,0 +1,158 @@
+{
+  "experiment": "FI-2010 checkpoint zero-shot transfer to HK 7709",
+  "data": "/Users/jiaqianxing/Documents/GitHub/DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books/data/processed/hk07709_2026-07-09_lob.npz",
+  "checkpoint": "/Users/jiaqianxing/Documents/GitHub/DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books/jupyter_pytorch/best_val_model_pytorch",
+  "checkpoint_format": "legacy-model",
+  "device": "mps",
+  "preprocessing": {
+    "source_metadata": {
+      "source": "/Users/jiaqianxing/Documents/GitHub/DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books/hk07709_2026-07-09.csv",
+      "security_id": 7709,
+      "feature_order": "ask_price,ask_size,bid_price,bid_size repeated for 10 levels",
+      "feature_scale": 100000.0,
+      "snapshot_every_book_update_groups": 10,
+      "levels": 10,
+      "message_counts": {
+        "30": 2495276,
+        "31": 239819,
+        "32": 2489208,
+        "50": 269886
+      },
+      "accepted_update_counts": {
+        "30": 2495276,
+        "31": 239819,
+        "32": 2489208
+      },
+      "continuous_session_book_update_groups": {
+        "1": 1010976,
+        "2": 596410
+      },
+      "book_errors": {
+        "crossed_or_locked_snapshot": 60
+      },
+      "invalid_rows": 0,
+      "skipped_other_security_rows": 0,
+      "out_of_order_send_times": 0,
+      "snapshot_count": 160676,
+      "session_counts": {
+        "1": 101060,
+        "2": 59616
+      },
+      "min_send_time": 20260709093000101,
+      "max_send_time": 20260709155959950
+    },
+    "sequence_length": 100,
+    "horizon_sampled_steps": 10,
+    "approximate_horizon_book_update_groups": 100,
+    "label_method": "DeepLOB Equation (3): future mean vs current mid-price",
+    "calibration_fraction": 0.2,
+    "target_calibration_stationary_share": 0.34447407662307866,
+    "calibrated_alpha": 0.00015551864287258337,
+    "evaluation_start_send_time": 20260709101652984,
+    "evaluation_end_send_time": 20260709155955639,
+    "evaluation_label_counts": [
+      43951,
+      40094,
+      44377
+    ]
+  },
+  "model": {
+    "samples": 128422,
+    "accuracy": 0.3042157885720515,
+    "balanced_accuracy": 0.31837782787406954,
+    "macro_f1": 0.2309932483714868,
+    "confusion_matrix": [
+      [
+        7991,
+        35276,
+        684
+      ],
+      [
+        8993,
+        30335,
+        766
+      ],
+      [
+        7931,
+        35704,
+        742
+      ]
+    ],
+    "per_class": [
+      {
+        "class": "down",
+        "precision": 0.32073048364439094,
+        "recall": 0.18181611339901255,
+        "f1": 0.23207388261260997,
+        "support": 43951
+      },
+      {
+        "class": "stationary",
+        "precision": 0.2994127226965405,
+        "recall": 0.7565969970569163,
+        "f1": 0.42903917006696884,
+        "support": 40094
+      },
+      {
+        "class": "up",
+        "precision": 0.3385036496350365,
+        "recall": 0.01672037316627983,
+        "f1": 0.03186669243488158,
+        "support": 44377
+      }
+    ],
+    "duration_seconds": 16.596274166000512,
+    "prediction_counts": [
+      24915,
+      101315,
+      2192
+    ]
+  },
+  "majority_baseline": {
+    "samples": 128422,
+    "accuracy": 0.34555605737334727,
+    "balanced_accuracy": 0.3333333333333333,
+    "macro_f1": 0.17120855251862957,
+    "confusion_matrix": [
+      [
+        0,
+        0,
+        43951
+      ],
+      [
+        0,
+        0,
+        40094
+      ],
+      [
+        0,
+        0,
+        44377
+      ]
+    ],
+    "per_class": [
+      {
+        "class": "down",
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 43951
+      },
+      {
+        "class": "stationary",
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 40094
+      },
+      {
+        "class": "up",
+        "precision": 0.34555605737334727,
+        "recall": 1.0,
+        "f1": 0.5136256575558887,
+        "support": 44377
+      }
+    ],
+    "majority_class": "up"
+  }
+}

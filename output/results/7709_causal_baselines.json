@@ -1,0 +1,207 @@
+{
+  "experiment": "HK 07709 causal-feature predictability diagnostic",
+  "status": "completed",
+  "split": {
+    "train_dates": [
+      "2025-11-06",
+      "2025-11-13",
+      "2025-12-09",
+      "2025-12-19",
+      "2026-07-09",
+      "2026-07-21"
+    ],
+    "validation_date": "2026-08-04",
+    "test_date": "2026-08-07"
+  },
+  "labeling": {
+    "method": "DeepLOB Equation (4)",
+    "k": 20,
+    "alpha": 0.00032704008003969776,
+    "classes": [
+      "down",
+      "stationary",
+      "up"
+    ]
+  },
+  "features": {
+    "count": 25,
+    "causal_only": true,
+    "summary": "lagged mid returns, trailing-mean returns, spread, multi-level depth imbalance, queue imbalance, book gaps, log depth"
+  },
+  "models": {
+    "logistic_regression": {
+      "train": {
+        "samples": 25675,
+        "accuracy": 0.5989873417721518,
+        "balanced_accuracy": 0.5990089906216194,
+        "macro_f1": 0.5978512355659866,
+        "confusion_matrix": [
+          [
+            5674,
+            2090,
+            727
+          ],
+          [
+            2265,
+            3996,
+            2298
+          ],
+          [
+            764,
+            2152,
+            5709
+          ]
+        ],
+        "prediction_counts": [
+          8703,
+          8238,
+          8734
+        ]
+      },
+      "validation": {
+        "samples": 15253,
+        "accuracy": 0.5979807251032584,
+        "balanced_accuracy": 0.5852008190873855,
+        "macro_f1": 0.5870211813719909,
+        "confusion_matrix": [
+          [
+            3507,
+            1424,
+            493
+          ],
+          [
+            1117,
+            1861,
+            1132
+          ],
+          [
+            522,
+            1444,
+            3753
+          ]
+        ],
+        "prediction_counts": [
+          5146,
+          4729,
+          5378
+        ]
+      },
+      "test": {
+        "samples": 61583,
+        "accuracy": 0.5861520224737347,
+        "balanced_accuracy": 0.5815285355500476,
+        "macro_f1": 0.584604661125616,
+        "confusion_matrix": [
+          [
+            12906,
+            6247,
+            1828
+          ],
+          [
+            4346,
+            9141,
+            4516
+          ],
+          [
+            1801,
+            6748,
+            14050
+          ]
+        ],
+        "prediction_counts": [
+          19053,
+          22136,
+          20394
+        ]
+      }
+    },
+    "hist_gradient_boosting": {
+      "train": {
+        "samples": 25675,
+        "accuracy": 0.6531256085686465,
+        "balanced_accuracy": 0.6531559781217515,
+        "macro_f1": 0.652823245809065,
+        "confusion_matrix": [
+          [
+            6005,
+            1814,
+            672
+          ],
+          [
+            1909,
+            4752,
+            1898
+          ],
+          [
+            732,
+            1881,
+            6012
+          ]
+        ],
+        "prediction_counts": [
+          8646,
+          8447,
+          8582
+        ]
+      },
+      "validation": {
+        "samples": 15253,
+        "accuracy": 0.5981774077230708,
+        "balanced_accuracy": 0.582581929728166,
+        "macro_f1": 0.5828546601215752,
+        "confusion_matrix": [
+          [
+            3691,
+            1240,
+            493
+          ],
+          [
+            1280,
+            1713,
+            1117
+          ],
+          [
+            687,
+            1312,
+            3720
+          ]
+        ],
+        "prediction_counts": [
+          5658,
+          4265,
+          5330
+        ]
+      },
+      "test": {
+        "samples": 61583,
+        "accuracy": 0.5853725865904552,
+        "balanced_accuracy": 0.577572051797628,
+        "macro_f1": 0.5783460028926244,
+        "confusion_matrix": [
+          [
+            13824,
+            5160,
+            1997
+          ],
+          [
+            5277,
+            8001,
+            4725
+          ],
+          [
+            2386,
+            5989,
+            14224
+          ]
+        ],
+        "prediction_counts": [
+          21487,
+          19150,
+          20946
+        ]
+      }
+    }
+  },
+  "saved_logistic_model": "/Users/jiaqianxing/Documents/GitHub/DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books/checkpoints/7709/7709_logistic_causal.joblib",
+  "note": "Test metrics diagnose whether the label is predictable; no execution costs or overlap-adjusted uncertainty are included."
+}
