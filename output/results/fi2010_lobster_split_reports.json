@@ -1,0 +1,159 @@
+{
+  "device": "cpu",
+  "fi2010": {
+    "checkpoint": "C:\\Users\\Administrator\\Desktop\\market-making\\DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books\\checkpoints\\full_cpu\\best_deeplob_state.pt",
+    "horizon_index": 4,
+    "window": 100,
+    "train": {
+      "samples": 203701,
+      "classification_report": {
+        "down": {
+          "precision": 0.8802986654124287,
+          "recall": 0.8867528960272901,
+          "f1-score": 0.8835139935446182,
+          "support": 84426.0
+        },
+        "stationary": {
+          "precision": 0.842050144766833,
+          "recall": 0.7549848108257388,
+          "f1-score": 0.7961442134078863,
+          "support": 36210.0
+        },
+        "up": {
+          "precision": 0.8691495533124493,
+          "recall": 0.901847950400289,
+          "f1-score": 0.8851968922631532,
+          "support": 83065.0
+        },
+        "accuracy": 0.8694851768032558,
+        "macro avg": {
+          "precision": 0.8638327878305704,
+          "recall": 0.8478618857511059,
+          "f1-score": 0.8549516997385526,
+          "support": 203701.0
+        },
+        "weighted avg": {
+          "precision": 0.8689532133569071,
+          "recall": 0.8694851768032558,
+          "f1-score": 0.8686693449827754,
+          "support": 203701.0
+        }
+      }
+    },
+    "test": {
+      "samples": 139488,
+      "classification_report": {
+        "down": {
+          "precision": 0.7227208509931023,
+          "recall": 0.7259939476155692,
+          "f1-score": 0.7243537018334774,
+          "support": 47915.0
+        },
+        "stationary": {
+          "precision": 0.8112592525522331,
+          "recall": 0.7458688865764829,
+          "f1-score": 0.7771910611859868,
+          "support": 48050.0
+        },
+        "up": {
+          "precision": 0.6859407787363022,
+          "recall": 0.7435608758587413,
+          "f1-score": 0.7135895570108708,
+          "support": 43523.0
+        },
+        "accuracy": 0.7383215760495526,
+        "macro avg": {
+          "precision": 0.7399736274272125,
+          "recall": 0.7384745700169312,
+          "f1-score": 0.7383781066767782,
+          "support": 139488.0
+        },
+        "weighted avg": {
+          "precision": 0.7417439290362567,
+          "recall": 0.7383215760495526,
+          "f1-score": 0.739196177471337,
+          "support": 139488.0
+        }
+      }
+    }
+  },
+  "lobster": {
+    "checkpoint": "C:\\Users\\Administrator\\Desktop\\market-making\\DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books\\checkpoints\\deeplob_lobster_5stocks_best.pt",
+    "alpha": 0.0,
+    "sequence_length": 100,
+    "horizon_events": 100,
+    "sample_stride": 20,
+    "train": {
+      "samples": 73833,
+      "classification_report": {
+        "down": {
+          "precision": 0.6425302552628903,
+          "recall": 0.26211417192167275,
+          "f1-score": 0.37233697734036597,
+          "support": 24104.0
+        },
+        "stationary": {
+          "precision": 0.7800642441276852,
+          "recall": 0.8352620830496936,
+          "f1-score": 0.8067200719760541,
+          "support": 27911.0
+        },
+        "up": {
+          "precision": 0.5073576830626723,
+          "recall": 0.7932899440828673,
+          "f1-score": 0.6188943717371094,
+          "support": 21818.0
+        },
+        "accuracy": 0.6357455338398819,
+        "macro avg": {
+          "precision": 0.6433173941510826,
+          "recall": 0.6302220663514112,
+          "f1-score": 0.5993171403511764,
+          "support": 73833.0
+        },
+        "weighted avg": {
+          "precision": 0.6545779301906453,
+          "recall": 0.6357455338398819,
+          "f1-score": 0.6094051688715896,
+          "support": 73833.0
+        }
+      }
+    },
+    "test": {
+      "samples": 15784,
+      "classification_report": {
+        "down": {
+          "precision": 0.6133509583608724,
+          "recall": 0.19952698344442055,
+          "f1-score": 0.3011031797534069,
+          "support": 4651.0
+        },
+        "stationary": {
+          "precision": 0.8176968119713728,
+          "recall": 0.9164357590783141,
+          "f1-score": 0.8642552606243983,
+          "support": 6857.0
+        },
+        "up": {
+          "precision": 0.5047069541451564,
+          "recall": 0.7773620205799813,
+          "f1-score": 0.6120419812189284,
+          "support": 4276.0
+        },
+        "accuracy": 0.6675114039533705,
+        "macro avg": {
+          "precision": 0.6452515748258004,
+          "recall": 0.631108254367572,
+          "f1-score": 0.5924668071989112,
+          "support": 15784.0
+        },
+        "weighted avg": {
+          "precision": 0.6726919211194127,
+          "recall": 0.6675114039533705,
+          "f1-score": 0.6299873747356014,
+          "support": 15784.0
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,207 @@
+{
+  "experiment": "All original DeepLOB 07709 checkpoints on held-out test day",
+  "test_date": "2026-08-07",
+  "device": "cpu",
+  "sequence_length": 100,
+  "snapshot_every_book_update_groups": 10,
+  "raw_test_file": "C:\\Users\\Administrator\\Desktop\\7709_tickdata\\hk07709_2026-08-07.csv",
+  "results": [
+    {
+      "checkpoint": "C:\\Users\\Administrator\\Desktop\\market-making\\DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books\\checkpoints\\7709\\deeplob_7709_k20_best.pt",
+      "k": 20,
+      "alpha": 0.00032704008003969776,
+      "loss": 1.1229453134724123,
+      "samples": 61583,
+      "accuracy": 0.3092574249387006,
+      "balanced_accuracy": 0.3380215642475051,
+      "macro_f1": 0.2361799705670035,
+      "confusion_matrix": [
+        [
+          637,
+          16971,
+          3373
+        ],
+        [
+          392,
+          14974,
+          2637
+        ],
+        [
+          789,
+          18376,
+          3434
+        ]
+      ],
+      "per_class": [
+        {
+          "class": "down",
+          "precision": 0.3503850385038504,
+          "recall": 0.030360802630951814,
+          "f1": 0.05587964384402825,
+          "support": 20981
+        },
+        {
+          "class": "stationary",
+          "precision": 0.2975696031477912,
+          "recall": 0.8317502638449147,
+          "f1": 0.4383232831801417,
+          "support": 18003
+        },
+        {
+          "class": "up",
+          "precision": 0.36361711139347735,
+          "recall": 0.15195362626664896,
+          "f1": 0.2143369846768405,
+          "support": 22599
+        }
+      ],
+      "duration_seconds": 77.35758750000969,
+      "label_counts": [
+        20981,
+        18003,
+        22599
+      ],
+      "normalization_sources": [
+        "2025-12-09",
+        "2025-12-19",
+        "2026-07-09",
+        "2026-07-21",
+        "2026-08-04"
+      ],
+      "embedded_test_metric_absolute_differences": {
+        "accuracy": 0.0,
+        "balanced_accuracy": 0.0,
+        "macro_f1": 0.0
+      }
+    },
+    {
+      "checkpoint": "C:\\Users\\Administrator\\Desktop\\market-making\\DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books\\checkpoints\\7709\\deeplob_7709_k50_best.pt",
+      "k": 50,
+      "alpha": 0.0005310598624085339,
+      "loss": 1.1265683958140302,
+      "samples": 61523,
+      "accuracy": 0.32643076572988966,
+      "balanced_accuracy": 0.3332246952124288,
+      "macro_f1": 0.2942667013933759,
+      "confusion_matrix": [
+        [
+          1939,
+          11197,
+          6776
+        ],
+        [
+          1371,
+          11443,
+          5993
+        ],
+        [
+          2022,
+          14081,
+          6701
+        ]
+      ],
+      "per_class": [
+        {
+          "class": "down",
+          "precision": 0.36365341335333834,
+          "recall": 0.09737846524708718,
+          "f1": 0.1536206623356045,
+          "support": 19912
+        },
+        {
+          "class": "stationary",
+          "precision": 0.3116200539201002,
+          "recall": 0.6084436645929707,
+          "f1": 0.41215242760409165,
+          "support": 18807
+        },
+        {
+          "class": "up",
+          "precision": 0.34417051874678994,
+          "recall": 0.29385195579722856,
+          "f1": 0.3170270142404315,
+          "support": 22804
+        }
+      ],
+      "duration_seconds": 76.1114399000071,
+      "label_counts": [
+        19912,
+        18807,
+        22804
+      ],
+      "normalization_sources": [
+        "2025-12-09",
+        "2025-12-19",
+        "2026-07-09",
+        "2026-07-21",
+        "2026-08-04"
+      ],
+      "embedded_test_metric_absolute_differences": null
+    },
+    {
+      "checkpoint": "C:\\Users\\Administrator\\Desktop\\market-making\\DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books\\checkpoints\\7709\\deeplob_7709_k100_best.pt",
+      "k": 100,
+      "alpha": 0.0007598048818914238,
+      "loss": 1.1765489586437214,
+      "samples": 61423,
+      "accuracy": 0.297787473747619,
+      "balanced_accuracy": 0.27442551009508714,
+      "macro_f1": 0.2556280265373149,
+      "confusion_matrix": [
+        [
+          4215,
+          1926,
+          14468
+        ],
+        [
+          3597,
+          1648,
+          11751
+        ],
+        [
+          8100,
+          3290,
+          12428
+        ]
+      ],
+      "per_class": [
+        {
+          "class": "down",
+          "precision": 0.264894419306184,
+          "recall": 0.20452229608423506,
+          "f1": 0.23082610005202486,
+          "support": 20609
+        },
+        {
+          "class": "stationary",
+          "precision": 0.2400932400932401,
+          "recall": 0.09696399152741822,
+          "f1": 0.13813914501257335,
+          "support": 16996
+        },
+        {
+          "class": "up",
+          "precision": 0.32157735399901677,
+          "recall": 0.5217902426736082,
+          "f1": 0.3979188345473465,
+          "support": 23818
+        }
+      ],
+      "duration_seconds": 76.90705839998554,
+      "label_counts": [
+        20609,
+        16996,
+        23818
+      ],
+      "normalization_sources": [
+        "2025-12-09",
+        "2025-12-19",
+        "2026-07-09",
+        "2026-07-21",
+        "2026-08-04"
+      ],
+      "embedded_test_metric_absolute_differences": null
+    }
+  ],
+  "note": "These post-hoc k=50 and k=100 test evaluations are diagnostic only. They must not be used to revise the original k selection, which was made using validation macro-F1 before the test day was opened."
+}

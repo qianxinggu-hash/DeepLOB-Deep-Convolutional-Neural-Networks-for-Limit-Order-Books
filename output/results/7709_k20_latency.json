@@ -1,0 +1,273 @@
+{
+  "experiment": "HK 07709 k=20 snapshot horizon vs neural forward latency",
+  "device": "cpu",
+  "k": 20,
+  "snapshot_every_book_update_groups": 10,
+  "sequence_length": 100,
+  "exchange_time": {
+    "one_snapshot": {
+      "count": 235679,
+      "mean_ms": 587.8847288048574,
+      "median_ms": 207.0,
+      "p10_ms": 40.0,
+      "p90_ms": 893.0,
+      "min_ms": 10.0,
+      "max_ms": 195159.0
+    },
+    "k20_snapshots": {
+      "count": 235413,
+      "mean_ms": 11701.0478648163,
+      "median_ms": 4626.0,
+      "p10_ms": 2432.0,
+      "p90_ms": 15555.800000000017,
+      "min_ms": 457.0,
+      "max_ms": 581230.0
+    },
+    "by_day": [
+      {
+        "date": "2025-11-06",
+        "snapshots": 6013,
+        "one_snapshot": {
+          "count": 6011,
+          "mean_ms": 3291.522708367992,
+          "median_ms": 2378.0,
+          "p10_ms": 376.0,
+          "p90_ms": 6520.0,
+          "min_ms": 13.0,
+          "max_ms": 97208.0
+        },
+        "k20_snapshots": {
+          "count": 5973,
+          "mean_ms": 65749.17830236063,
+          "median_ms": 51708.0,
+          "p10_ms": 26798.6,
+          "p90_ms": 110392.4,
+          "min_ms": 7334.0,
+          "max_ms": 392000.0
+        }
+      },
+      {
+        "date": "2025-11-13",
+        "snapshots": 4564,
+        "one_snapshot": {
+          "count": 4562,
+          "mean_ms": 4338.488820692679,
+          "median_ms": 4018.5,
+          "p10_ms": 1126.1,
+          "p90_ms": 7680.300000000004,
+          "min_ms": 13.0,
+          "max_ms": 43663.0
+        },
+        "k20_snapshots": {
+          "count": 4524,
+          "mean_ms": 86921.37886825818,
+          "median_ms": 79406.5,
+          "p10_ms": 48380.4,
+          "p90_ms": 132647.0,
+          "min_ms": 14769.0,
+          "max_ms": 377716.0
+        }
+      },
+      {
+        "date": "2025-12-09",
+        "snapshots": 3104,
+        "one_snapshot": {
+          "count": 3102,
+          "mean_ms": 6379.255641521599,
+          "median_ms": 4888.5,
+          "p10_ms": 1606.3000000000002,
+          "p90_ms": 12114.400000000001,
+          "min_ms": 15.0,
+          "max_ms": 94650.0
+        },
+        "k20_snapshots": {
+          "count": 3064,
+          "mean_ms": 127498.67134464752,
+          "median_ms": 106499.5,
+          "p10_ms": 70100.90000000001,
+          "p90_ms": 218897.50000000012,
+          "min_ms": 6640.0,
+          "max_ms": 461507.0
+        }
+      },
+      {
+        "date": "2025-12-19",
+        "snapshots": 4380,
+        "one_snapshot": {
+          "count": 4378,
+          "mean_ms": 4520.280493375971,
+          "median_ms": 3164.5,
+          "p10_ms": 270.0,
+          "p90_ms": 9618.900000000001,
+          "min_ms": 14.0,
+          "max_ms": 79031.0
+        },
+        "k20_snapshots": {
+          "count": 4340,
+          "mean_ms": 90046.89423963134,
+          "median_ms": 74475.5,
+          "p10_ms": 32818.700000000004,
+          "p90_ms": 166043.89999999997,
+          "min_ms": 6398.0,
+          "max_ms": 581230.0
+        }
+      },
+      {
+        "date": "2026-07-21",
+        "snapshots": 79314,
+        "one_snapshot": {
+          "count": 79312,
+          "mean_ms": 249.6336493847085,
+          "median_ms": 174.0,
+          "p10_ms": 32.0,
+          "p90_ms": 527.0,
+          "min_ms": 10.0,
+          "max_ms": 4353.0
+        },
+        "k20_snapshots": {
+          "count": 79274,
+          "mean_ms": 4992.22130837349,
+          "median_ms": 4007.0,
+          "p10_ms": 2376.0,
+          "p90_ms": 8332.699999999997,
+          "min_ms": 763.0,
+          "max_ms": 30443.0
+        }
+      },
+      {
+        "date": "2026-08-04",
+        "snapshots": 76497,
+        "one_snapshot": {
+          "count": 76495,
+          "mean_ms": 258.81611870056867,
+          "median_ms": 179.0,
+          "p10_ms": 39.0,
+          "p90_ms": 535.0,
+          "min_ms": 10.0,
+          "max_ms": 195159.0
+        },
+        "k20_snapshots": {
+          "count": 76457,
+          "mean_ms": 5174.933465869704,
+          "median_ms": 4135.0,
+          "p10_ms": 2325.0,
+          "p90_ms": 8660.400000000009,
+          "min_ms": 551.0,
+          "max_ms": 202057.0
+        }
+      },
+      {
+        "date": "2026-08-07",
+        "snapshots": 61821,
+        "one_snapshot": {
+          "count": 61819,
+          "mean_ms": 320.2774875038419,
+          "median_ms": 232.0,
+          "p10_ms": 46.0,
+          "p90_ms": 710.0,
+          "min_ms": 10.0,
+          "max_ms": 3716.0
+        },
+        "k20_snapshots": {
+          "count": 61781,
+          "mean_ms": 6405.754698046325,
+          "median_ms": 5704.0,
+          "p10_ms": 2495.0,
+          "p90_ms": 10924.0,
+          "min_ms": 457.0,
+          "max_ms": 34015.0
+        }
+      }
+    ]
+  },
+  "reconstruction_cpu": {
+    "days": [
+      {
+        "date": "2025-11-06",
+        "snapshot_count": 6013,
+        "reconstruct_seconds": 0.7564082000171766,
+        "ms_per_snapshot": 0.12579547647050998,
+        "ms_per_k_snapshots": 2.5159095294102
+      },
+      {
+        "date": "2025-11-13",
+        "snapshot_count": 4564,
+        "reconstruct_seconds": 0.5697118999669328,
+        "ms_per_snapshot": 0.12482732251685645,
+        "ms_per_k_snapshots": 2.496546450337129
+      },
+      {
+        "date": "2025-12-09",
+        "snapshot_count": 3104,
+        "reconstruct_seconds": 0.3504217000445351,
+        "ms_per_snapshot": 0.11289358893187341,
+        "ms_per_k_snapshots": 2.2578717786374685
+      },
+      {
+        "date": "2025-12-19",
+        "snapshot_count": 4380,
+        "reconstruct_seconds": 0.5031889999518171,
+        "ms_per_snapshot": 0.11488333332233266,
+        "ms_per_k_snapshots": 2.2976666664466534
+      },
+      {
+        "date": "2026-07-21",
+        "snapshot_count": 79314,
+        "reconstruct_seconds": 10.51803999999538,
+        "ms_per_snapshot": 0.1326126535037368,
+        "ms_per_k_snapshots": 2.652253070074736
+      },
+      {
+        "date": "2026-08-04",
+        "snapshot_count": 76497,
+        "reconstruct_seconds": 9.57876489998307,
+        "ms_per_snapshot": 0.12521752356279423,
+        "ms_per_k_snapshots": 2.5043504712558846
+      },
+      {
+        "date": "2026-08-07",
+        "snapshot_count": 61821,
+        "reconstruct_seconds": 7.673988800030202,
+        "ms_per_snapshot": 0.12413239514129829,
+        "ms_per_k_snapshots": 2.4826479028259656
+      }
+    ],
+    "ms_per_snapshot": 0.12707430640701725,
+    "ms_per_k_snapshots": 2.541486128140345
+  },
+  "forward": {
+    "deeplob_k20_batch1": {
+      "warmup": 30,
+      "repeats": 200,
+      "batch_size": 1,
+      "count": 200,
+      "mean_ms": 2.020213003270328,
+      "median_ms": 1.961449976079166,
+      "p10_ms": 1.6554599278606474,
+      "p90_ms": 2.5123300263658166,
+      "min_ms": 1.4933000784367323,
+      "max_ms": 3.296799957752228
+    },
+    "hybrid_k20_batch1": {
+      "warmup": 30,
+      "repeats": 200,
+      "batch_size": 1,
+      "count": 200,
+      "mean_ms": 2.0949145016493276,
+      "median_ms": 2.002249995712191,
+      "p10_ms": 1.6939599765464664,
+      "p90_ms": 2.7189499814994633,
+      "min_ms": 1.6111000441014767,
+      "max_ms": 3.750900039449334
+    }
+  },
+  "comparison": {
+    "k20_exchange_mean_ms": 11701.0478648163,
+    "k20_exchange_median_ms": 4626.0,
+    "deeplob_forward_mean_ms": 2.020213003270328,
+    "hybrid_forward_mean_ms": 2.0949145016493276,
+    "deeplob_forward_share_of_k20_median": 0.0004367083880826477,
+    "hybrid_forward_share_of_k20_median": 0.00045285657190863115
+  },
+  "note": "Exchange time is SendTime spanned by 20 consecutive reconstructed snapshots inside one continuous session. Forward times are batch=1 inference on CPU/GPU after warmup. Reconstruction ms/k is wall time of the offline book builder scaled to 20 snapshots, not live matching-engine latency."
+}

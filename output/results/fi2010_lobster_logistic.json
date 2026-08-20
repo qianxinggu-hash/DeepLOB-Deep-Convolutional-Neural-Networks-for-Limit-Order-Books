@@ -1,0 +1,162 @@
+{
+  "experiment": "FI-2010 and LOBSTER causal logistic regression",
+  "model": "StandardScaler + LogisticRegression(C=0.1, class_weight=balanced)",
+  "features": "25 causal columns: lagged mid returns, trailing-mean returns, spread, depth imbalance, queue imbalance, book gaps, log depth",
+  "fi2010": {
+    "checkpoint_labels": "FI-2010 supplied labels, horizon_index=4 (k=100)",
+    "window": 100,
+    "features": 25,
+    "train": {
+      "samples": 203701,
+      "classification_report": {
+        "down": {
+          "precision": 0.7556823744982026,
+          "recall": 0.6399213512425083,
+          "f1-score": 0.6930008530070101,
+          "support": 84426.0
+        },
+        "stationary": {
+          "precision": 0.322424874066354,
+          "recall": 0.5126208229770781,
+          "f1-score": 0.3958626572830028,
+          "support": 36210.0
+        },
+        "up": {
+          "precision": 0.830850237144618,
+          "recall": 0.7465599229519051,
+          "f1-score": 0.786453016112566,
+          "support": 83065.0
+        },
+        "accuracy": 0.6607773157716457,
+        "macro avg": {
+          "precision": 0.6363191619030583,
+          "recall": 0.6330340323904972,
+          "f1-score": 0.6251055088008596,
+          "support": 203701.0
+        },
+        "weighted avg": {
+          "precision": 0.7093181662718673,
+          "recall": 0.6607773157716457,
+          "f1-score": 0.6782892406987577,
+          "support": 203701.0
+        }
+      }
+    },
+    "test": {
+      "samples": 139488,
+      "classification_report": {
+        "down": {
+          "precision": 0.6258039834540803,
+          "recall": 0.5462381300219138,
+          "f1-score": 0.5833203325235686,
+          "support": 47915.0
+        },
+        "stationary": {
+          "precision": 0.48280235128789567,
+          "recall": 0.5863059313215401,
+          "f1-score": 0.5295438952641423,
+          "support": 48050.0
+        },
+        "up": {
+          "precision": 0.7433229892659103,
+          "recall": 0.6714380902051789,
+          "f1-score": 0.7055542812994193,
+          "support": 43523.0
+        },
+        "accuracy": 0.5991052993805919,
+        "macro avg": {
+          "precision": 0.6173097746692954,
+          "recall": 0.6013273838495442,
+          "f1-score": 0.6061395030290434,
+          "support": 139488.0
+        },
+        "weighted avg": {
+          "precision": 0.6132118698985278,
+          "recall": 0.5991052993805919,
+          "f1-score": 0.6029351405519002,
+          "support": 139488.0
+        }
+      }
+    }
+  },
+  "lobster": {
+    "checkpoint": "C:\\Users\\Administrator\\Desktop\\market-making\\DeepLOB-Deep-Convolutional-Neural-Networks-for-Limit-Order-Books\\checkpoints\\deeplob_lobster_5stocks_best.pt",
+    "alpha": 0.0,
+    "sequence_length": 100,
+    "horizon_events": 100,
+    "sample_stride": 20,
+    "features": 25,
+    "train": {
+      "samples": 73833,
+      "classification_report": {
+        "down": {
+          "precision": 0.5864069622876088,
+          "recall": 0.4109276468635911,
+          "f1-score": 0.4832296621539212,
+          "support": 24104.0
+        },
+        "stationary": {
+          "precision": 0.6559530111674103,
+          "recall": 0.9322847622801046,
+          "f1-score": 0.7700799052974253,
+          "support": 27911.0
+        },
+        "up": {
+          "precision": 0.5230706883575522,
+          "recall": 0.4141076175634797,
+          "f1-score": 0.4622547389424676,
+          "support": 21818.0
+        },
+        "accuracy": 0.6089553451708586,
+        "macro avg": {
+          "precision": 0.5884768872708571,
+          "recall": 0.5857733422357251,
+          "f1-score": 0.5718547687979381,
+          "support": 73833.0
+        },
+        "weighted avg": {
+          "precision": 0.5939812034220361,
+          "recall": 0.6089553451708586,
+          "f1-score": 0.5854691250194536,
+          "support": 73833.0
+        }
+      }
+    },
+    "test": {
+      "samples": 15784,
+      "classification_report": {
+        "down": {
+          "precision": 0.603882833787466,
+          "recall": 0.3812083422919802,
+          "f1-score": 0.46737841043890865,
+          "support": 4651.0
+        },
+        "stationary": {
+          "precision": 0.711294019587414,
+          "recall": 0.9956249088522677,
+          "f1-score": 0.8297781829231237,
+          "support": 6857.0
+        },
+        "up": {
+          "precision": 0.5483076923076923,
+          "recall": 0.4167446211412535,
+          "f1-score": 0.4735583311187882,
+          "support": 4276.0
+        },
+        "accuracy": 0.6577546882919412,
+        "macro avg": {
+          "precision": 0.621161515227524,
+          "recall": 0.5978592907618339,
+          "f1-score": 0.5902383081602736,
+          "support": 15784.0
+        },
+        "weighted avg": {
+          "precision": 0.6354894731730927,
+          "recall": 0.6577546882919412,
+          "f1-score": 0.6264889388696884,
+          "support": 15784.0
+        }
+      }
+    }
+  }
+}
