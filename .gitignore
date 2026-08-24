@@ -17,3 +17,8 @@ Train_Dst_NoAuction_DecPre_CF_7.txt
 Test_Dst_NoAuction_DecPre_CF_7.txt
 Test_Dst_NoAuction_DecPre_CF_8.txt
 Test_Dst_NoAuction_DecPre_CF_9.txt
+
+# HK 07709 research data and generated artifacts (not redistributable/reproducible).
+0824/data/
+0824/checkpoints/
+0824/output/
