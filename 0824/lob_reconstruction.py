@@ -41,6 +41,9 @@ MBO_DELETE = 32
 MBO_TRADE = 50
 MBO_BID = 0
 MBO_ASK = 1
+MBO_RECONSTRUCTION_POLICIES = {"strict", "tolerant"}
+DEFAULT_MBO_GAP_THRESHOLD_MS = 30_000
+DEFAULT_MBO_RECOVERY_MS = 5 * 60_000
 
 
 def hk_session_from_utc_ms(exchange_ms: int) -> int:
@@ -84,6 +87,19 @@ def hk_session_from_compact(send_time: int) -> int:
     if 130_000_000 <= time_of_day < 160_000_000:
         return 2
     return 0
+
+
+def compact_hk_time_to_day_ms(send_time: int) -> int:
+    """Convert YYYYMMDDhhmmssSSS to milliseconds since local midnight."""
+
+    value = send_time % 1_000_000_000
+    hour = value // 10_000_000
+    minute = (value // 100_000) % 100
+    second = (value // 1_000) % 100
+    millisecond = value % 1_000
+    if hour > 23 or minute > 59 or second > 59:
+        raise ValueError(f"invalid compact send time: {send_time}")
+    return int(((hour * 60 + minute) * 60 + second) * 1_000 + millisecond)
 
 
 def _parse_price_hkd(value: str) -> float:
@@ -225,6 +241,13 @@ class StrictMBOBook:
         self.errors: Counter[str] = Counter()
         self.tainted = False
 
+    def clear_state(self) -> None:
+        """Discard order and level state while preserving audit counters."""
+
+        self.orders.clear()
+        self.bids.clear()
+        self.asks.clear()
+
     def _adjust(self, side: int, price: int, delta: int) -> bool:
         levels = self.bids if side == MBO_BID else self.asks
         quantity = levels.get(price, 0) + delta
@@ -305,26 +328,64 @@ class StrictMBOBook:
         return output, None
 
 
+class TolerantMBOBook(StrictMBOBook):
+    """MBO state that ignores only modify/delete events for unknown orders.
+
+    All other impossible transitions retain the strict behavior.  In
+    particular, duplicate adds, side mismatches, invalid quantities, negative
+    aggregate levels, malformed rows, and time reversal still taint the state.
+    """
+
+    def modify(self, order_id: int, side: int, quantity: int) -> bool:
+        if order_id not in self.orders:
+            self.errors["modify_missing_order"] += 1
+            return False
+        return super().modify(order_id, side, quantity)
+
+    def delete(self, order_id: int, side: int) -> bool:
+        if order_id not in self.orders:
+            self.errors["delete_missing_order"] += 1
+            return False
+        return super().delete(order_id, side)
+
+
 def reconstruct_mbo_csv(
     source: Path,
     snapshot_every: int = 10,
     levels: int = LEVELS,
     security_id: int = 7709,
+    policy: str = "strict",
+    gap_threshold_ms: int = DEFAULT_MBO_GAP_THRESHOLD_MS,
+    recovery_ms: int = DEFAULT_MBO_RECOVERY_MS,
 ) -> ReconstructedLOB:
-    """Strictly replay an HKEX order-event CSV into sampled ten-level states.
+    """Replay an HKEX order-event CSV into sampled ten-level states.
 
     Add/modify/delete messages update the order map and aggregate price levels.
     Trade prints are informational and are not applied again.  Rows sharing one
-    SendTime are applied atomically.  Any impossible order transition taints the
-    state, after which snapshots are withheld instead of guessing a repair.
+    SendTime are applied atomically.
+
+    ``strict`` taints the state after any impossible order transition.
+    ``tolerant`` ignores only modify/delete events for unknown OrderIDs.  A new
+    gap longer than ``gap_threshold_ms`` inside one continuous trading session
+    starts a fixed ``recovery_ms`` snapshot quarantine.  Events continue to
+    update the state during quarantine, and a new segment starts after the gap
+    so model windows and labels cannot cross the missing interval.  Later
+    unknown modify/delete events do not restart the quarantine.
     """
 
     if snapshot_every < 1:
         raise ValueError("snapshot_every must be positive")
     if levels != LEVELS:
         raise ValueError("DeepLOB requires ten levels")
+    if policy not in MBO_RECONSTRUCTION_POLICIES:
+        raise ValueError(f"unsupported MBO reconstruction policy: {policy}")
+    if gap_threshold_ms < 1:
+        raise ValueError("gap_threshold_ms must be positive")
+    if recovery_ms < 0:
+        raise ValueError("recovery_ms must be non-negative")
 
-    book = StrictMBOBook()
+    tolerant = policy == "tolerant"
+    book = TolerantMBOBook() if tolerant else StrictMBOBook()
     feature_rows: list[np.ndarray] = []
     send_time_rows: list[int] = []
     exchange_rows: list[int] = []
@@ -334,6 +395,11 @@ def reconstruct_mbo_csv(
     sample_counter: Counter[int] = Counter()
     previous_send_time: int | None = None
     group_send_time: int | None = None
+    group_day_ms: int | None = None
+    group_segment = 0
+    next_segment = 0
+    recovery_until_day_ms: int | None = None
+    gap_events: list[dict[str, int]] = []
     group_changed = False
     csv_columns: tuple[str, ...] = ()
 
@@ -346,9 +412,19 @@ def reconstruct_mbo_csv(
             counts["changed_groups_outside_continuous_session"] += 1
             group_changed = False
             return
+        if (
+            tolerant
+            and recovery_until_day_ms is not None
+            and group_day_ms is not None
+            and group_day_ms < recovery_until_day_ms
+        ):
+            counts["skipped_recovery_changed_groups"] += 1
+            group_changed = False
+            return
         counts[f"changed_groups_session_{session}"] += 1
-        sample_counter[session] += 1
-        if sample_counter[session] % snapshot_every == 0:
+        segment = group_segment if tolerant else session
+        sample_counter[segment] += 1
+        if sample_counter[segment] % snapshot_every == 0:
             counts["snapshot_attempts"] += 1
             state, reason = book.snapshot(levels)
             if state is None:
@@ -357,7 +433,7 @@ def reconstruct_mbo_csv(
                 feature_rows.append(state)
                 send_time_rows.append(group_send_time)
                 exchange_rows.append(compact_hk_time_to_utc_ms(group_send_time))
-                segment_rows.append(session)
+                segment_rows.append(segment)
         group_changed = False
 
     with source.open("r", encoding="utf-8-sig", newline="") as stream:
@@ -389,9 +465,59 @@ def reconstruct_mbo_csv(
                 previous_send_time = send_time
                 if group_send_time is None:
                     group_send_time = send_time
+                    group_day_ms = compact_hk_time_to_day_ms(send_time)
+                    session = hk_session_from_compact(send_time)
+                    if tolerant and session:
+                        next_segment += 1
+                        group_segment = next_segment
                 elif send_time != group_send_time:
+                    previous_group_send_time = group_send_time
+                    previous_group_day_ms = group_day_ms
                     flush_group()
                     group_send_time = send_time
+                    group_day_ms = compact_hk_time_to_day_ms(send_time)
+                    previous_session = hk_session_from_compact(
+                        previous_group_send_time
+                    )
+                    session = hk_session_from_compact(send_time)
+                    same_continuous_session = bool(
+                        session and session == previous_session
+                    )
+                    gap_ms = (
+                        group_day_ms - previous_group_day_ms
+                        if previous_group_day_ms is not None
+                        else 0
+                    )
+                    detected_gap = bool(
+                        tolerant
+                        and same_continuous_session
+                        and gap_ms > gap_threshold_ms
+                    )
+                    if tolerant and session != previous_session and session:
+                        next_segment += 1
+                        group_segment = next_segment
+                    elif detected_gap:
+                        next_segment += 1
+                        group_segment = next_segment
+                        book.clear_state()
+                        counts["gap_state_resets"] += 1
+                        candidate_until = group_day_ms + recovery_ms
+                        recovery_until_day_ms = max(
+                            recovery_until_day_ms or candidate_until,
+                            candidate_until,
+                        )
+                        counts["detected_continuous_session_gaps"] += 1
+                        gap_events.append(
+                            {
+                                "previous_send_time": previous_group_send_time,
+                                "resume_send_time": send_time,
+                                "gap_ms": int(gap_ms),
+                                "recovery_until_day_ms": int(
+                                    recovery_until_day_ms
+                                ),
+                                "new_segment": int(group_segment),
+                            }
+                        )
 
                 message_type = int(row["MsgType"])
                 message_counts[str(message_type)] += 1
@@ -432,7 +558,9 @@ def reconstruct_mbo_csv(
     metadata: dict[str, object] = {
         "source": str(source.resolve()),
         "source_kind": "market-by-order (MBO) order event stream",
-        "reconstruction_version": "0824-v2-mbo-strict",
+        "reconstruction_version": (
+            "0831-v1-mbo-tolerant-5m" if tolerant else "0824-v2-mbo-strict"
+        ),
         "source_columns": list(csv_columns),
         "message_counts": dict(sorted(message_counts.items())),
         "snapshot_every_changed_send_time_groups": snapshot_every,
@@ -445,9 +573,23 @@ def reconstruct_mbo_csv(
             "delete": "remove an existing OrderID and subtract its remaining quantity",
             "trade": "ignored for state because the order update/delete is delivered separately",
             "same_send_time": "apply atomically before sampling",
-            "impossible_transition": "taint state and withhold all later snapshots; never overwrite or guess",
+            "missing_modify_or_delete": (
+                "count and ignore without mutating state or restarting recovery"
+                if tolerant
+                else "taint state and withhold all later snapshots"
+            ),
+            "other_impossible_transition": "taint state and withhold all later snapshots; never overwrite or guess",
+            "continuous_session_gap": (
+                f"if gap exceeds {gap_threshold_ms}ms, clear the unreliable order state, rebuild from post-gap adds, withhold snapshots for {recovery_ms}ms after resume, and start a new segment"
+                if tolerant
+                else "no recovery; strict order consistency remains required"
+            ),
             "crossed_or_locked": "skip observation without mutating the book",
         },
+        "reconstruction_policy": policy,
+        "gap_threshold_ms": gap_threshold_ms if tolerant else None,
+        "recovery_ms": recovery_ms if tolerant else None,
+        "gap_events": gap_events,
         "quality_counts": dict(sorted(counts.items())),
         "order_errors": dict(sorted(book.errors.items())),
         "final_state_tainted": book.tainted,

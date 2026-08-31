@@ -1,0 +1,7 @@
+{
+  "chronological_no_future_training_or_tuning": true,
+  "fee_fill_and_inventory_accounting": true,
+  "monthly_aggregate_recomputed": true,
+  "all_test_days_end_flat": true,
+  "all_passed": true
+}

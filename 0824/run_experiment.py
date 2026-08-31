@@ -101,6 +101,30 @@ def symmetric_returns(mids: np.ndarray, segments: np.ndarray, horizon: int) -> n
     return result
 
 
+def forward_returns(mids: np.ndarray, segments: np.ndarray, horizon: int) -> np.ndarray:
+    """Future-horizon mean mid-price return measured from the current mid.
+
+    At index ``t`` this is ``mean(mid[t+1:t+horizon+1]) / mid[t] - 1``.
+    Unlike :func:`symmetric_returns`, its denominator is fully the current
+    price, so a model cannot obtain part of the target simply from the past
+    price-path features that are already observed at ``t``.
+    """
+
+    result = np.full(len(mids), np.nan, dtype=np.float64)
+    for segment in np.unique(segments):
+        positions = np.flatnonzero(segments == segment)
+        if len(positions) <= horizon:
+            continue
+        if np.any(np.diff(positions) != 1):
+            raise ValueError(f"segment {segment} is not contiguous")
+        values = mids[positions]
+        cumulative = np.concatenate(([0.0], np.cumsum(values, dtype=np.float64)))
+        local = np.arange(0, len(values) - horizon, dtype=np.int64)
+        future = (cumulative[local + horizon + 1] - cumulative[local + 1]) / horizon
+        result[positions[local]] = future / values[local] - 1.0
+    return result
+
+
 def eligible_indices(
     returns: np.ndarray,
     segments: np.ndarray,

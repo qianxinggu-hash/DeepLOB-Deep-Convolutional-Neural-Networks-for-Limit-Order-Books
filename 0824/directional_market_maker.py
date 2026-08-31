@@ -59,6 +59,23 @@ class ASParameters:
     quote_horizon_snapshots: int = 20
 
 
+@dataclass(frozen=True)
+class ASDriftParameters:
+    """Finite-horizon AS parameters with an exogenous directional drift.
+
+    The calibrated alpha shifts only the reservation price.  Inventory risk
+    and the AS optimal total spread retain the same units and formula as the
+    classic model.
+    """
+
+    risk_aversion_per_tick: float
+    order_decay_per_tick: float
+    horizon_variance_ticks2: float
+    signal_strength: float
+    max_inventory_lots: int
+    quote_horizon_snapshots: int = 20
+
+
 @dataclass
 class TradeData:
     trade_time_ms: np.ndarray
@@ -397,12 +414,51 @@ def classic_as_quote_prices(
     return bid_tick * TICK_HKD, ask_tick * TICK_HKD, inventory_shift
 
 
+def as_drift_quote_prices(
+    best_bid_hkd: float,
+    best_ask_hkd: float,
+    alpha_ticks: float,
+    inventory_lots: int,
+    parameters: ASDriftParameters,
+) -> tuple[float, float, float]:
+    """Return passive AS quotes with drift in the reservation price.
+
+    In tick units,
+
+        r = mid + eta * alpha - q * gamma * sigma_h^2
+        delta_a + delta_b = gamma * sigma_h^2
+                            + 2/gamma * log(1 + gamma/k).
+
+    Thus alpha changes the quote center but not the AS optimal spread.
+    """
+
+    best_bid_tick = _rounded_tick(best_bid_hkd / TICK_HKD)
+    best_ask_tick = _rounded_tick(best_ask_hkd / TICK_HKD)
+    mid_tick = (best_bid_tick + best_ask_tick) / 2.0
+    gamma = parameters.risk_aversion_per_tick
+    decay = parameters.order_decay_per_tick
+    variance = max(parameters.horizon_variance_ticks2, 0.0)
+    inventory_shift = -inventory_lots * gamma * variance
+    drift_shift = parameters.signal_strength * alpha_ticks
+    center_shift = drift_shift + inventory_shift
+    reservation_tick = mid_tick + center_shift
+    total_spread_ticks = gamma * variance + 2.0 / gamma * math.log1p(gamma / decay)
+    half_spread = total_spread_ticks / 2.0
+    bid_tick = int(math.floor(reservation_tick - half_spread))
+    ask_tick = int(math.ceil(reservation_tick + half_spread))
+    bid_tick = min(bid_tick, best_ask_tick - 1)
+    ask_tick = max(ask_tick, best_bid_tick + 1)
+    if bid_tick >= ask_tick:
+        raise AssertionError("crossed AS+drift quote")
+    return bid_tick * TICK_HKD, ask_tick * TICK_HKD, center_shift
+
+
 def simulate_market_maker(
     day: object,
     trades: TradeData,
     quote_indices: np.ndarray,
     alpha_ticks: np.ndarray,
-    parameters: QuoteParameters | ASParameters,
+    parameters: QuoteParameters | ASParameters | ASDriftParameters,
     fill_mode: str,
     strategy_name: str,
     record_events: bool = False,
@@ -433,7 +489,11 @@ def simulate_market_maker(
             continue
         best_ask = float(day.book[index, 0])
         best_bid = float(day.book[index, 2])
-        if isinstance(parameters, ASParameters):
+        if isinstance(parameters, ASDriftParameters):
+            bid_quote, ask_quote, center_shift = as_drift_quote_prices(
+                best_bid, best_ask, float(alpha_value), inventory, parameters
+            )
+        elif isinstance(parameters, ASParameters):
             bid_quote, ask_quote, center_shift = classic_as_quote_prices(
                 best_bid, best_ask, inventory, parameters
             )

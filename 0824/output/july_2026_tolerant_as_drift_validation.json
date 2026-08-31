@@ -1,0 +1,10 @@
+{
+  "chronological_no_future_information": true,
+  "fee_and_fill_accounting": true,
+  "paired_zero_drift_parameters_match": true,
+  "unit_drift_uses_classic_as_parameters": true,
+  "kill_switch_matches_validation_objective": true,
+  "monthly_aggregate_recomputed": true,
+  "classic_as_reproduces_prior_monthly_result": true,
+  "all_passed": true
+}

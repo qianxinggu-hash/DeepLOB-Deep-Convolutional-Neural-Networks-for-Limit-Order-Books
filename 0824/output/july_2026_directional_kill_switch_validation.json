@@ -1,0 +1,7 @@
+{
+  "chronological_no_future_information": true,
+  "fee_and_fill_accounting": true,
+  "kill_switch_deployment_matches_activation": true,
+  "monthly_aggregate_recomputed": true,
+  "all_passed": true
+}

@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import csv
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -10,8 +12,19 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lob_reconstruction import AbsoluteLevelBook, StrictMBOBook  # noqa: E402
-from run_experiment import eligible_indices, prepare_data, symmetric_returns  # noqa: E402
+from lob_reconstruction import (  # noqa: E402
+    AbsoluteLevelBook,
+    StrictMBOBook,
+    TolerantMBOBook,
+    compact_hk_time_to_day_ms,
+    reconstruct_mbo_csv,
+)
+from run_experiment import (  # noqa: E402
+    eligible_indices,
+    forward_returns,
+    prepare_data,
+    symmetric_returns,
+)
 from run_improved_experiment import causal_features, interval_indices  # noqa: E402
 
 
@@ -64,6 +77,163 @@ class StrictMBOBookTests(unittest.TestCase):
         self.assertNotIn(1100, book.asks)
 
 
+class TolerantMBOBookTests(unittest.TestCase):
+    def test_missing_modify_delete_are_ignored_but_new_adds_continue(self) -> None:
+        book = TolerantMBOBook()
+        self.assertFalse(book.modify(999, 0, 100))
+        self.assertFalse(book.delete(999, 0))
+        self.assertFalse(book.tainted)
+        self.assertTrue(book.add(1, 0, 1000, 50))
+        self.assertEqual(book.bids[1000], 50)
+        self.assertEqual(book.errors["modify_missing_order"], 1)
+        self.assertEqual(book.errors["delete_missing_order"], 1)
+
+    def test_time_gap_quarantines_snapshots_and_splits_segments(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            source = Path(temporary) / "synthetic.csv"
+            fieldnames = [
+                "SendTime",
+                "MsgType",
+                "SecurityId",
+                "Price",
+                "Quantity",
+                "Side",
+                "OrderID",
+                "OrderBookPosition",
+                "TradeID",
+                "TradeTime",
+                "TrdType",
+            ]
+            rows: list[dict[str, object]] = []
+            for level in range(10):
+                rows.append(
+                    {
+                        "SendTime": 20260703093000000,
+                        "MsgType": 30,
+                        "SecurityId": 7709,
+                        "Price": 1000 - level,
+                        "Quantity": 100,
+                        "Side": 0,
+                        "OrderID": 100 + level,
+                    }
+                )
+                rows.append(
+                    {
+                        "SendTime": 20260703093000000,
+                        "MsgType": 30,
+                        "SecurityId": 7709,
+                        "Price": 1100 + level,
+                        "Quantity": 100,
+                        "Side": 1,
+                        "OrderID": 200 + level,
+                    }
+                )
+            rows.extend(
+                [
+                    {
+                        "SendTime": 20260703093000001,
+                        "MsgType": 31,
+                        "SecurityId": 7709,
+                        "Price": "",
+                        "Quantity": 90,
+                        "Side": 0,
+                        "OrderID": 100,
+                    },
+                    {
+                        "SendTime": 20260703093301001,
+                        "MsgType": 31,
+                        "SecurityId": 7709,
+                        "Price": "",
+                        "Quantity": 50,
+                        "Side": 0,
+                        "OrderID": 999999,
+                    },
+                    {
+                        "SendTime": 20260703093801002,
+                        "MsgType": 31,
+                        "SecurityId": 7709,
+                        "Price": "",
+                        "Quantity": 80,
+                        "Side": 0,
+                        "OrderID": 400,
+                    },
+                ]
+            )
+            rebuilt_rows: list[dict[str, object]] = []
+            for level in range(10):
+                rebuilt_rows.append(
+                    {
+                        "SendTime": 20260703093301001,
+                        "MsgType": 30,
+                        "SecurityId": 7709,
+                        "Price": 1000 - level,
+                        "Quantity": 100,
+                        "Side": 0,
+                        "OrderID": 400 + level,
+                    }
+                )
+                rebuilt_rows.append(
+                    {
+                        "SendTime": 20260703093301001,
+                        "MsgType": 30,
+                        "SecurityId": 7709,
+                        "Price": 1100 + level,
+                        "Quantity": 100,
+                        "Side": 1,
+                        "OrderID": 500 + level,
+                    }
+                )
+            rows[22:22] = rebuilt_rows
+            recovery_rows: list[dict[str, object]] = []
+            start_second = 9 * 3600 + 33 * 60 + 1
+            for elapsed in range(20, 301, 20):
+                total_second = start_second + elapsed
+                hour, remainder = divmod(total_second, 3600)
+                minute, second = divmod(remainder, 60)
+                recovery_rows.append(
+                    {
+                        "SendTime": int(
+                            f"20260703{hour:02d}{minute:02d}{second:02d}000"
+                        ),
+                        "MsgType": 31,
+                        "SecurityId": 7709,
+                        "Price": "",
+                        "Quantity": 80 + elapsed % 40,
+                        "Side": 0,
+                        "OrderID": 400,
+                    }
+                )
+            rows[-1:-1] = recovery_rows
+            with source.open("w", encoding="utf-8", newline="") as stream:
+                writer = csv.DictWriter(stream, fieldnames=fieldnames)
+                writer.writeheader()
+                writer.writerows(rows)
+
+            result = reconstruct_mbo_csv(
+                source,
+                snapshot_every=1,
+                policy="tolerant",
+                gap_threshold_ms=30_000,
+                recovery_ms=300_000,
+            )
+
+        self.assertEqual(result.metadata["reconstruction_policy"], "tolerant")
+        self.assertEqual(len(result.metadata["gap_events"]), 1)
+        self.assertEqual(result.metadata["order_errors"]["modify_missing_order"], 1)
+        self.assertFalse(result.metadata["final_state_tainted"])
+        self.assertEqual(set(result.segments.tolist()), {1, 2})
+        self.assertGreaterEqual(
+            result.metadata["quality_counts"]["skipped_recovery_changed_groups"],
+            1,
+        )
+
+    def test_compact_time_to_day_ms(self) -> None:
+        self.assertEqual(
+            compact_hk_time_to_day_ms(20260703093647406),
+            ((9 * 60 + 36) * 60 + 47) * 1000 + 406,
+        )
+
+
 class SplitTests(unittest.TestCase):
     def test_train_and_test_windows_are_strictly_disjoint(self) -> None:
         n = 1000
@@ -79,6 +249,22 @@ class SplitTests(unittest.TestCase):
         returns = symmetric_returns(mids, segments, 5)
         self.assertTrue(np.isnan(returns[48]))
         self.assertTrue(np.isnan(returns[51]))
+
+    def test_forward_returns_use_current_mid_and_future_only(self) -> None:
+        mids = np.array([100.0, 102.0, 104.0, 106.0, 108.0, 110.0])
+        segments = np.ones(len(mids), dtype=np.int16)
+        returns = forward_returns(mids, segments, 2)
+        self.assertAlmostEqual(returns[0], 103.0 / 100.0 - 1.0)
+        self.assertAlmostEqual(returns[3], 109.0 / 106.0 - 1.0)
+        self.assertTrue(np.isnan(returns[4]))
+        self.assertTrue(np.isnan(returns[5]))
+
+    def test_forward_returns_do_not_cross_segments(self) -> None:
+        mids = np.r_[np.arange(10.0, 20.0), np.arange(100.0, 110.0)]
+        segments = np.r_[np.ones(10), np.full(10, 2)]
+        returns = forward_returns(mids, segments, 3)
+        self.assertTrue(np.isnan(returns[7]))
+        self.assertTrue(np.isnan(returns[8]))
 
     def test_normalization_uses_train_prefix_only(self) -> None:
         features = np.zeros((500, 40), dtype=np.float32)

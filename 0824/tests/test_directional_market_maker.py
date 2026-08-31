@@ -10,8 +10,10 @@ if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 
 from directional_market_maker import (  # noqa: E402
+    ASDriftParameters,
     ASParameters,
     QuoteParameters,
+    as_drift_quote_prices,
     classic_as_quote_prices,
     compact_time_to_day_ms,
     fit_alpha_calibrator,
@@ -58,6 +60,26 @@ class DirectionalMarketMakerTests(unittest.TestCase):
         bid, ask, _ = classic_as_quote_prices(99.98, 100.00, -5, parameters)
         self.assertLessEqual(bid, 99.98)
         self.assertGreaterEqual(ask, 100.00)
+
+    def test_zero_drift_matches_classic_as(self) -> None:
+        classic = ASParameters(0.02, 1.0, 10.0, 5)
+        drift = ASDriftParameters(0.02, 1.0, 10.0, 4.0, 5)
+        classic_quotes = classic_as_quote_prices(99.98, 100.00, 2, classic)
+        drift_quotes = as_drift_quote_prices(99.98, 100.00, 0.0, 2, drift)
+        self.assertEqual(classic_quotes, drift_quotes)
+
+    def test_positive_drift_moves_as_reservation_up(self) -> None:
+        parameters = ASDriftParameters(0.02, 1.0, 10.0, 4.0, 5)
+        neutral_bid, neutral_ask, neutral_shift = as_drift_quote_prices(
+            99.98, 100.00, 0.0, 0, parameters
+        )
+        up_bid, up_ask, up_shift = as_drift_quote_prices(
+            99.98, 100.00, 1.0, 0, parameters
+        )
+        self.assertGreater(up_shift, neutral_shift)
+        self.assertGreaterEqual(up_bid, neutral_bid)
+        self.assertGreaterEqual(up_ask, neutral_ask)
+        self.assertLess(up_bid, up_ask)
 
 
 if __name__ == "__main__":

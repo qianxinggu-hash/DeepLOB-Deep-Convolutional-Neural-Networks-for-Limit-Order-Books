@@ -4,6 +4,20 @@
 `MsgType=50` 的成交数量选择成交量最高交易日，再从该日的 MBP/L2 绝对档位事件流
 恢复十档盘口，按时间严格 70%/30% 切分并训练 DeepLOB。
 
+## 📋 目录结构
+
+| 类别 | 文件 | 说明 |
+| --- | --- | --- |
+| 核心模块 | `lob_reconstruction.py`、`directional_market_maker.py` | 盘口重建与 AS/GP-style 做市组件 |
+| 实验入口 | `run_*.py` | 单日、多日、方向增强和 markout 实验 |
+| 独立验证 | `validate_*.py`、`tests/` | 结果复算、时序检查与单元测试 |
+| 分析 | `*_analysis.ipynb` | 可复现的结果分析 notebook |
+| 文档 | `project_methodology.md`、`reconstruction_and_results.md` | 完整方法论、证据边界与实验结论 |
+| 论文 | [`papers/`](papers/) | AS 与 GP 原论文及来源索引 |
+
+代码文件继续保留在当前层级，避免破坏既有导入、命令和结果路径；论文统一归档到
+`papers/`，本地数据与生成物仍由 `.gitignore` 隔离。
+
 原始逐笔数据、重建缓存、模型权重和逐成交输出不包含在 Git 仓库中。默认从仓库根目录下的
 `7709_tickdata/` 读取原始文件，也可以通过环境变量指定数据目录：
 
@@ -82,3 +96,8 @@ markout，分别报告买单和卖单 adverse-selection cost，并与相同参�
 项目完整方法论总结见 [`project_methodology.md`](project_methodology.md)。该文档按
 DeepLOB、25维因果逻辑回归、方向信号校准和 AS/GP-style 做市的顺序，统一说明公式、
 数学原理、实证结果、证据边界与复现入口。
+
+## 🔗 参考论文
+
+AS 与 GP 原论文已保存到 [`papers/`](papers/)，文件来源和模型适用边界见
+[`papers/README.md`](papers/README.md)。
