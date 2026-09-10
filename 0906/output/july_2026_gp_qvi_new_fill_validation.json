@@ -1,0 +1,11 @@
+{
+  "strictly_prior_rolling_calibration": true,
+  "order_lifecycle_reconciles": true,
+  "fill_evidence_reconciles": true,
+  "all_days_end_flat": true,
+  "net_equals_gross_minus_all_in_fees": true,
+  "womo_has_no_policy_market_orders": true,
+  "monthly_aggregate_reconciles_to_daily": true,
+  "test_day_count_is_19": true,
+  "all_passed": true
+}

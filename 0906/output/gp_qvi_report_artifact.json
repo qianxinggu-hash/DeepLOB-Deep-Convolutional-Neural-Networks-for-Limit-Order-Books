@@ -1,0 +1,659 @@
+{
+  "surface": "report",
+  "manifest": {
+    "version": 1,
+    "surface": "report",
+    "title": "7709 的 GP-QVI 一个月回测",
+    "description": "HK 07709，2026 年 7 月，论文形式 GP-QVI 与 0906 新成交逻辑。",
+    "generatedAt": "2026-09-10T09:00:00+08:00",
+    "cards": [
+      {
+        "id": "through_net",
+        "description": "保守 through 口径、2.77 bp 每执行边费用后的整月收益。",
+        "dataset": "summary",
+        "sourceId": "gp_results",
+        "metrics": [
+          {
+            "label": "GP-QVI 月度净收益",
+            "field": "through_net",
+            "format": "number",
+            "unit": "HKD"
+          }
+        ]
+      },
+      {
+        "id": "through_gross",
+        "description": "扣费前现金交易损益。",
+        "dataset": "summary",
+        "sourceId": "gp_results",
+        "metrics": [
+          {
+            "label": "through 毛收益",
+            "field": "through_gross",
+            "format": "number",
+            "unit": "HKD"
+          }
+        ]
+      },
+      {
+        "id": "through_fees",
+        "description": "官方费用 1.27 bp 加券商佣金假设 1.50 bp。",
+        "dataset": "summary",
+        "sourceId": "gp_results",
+        "metrics": [
+          {
+            "label": "through 全包费用",
+            "field": "through_fees",
+            "format": "number",
+            "unit": "HKD"
+          }
+        ]
+      },
+      {
+        "id": "through_womo",
+        "description": "关闭盘中市价单，只用限价单管理库存。",
+        "dataset": "summary",
+        "sourceId": "gp_results",
+        "metrics": [
+          {
+            "label": "WoMO 月度净收益",
+            "field": "through_womo_net",
+            "format": "number",
+            "unit": "HKD"
+          }
+        ]
+      }
+    ],
+    "charts": [
+      {
+        "id": "headline_pnl",
+        "title": "through 口径月度净收益",
+        "subtitle": "19 个样本外交易日；HKD；已扣除 2.77 bp 每执行边费用",
+        "type": "bar",
+        "dataset": "headline_pnl",
+        "sourceId": "gp_results",
+        "encodings": {
+          "x": {
+            "field": "strategy",
+            "type": "nominal",
+            "label": "策略"
+          },
+          "y": {
+            "field": "net_pnl_hkd",
+            "type": "quantitative",
+            "label": "月度净收益",
+            "format": "number"
+          }
+        },
+        "yAxisTitle": "HKD",
+        "valueFormat": "number",
+        "layout": "full"
+      },
+      {
+        "id": "daily_through_pnl",
+        "title": "through 口径逐日净收益",
+        "subtitle": "GP-QVI 损失集中于少数日期；WoMO 大多数日期选择不交易",
+        "type": "line",
+        "dataset": "daily_through",
+        "sourceId": "gp_results",
+        "encodings": {
+          "x": {
+            "field": "date",
+            "type": "temporal",
+            "label": "交易日"
+          },
+          "y": {
+            "field": "net_pnl_hkd",
+            "type": "quantitative",
+            "label": "净收益",
+            "format": "number"
+          },
+          "color": {
+            "field": "strategy",
+            "type": "nominal",
+            "label": "策略"
+          }
+        },
+        "yAxisTitle": "HKD",
+        "valueFormat": "number",
+        "layout": "full"
+      }
+    ],
+    "tables": [
+      {
+        "id": "aggregate_detail",
+        "title": "策略与成交口径汇总",
+        "subtitle": "2026 年 7 月 3 日至 30 日，共 19 个样本外完整交易日",
+        "dataset": "aggregate_detail",
+        "sourceId": "gp_results",
+        "defaultSort": {
+          "field": "net_pnl_hkd",
+          "direction": "desc"
+        },
+        "density": "dense",
+        "layout": "full",
+        "columns": [
+          {
+            "field": "fill_mode",
+            "label": "成交口径",
+            "type": "text"
+          },
+          {
+            "field": "strategy",
+            "label": "策略",
+            "type": "text"
+          },
+          {
+            "field": "gross_pnl_hkd",
+            "label": "毛收益",
+            "format": "number"
+          },
+          {
+            "field": "fees_hkd",
+            "label": "费用",
+            "format": "number"
+          },
+          {
+            "field": "net_pnl_hkd",
+            "label": "净收益",
+            "format": "number",
+            "movement": true
+          },
+          {
+            "field": "maker_fills",
+            "label": "Maker 成交",
+            "format": "number"
+          },
+          {
+            "field": "market_order_lots",
+            "label": "市价手数",
+            "format": "number"
+          }
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "gp_results",
+        "label": "GP-QVI 月度回测机器结果",
+        "path": "0906/output/july_2026_gp_qvi_new_fill_results.json",
+        "description": "从 19 个样本外交易日逐日结果汇总月度收益、成交、费用与回撤。",
+        "query": {
+          "engine": "duckdb",
+          "language": "sql",
+          "sql": "SELECT * FROM read_json_auto('0906/output/july_2026_gp_qvi_new_fill_results.json')",
+          "description": "读取经程序校验的 GP-QVI 月度机器结果；报告构建脚本再展开 aggregate 与 tests 字段。",
+          "tables_used": [
+            "0906/output/july_2026_gp_qvi_new_fill_results.json"
+          ],
+          "filters": [
+            "instrument = HK 07709",
+            "period = 2026-07",
+            "19 full-day out-of-sample tests"
+          ],
+          "metric_definitions": {
+            "net_pnl_hkd": "gross cash trading PnL minus all-in execution fees",
+            "all_in_fees_hkd": "feeable turnover multiplied by 2.77 basis points per execution side"
+          },
+          "executed_at": "2026-09-10T09:00:00+08:00"
+        }
+      },
+      {
+        "id": "gp_model",
+        "label": "GP-QVI 求解与回放实现",
+        "path": "0906/gp_qvi_model.py",
+        "description": "实现 GP 的状态、控制、滚动估计、Bellman/QVI 离散化及 0906 新成交逻辑。"
+      },
+      {
+        "id": "gp_paper",
+        "label": "Guilbaud-Pham 原论文",
+        "path": "0906/papers/Guilbaud_Pham_2011_Optimal_High_Frequency_Trading_with_Limit_and_Market_Orders.pdf"
+      }
+    ],
+    "blocks": [
+      {
+        "id": "title",
+        "type": "markdown",
+        "body": "# 7709 的 GP-QVI 一个月回测"
+      },
+      {
+        "id": "technical_summary",
+        "type": "markdown",
+        "sourceId": "gp_results",
+        "body": "## 技术结论\n\n**按保守的 `through` 成交口径，论文形式 GP-QVI 在 19 个样本外交易日的全包净收益为 HKD −236.94。** 毛收益 HKD 468.00，不足以覆盖 HKD 704.94 的执行费用。乐观 `touch` 口径净收益为 HKD −3,830.95。\n\n关闭盘中市价单的 WoMO 版本反而分别实现 HKD +58.48（through）和 HKD +202.60（touch）。这说明 GP 的库存控制机制已经复现，但在 7709 的费用与新成交代理下，频繁用市价单归零库存并不经济。"
+      },
+      {
+        "id": "metrics",
+        "type": "metric-strip",
+        "cardIds": [
+          "through_net",
+          "through_gross",
+          "through_fees",
+          "through_womo"
+        ]
+      },
+      {
+        "id": "finding_market_orders",
+        "type": "markdown",
+        "sourceId": "gp_results",
+        "body": "## 市价减仓没有赚回执行成本\n\nGP-QVI 在 through 下完成 231 笔 maker 成交，并用 95 手市价单减仓；相对 WoMO，它多获得 HKD 378.00 毛收益，却多付 HKD 673.42 费用，净收益因此低 HKD 295.42。touch 下差距更大：多出的毛收益只有 HKD 154.98，但额外费用达到 HKD 4,188.53。\n\n因此这里不是库存惩罚失效，而是惩罚确实促使策略快速回到零库存；问题在于这种风险交换在当前费率下太贵。"
+      },
+      {
+        "id": "headline_chart",
+        "type": "chart",
+        "chartId": "headline_pnl",
+        "layout": "full"
+      },
+      {
+        "id": "finding_daily",
+        "type": "markdown",
+        "sourceId": "gp_results",
+        "body": "## through 损失集中在少数交易日\n\nGP-QVI 有 8 个盈利日、10 个亏损日和 1 个零交易收益日；最大单日收益为 HKD +95.41（7 月 16 日），最差为 HKD −183.74（7 月 21 日）。WoMO 有 17 天选择不产生净交易收益，体现了高惩罚和费用下的保守最优解。"
+      },
+      {
+        "id": "daily_chart",
+        "type": "chart",
+        "chartId": "daily_through_pnl",
+        "layout": "full"
+      },
+      {
+        "id": "scope",
+        "type": "markdown",
+        "sourceId": "gp_results",
+        "body": "## 范围与收益定义\n\n样本为 HK 07709 的 2026 年 7 月数据。7 月 2 日只用于初始校准，之后 19 个完整交易日计入样本外 PnL；每天仅使用此前最多 5 个完整交易日估计参数。净收益定义为实际报价现金流和日终平仓现金流之和，减去每个执行边 2.77 bp（官方 1.27 bp + 券商佣金假设 1.50 bp）。未给定账户资本，因此不报告资本收益率。"
+      },
+      {
+        "id": "method",
+        "type": "markdown",
+        "sourceId": "gp_model",
+        "body": "## 论文模型如何落到 7709\n\n实现采用论文的线性效用降维 `v=x+yp+φ(t,y,s)`，在 `(剩余时间, 库存, spread)` 上反向求解。每侧控制为不挂、当前最优价或改善一个合法 tick；GP-QVI 还可用市价单减少库存，WoMO 禁用该冲击控制。库存范围为 ±10 手，每手 100 股；`T=300s`、100 个时间步、`γ=5`。\n\nspread 转移矩阵、六个日内时段的 Poisson 时钟强度和按 spread/方向/报价层级区分的成交强度，全部由滚动历史估计。回放沿用新成交逻辑：5ms 后生效，只检查 `t+1…t+20`，未来成交价或对手方 L1 报价任一先满足即成交。"
+      },
+      {
+        "id": "detail_table",
+        "type": "table",
+        "tableId": "aggregate_detail",
+        "layout": "full"
+      },
+      {
+        "id": "limitations",
+        "type": "markdown",
+        "body": "## 限制、稳健性与解释边界\n\n- 这是基于逐笔成交和 L1 触价的可执行性代理，不含 queue-ahead、隐藏流动性、交易所确认、市场冲击与借券成本。\n- `touch` 与 `through` 分别代表乐观和保守的排队敏感性，不是置信区间；两者分别校准政策，不能当成只改变一个条件的严格配对实验。\n- 论文中的 EUR/股参数不能无量纲地直接搬到 HKD/手。本复现保留 `γ=5` 的结构，将库存单位改为 100 股一手，因此结果应视为论文形式的工程复现，而非原表参数的跨市场同量纲复制。\n- 月初合法 tick 为 HKD 0.05，之后主要为 HKD 0.02；实现按当日盘口网格识别，避免固定 tick 造成非法改善报价。\n- 仅按官方 1.27 bp 计算时，through 的 GP-QVI 为 HKD +144.80；加入 1.50 bp 佣金假设后转为 HKD −236.94，结论对费用高度敏感。"
+      },
+      {
+        "id": "next_steps",
+        "type": "markdown",
+        "body": "## 建议的下一步\n\n1. 把市价冲击控制加入费用阈值：只有预期库存风险下降超过跨 spread 和佣金时才减仓。\n2. 对 `γ` 做严格 walk-forward 灵敏度分析，同时保留论文的 WoMO 作为低换手基线。\n3. 若目标是可交易收益，优先研究 WoMO；当前证据不支持直接上线带市价归零的 GP-QVI。"
+      },
+      {
+        "id": "further_questions",
+        "type": "markdown",
+        "body": "## 仍需回答的问题\n\n真实券商是否有最低佣金、maker rebate 或分层费率？可获得的 queue-ahead 数据是否足以替代触价代理？这两项会最直接地改变市价减仓与限价等待之间的最优边界。"
+      }
+    ]
+  },
+  "snapshot": {
+    "version": 1,
+    "generatedAt": "2026-09-10T09:00:00+08:00",
+    "status": "ready",
+    "datasets": {
+      "summary": [
+        {
+          "through_net": -236.9417021967316,
+          "through_gross": 468.0000305175781,
+          "through_fees": 704.9417327143098,
+          "through_womo_net": 58.47971219406128,
+          "touch_net": -3830.9455258880607,
+          "test_days": 19,
+          "maker_fills": 231
+        }
+      ],
+      "headline_pnl": [
+        {
+          "strategy": "GP-QVI",
+          "net_pnl_hkd": -236.9417021967316
+        },
+        {
+          "strategy": "GP WoMO",
+          "net_pnl_hkd": 58.47971219406128
+        }
+      ],
+      "monthly_comparison": [
+        {
+          "fill_mode": "through",
+          "strategy": "GP-QVI",
+          "net_pnl_hkd": -236.9417021967316,
+          "gross_pnl_hkd": 468.0000305175781,
+          "fees_hkd": 704.9417327143098,
+          "maker_fills": 231,
+          "market_order_lots": 95
+        },
+        {
+          "fill_mode": "through",
+          "strategy": "GP WoMO",
+          "net_pnl_hkd": 58.47971219406128,
+          "gross_pnl_hkd": 89.99954223632812,
+          "fees_hkd": 31.519830042266847,
+          "maker_fills": 10,
+          "market_order_lots": 0
+        },
+        {
+          "fill_mode": "touch",
+          "strategy": "GP-QVI",
+          "net_pnl_hkd": -3830.9455258880607,
+          "gross_pnl_hkd": 565.9751892089844,
+          "fees_hkd": 4396.920715097045,
+          "maker_fills": 1324,
+          "market_order_lots": 570
+        },
+        {
+          "fill_mode": "touch",
+          "strategy": "GP WoMO",
+          "net_pnl_hkd": 202.6026045904532,
+          "gross_pnl_hkd": 410.9982910156241,
+          "fees_hkd": 208.39568642517088,
+          "maker_fills": 88,
+          "market_order_lots": 0
+        }
+      ],
+      "daily_through": [
+        {
+          "date": "2026-07-03",
+          "strategy": "GP-QVI",
+          "net_pnl_hkd": 43.022191913604736
+        },
+        {
+          "date": "2026-07-03",
+          "strategy": "GP WoMO",
+          "net_pnl_hkd": 55.51720491546631
+        },
+        {
+          "date": "2026-07-06",
+          "strategy": "GP-QVI",
+          "net_pnl_hkd": -41.353832180633546
+        },
+        {
+          "date": "2026-07-06",
+          "strategy": "GP WoMO",
+          "net_pnl_hkd": 2.9625072785949715
+        },
+        {
+          "date": "2026-07-07",
+          "strategy": "GP-QVI",
+          "net_pnl_hkd": 1.8938326828002943
+        },
+        {
+          "date": "2026-07-07",
+          "strategy": "GP WoMO",
+          "net_pnl_hkd": 0.0
+        },
+        {
+          "date": "2026-07-08",
+          "strategy": "GP-QVI",
+          "net_pnl_hkd": -62.85757359848023
+        },
+        {
+          "date": "2026-07-08",
+          "strategy": "GP WoMO",
+          "net_pnl_hkd": 0.0
+        },
+        {
+          "date": "2026-07-09",
+          "strategy": "GP-QVI",
+          "net_pnl_hkd": -25.91648288726806
+        },
+        {
+          "date": "2026-07-09",
+          "strategy": "GP WoMO",
+          "net_pnl_hkd": 0.0
+        },
+        {
+          "date": "2026-07-10",
+          "strategy": "GP-QVI",
+          "net_pnl_hkd": -46.931555120849616
+        },
+        {
+          "date": "2026-07-10",
+          "strategy": "GP WoMO",
+          "net_pnl_hkd": 0.0
+        },
+        {
+          "date": "2026-07-14",
+          "strategy": "GP-QVI",
+          "net_pnl_hkd": 11.24653648109436
+        },
+        {
+          "date": "2026-07-14",
+          "strategy": "GP WoMO",
+          "net_pnl_hkd": 0.0
+        },
+        {
+          "date": "2026-07-15",
+          "strategy": "GP-QVI",
+          "net_pnl_hkd": -54.1416067565918
+        },
+        {
+          "date": "2026-07-15",
+          "strategy": "GP WoMO",
+          "net_pnl_hkd": 0.0
+        },
+        {
+          "date": "2026-07-16",
+          "strategy": "GP-QVI",
+          "net_pnl_hkd": 95.40868135604859
+        },
+        {
+          "date": "2026-07-16",
+          "strategy": "GP WoMO",
+          "net_pnl_hkd": 0.0
+        },
+        {
+          "date": "2026-07-17",
+          "strategy": "GP-QVI",
+          "net_pnl_hkd": 5.634686588287352
+        },
+        {
+          "date": "2026-07-17",
+          "strategy": "GP WoMO",
+          "net_pnl_hkd": 0.0
+        },
+        {
+          "date": "2026-07-20",
+          "strategy": "GP-QVI",
+          "net_pnl_hkd": 12.635258447265628
+        },
+        {
+          "date": "2026-07-20",
+          "strategy": "GP WoMO",
+          "net_pnl_hkd": 0.0
+        },
+        {
+          "date": "2026-07-21",
+          "strategy": "GP-QVI",
+          "net_pnl_hkd": -183.73832439117433
+        },
+        {
+          "date": "2026-07-21",
+          "strategy": "GP WoMO",
+          "net_pnl_hkd": 0.0
+        },
+        {
+          "date": "2026-07-22",
+          "strategy": "GP-QVI",
+          "net_pnl_hkd": 81.71041367607117
+        },
+        {
+          "date": "2026-07-22",
+          "strategy": "GP WoMO",
+          "net_pnl_hkd": 0.0
+        },
+        {
+          "date": "2026-07-23",
+          "strategy": "GP-QVI",
+          "net_pnl_hkd": -88.67179149932862
+        },
+        {
+          "date": "2026-07-23",
+          "strategy": "GP WoMO",
+          "net_pnl_hkd": 0.0
+        },
+        {
+          "date": "2026-07-24",
+          "strategy": "GP-QVI",
+          "net_pnl_hkd": 0.0
+        },
+        {
+          "date": "2026-07-24",
+          "strategy": "GP WoMO",
+          "net_pnl_hkd": 0.0
+        },
+        {
+          "date": "2026-07-27",
+          "strategy": "GP-QVI",
+          "net_pnl_hkd": -2.773324076080322
+        },
+        {
+          "date": "2026-07-27",
+          "strategy": "GP WoMO",
+          "net_pnl_hkd": 0.0
+        },
+        {
+          "date": "2026-07-28",
+          "strategy": "GP-QVI",
+          "net_pnl_hkd": -0.8615342674255366
+        },
+        {
+          "date": "2026-07-28",
+          "strategy": "GP WoMO",
+          "net_pnl_hkd": 0.0
+        },
+        {
+          "date": "2026-07-29",
+          "strategy": "GP-QVI",
+          "net_pnl_hkd": 22.991717845153808
+        },
+        {
+          "date": "2026-07-29",
+          "strategy": "GP WoMO",
+          "net_pnl_hkd": 0.0
+        },
+        {
+          "date": "2026-07-30",
+          "strategy": "GP-QVI",
+          "net_pnl_hkd": -4.238996409225464
+        },
+        {
+          "date": "2026-07-30",
+          "strategy": "GP WoMO",
+          "net_pnl_hkd": 0.0
+        }
+      ],
+      "aggregate_detail": [
+        {
+          "fill_mode": "through",
+          "strategy": "GP-QVI",
+          "gross_pnl_hkd": 468.0000305175781,
+          "fees_hkd": 704.9417327143098,
+          "net_pnl_hkd": -236.9417021967316,
+          "profitable_days": 8,
+          "maker_fills": 231,
+          "market_order_lots": 95,
+          "max_drawdown_hkd": 298.7166155462647
+        },
+        {
+          "fill_mode": "through",
+          "strategy": "GP WoMO",
+          "gross_pnl_hkd": 89.99954223632812,
+          "fees_hkd": 31.519830042266847,
+          "net_pnl_hkd": 58.47971219406128,
+          "profitable_days": 2,
+          "maker_fills": 10,
+          "market_order_lots": 0,
+          "max_drawdown_hkd": 0.0
+        },
+        {
+          "fill_mode": "through",
+          "strategy": "恒定最优价",
+          "gross_pnl_hkd": -271968.68839263916,
+          "fees_hkd": 197054.03864598036,
+          "net_pnl_hkd": -469022.7270386195,
+          "profitable_days": 0,
+          "maker_fills": 103312,
+          "market_order_lots": 92,
+          "max_drawdown_hkd": 469022.7270386194
+        },
+        {
+          "fill_mode": "touch",
+          "strategy": "GP-QVI",
+          "gross_pnl_hkd": 565.9751892089844,
+          "fees_hkd": 4396.920715097045,
+          "net_pnl_hkd": -3830.9455258880607,
+          "profitable_days": 7,
+          "maker_fills": 1324,
+          "market_order_lots": 570,
+          "max_drawdown_hkd": 3871.7640465290065
+        },
+        {
+          "fill_mode": "touch",
+          "strategy": "GP WoMO",
+          "gross_pnl_hkd": 410.9982910156241,
+          "fees_hkd": 208.39568642517088,
+          "net_pnl_hkd": 202.6026045904532,
+          "profitable_days": 6,
+          "maker_fills": 88,
+          "market_order_lots": 0,
+          "max_drawdown_hkd": 28.091930728149407
+        },
+        {
+          "fill_mode": "touch",
+          "strategy": "恒定最优价",
+          "gross_pnl_hkd": -96919.74105834961,
+          "fees_hkd": 275103.73058633297,
+          "net_pnl_hkd": -372023.4716446826,
+          "profitable_days": 0,
+          "maker_fills": 146755,
+          "market_order_lots": 115,
+          "max_drawdown_hkd": 372023.4716446826
+        }
+      ]
+    }
+  },
+  "sources": [
+    {
+      "id": "gp_results",
+      "label": "GP-QVI 月度回测机器结果",
+      "path": "0906/output/july_2026_gp_qvi_new_fill_results.json",
+      "description": "从 19 个样本外交易日逐日结果汇总月度收益、成交、费用与回撤。",
+      "query": {
+        "engine": "duckdb",
+        "language": "sql",
+        "sql": "SELECT * FROM read_json_auto('0906/output/july_2026_gp_qvi_new_fill_results.json')",
+        "description": "读取经程序校验的 GP-QVI 月度机器结果；报告构建脚本再展开 aggregate 与 tests 字段。",
+        "tables_used": [
+          "0906/output/july_2026_gp_qvi_new_fill_results.json"
+        ],
+        "filters": [
+          "instrument = HK 07709",
+          "period = 2026-07",
+          "19 full-day out-of-sample tests"
+        ],
+        "metric_definitions": {
+          "net_pnl_hkd": "gross cash trading PnL minus all-in execution fees",
+          "all_in_fees_hkd": "feeable turnover multiplied by 2.77 basis points per execution side"
+        },
+        "executed_at": "2026-09-10T09:00:00+08:00"
+      }
+    },
+    {
+      "id": "gp_model",
+      "label": "GP-QVI 求解与回放实现",
+      "path": "0906/gp_qvi_model.py",
+      "description": "实现 GP 的状态、控制、滚动估计、Bellman/QVI 离散化及 0906 新成交逻辑。"
+    },
+    {
+      "id": "gp_paper",
+      "label": "Guilbaud-Pham 原论文",
+      "path": "0906/papers/Guilbaud_Pham_2011_Optimal_High_Frequency_Trading_with_Limit_and_Market_Orders.pdf"
+    }
+  ],
+  "package_info": {}
+}

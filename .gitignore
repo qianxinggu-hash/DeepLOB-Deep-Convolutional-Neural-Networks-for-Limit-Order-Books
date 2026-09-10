@@ -22,3 +22,6 @@ Test_Dst_NoAuction_DecPre_CF_9.txt
 0824/data/
 0824/checkpoints/
 0824/output/
+
+# Locally supplied research papers; keep citations/notes but do not redistribute PDFs.
+0906/papers/
