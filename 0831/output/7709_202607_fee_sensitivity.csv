@@ -1,0 +1,155 @@
+﻿model,model_label_zh,fill_mode,all_in_fee_bps_per_side,brokerage_bps_per_side_after_official_fees,net_pnl_hkd,profitable_days,test_days
+classic_as,经典 AS,through,0.0,-1.27,43516.000335693316,13,19
+classic_as,经典 AS,through,1.27,0.0,14414.82155573595,10,19
+classic_as,经典 AS,through,1.5,0.22999999999999998,9144.529335743668,10,19
+classic_as,经典 AS,through,1.75,0.48,3415.950835752061,10,19
+classic_as,经典 AS,through,1.9,0.6299999999999999,-21.196264242898906,9,19
+classic_as,经典 AS,through,2.0,0.73,-2312.627664239546,8,19
+classic_as,经典 AS,through,2.25,0.98,-8041.206164231153,6,19
+classic_as,经典 AS,through,2.5,1.23,-13769.78466422276,6,19
+classic_as,经典 AS,through,2.77,1.5,-19956.649444213697,5,19
+classic_as,经典 AS,through,3.0,1.73,-25226.94166420598,5,19
+classic_as,经典 AS,through,3.25,1.98,-30955.520164197587,3,19
+classic_as,经典 AS,touch,0.0,-1.27,99243.9981384277,19,19
+classic_as,经典 AS,touch,1.27,0.0,58511.8906263967,17,19
+classic_as,经典 AS,touch,1.5,0.22999999999999998,51135.20973839109,16,19
+classic_as,经典 AS,touch,1.75,0.48,43117.07833838498,16,19
+classic_as,经典 AS,touch,1.9,0.6299999999999999,38306.19949838132,14,19
+classic_as,经典 AS,touch,2.0,0.73,35098.946938378875,14,19
+classic_as,经典 AS,touch,2.25,0.98,27080.81553837277,13,19
+classic_as,经典 AS,touch,2.5,1.23,19062.684138366676,13,19
+classic_as,经典 AS,touch,2.77,1.5,10403.102226360075,11,19
+classic_as,经典 AS,touch,3.0,1.73,3026.42133835447,7,19
+classic_as,经典 AS,touch,3.25,1.98,-4991.71006165164,4,19
+as_drift_unit,AS + unit drift,through,0.0,-1.27,43076.000473022395,11,19
+as_drift_unit,AS + unit drift,through,1.27,0.0,13248.048953039837,10,19
+as_drift_unit,AS + unit drift,through,1.5,0.22999999999999998,7846.136473042992,9,19
+as_drift_unit,AS + unit drift,through,1.75,0.48,1974.4924730464263,9,19
+as_drift_unit,AS + unit drift,through,1.9,0.6299999999999999,-1548.493926951509,8,19
+as_drift_unit,AS + unit drift,through,2.0,0.73,-3897.1515269501397,7,19
+as_drift_unit,AS + unit drift,through,2.25,0.98,-9768.795526946706,7,19
+as_drift_unit,AS + unit drift,through,2.5,1.23,-15640.439526943272,5,19
+as_drift_unit,AS + unit drift,through,2.77,1.5,-21981.81504693957,5,19
+as_drift_unit,AS + unit drift,through,3.0,1.73,-27383.72752693641,4,19
+as_drift_unit,AS + unit drift,through,3.25,1.98,-33255.37152693298,2,19
+as_drift_unit,AS + unit drift,touch,0.0,-1.27,102013.99822998045,19,19
+as_drift_unit,AS + unit drift,touch,1.27,0.0,60151.38167588356,17,19
+as_drift_unit,AS + unit drift,touch,1.5,0.22999999999999998,52569.962929866015,16,19
+as_drift_unit,AS + unit drift,touch,1.75,0.48,44329.29037984694,15,19
+as_drift_unit,AS + unit drift,touch,1.9,0.6299999999999999,39384.8868498355,14,19
+as_drift_unit,AS + unit drift,touch,2.0,0.73,36088.61782982787,14,19
+as_drift_unit,AS + unit drift,touch,2.25,0.98,27847.945279808788,13,19
+as_drift_unit,AS + unit drift,touch,2.5,1.23,19607.27272978972,12,19
+as_drift_unit,AS + unit drift,touch,2.77,1.5,10707.34637576912,11,19
+as_drift_unit,AS + unit drift,touch,3.0,1.73,3125.9276297515753,9,19
+as_drift_unit,AS + unit drift,touch,3.25,1.98,-5114.744920267505,5,19
+as_drift_tuned,AS + tuned drift,through,0.0,-1.27,39828.99996948242,12,19
+as_drift_tuned,AS + tuned drift,through,1.27,0.0,8993.934258393281,10,19
+as_drift_tuned,AS + tuned drift,through,1.5,0.22999999999999998,3409.631019377135,9,19
+as_drift_tuned,AS + tuned drift,through,1.75,0.48,-2660.2638056404103,7,19
+as_drift_tuned,AS + tuned drift,through,1.9,0.6299999999999999,-6302.2007006509375,6,19
+as_drift_tuned,AS + tuned drift,through,2.0,0.73,-8730.158630657956,6,19
+as_drift_tuned,AS + tuned drift,through,2.25,0.98,-14800.053455675508,6,19
+as_drift_tuned,AS + tuned drift,through,2.5,1.23,-20869.948280693054,3,19
+as_drift_tuned,AS + tuned drift,through,2.77,1.5,-27425.434691712013,3,19
+as_drift_tuned,AS + tuned drift,through,3.0,1.73,-33009.73793072815,3,19
+as_drift_tuned,AS + tuned drift,through,3.25,1.98,-39079.6327557457,2,19
+as_drift_tuned,AS + tuned drift,touch,0.0,-1.27,100872.99925231932,18,19
+as_drift_tuned,AS + tuned drift,touch,1.27,0.0,58684.77920911584,18,19
+as_drift_tuned,AS + tuned drift,touch,1.5,0.22999999999999998,51044.392902078995,16,19
+as_drift_tuned,AS + tuned drift,touch,1.75,0.48,42739.62517703894,14,19
+as_drift_tuned,AS + tuned drift,touch,1.9,0.6299999999999999,37756.764542014906,13,19
+as_drift_tuned,AS + tuned drift,touch,2.0,0.73,34434.85745199889,13,19
+as_drift_tuned,AS + tuned drift,touch,2.25,0.98,26130.08972695883,13,19
+as_drift_tuned,AS + tuned drift,touch,2.5,1.23,17825.322001918772,12,19
+as_drift_tuned,AS + tuned drift,touch,2.77,1.5,8856.172858875521,10,19
+as_drift_tuned,AS + tuned drift,touch,3.0,1.73,1215.786551838668,9,19
+as_drift_tuned,AS + tuned drift,touch,3.25,1.98,-7088.981173201391,7,19
+as_drift_kill_switch,AS + drift kill switch,through,0.0,-1.27,39731.00010681148,12,19
+as_drift_kill_switch,AS + drift kill switch,through,1.27,0.0,9317.559409732025,10,19
+as_drift_kill_switch,AS + drift kill switch,through,1.5,0.22999999999999998,3809.6134567176414,9,19
+as_drift_kill_switch,AS + drift kill switch,through,1.75,0.48,-2177.2843182979996,7,19
+as_drift_kill_switch,AS + drift kill switch,through,1.9,0.6299999999999999,-5769.422983307384,7,19
+as_drift_kill_switch,AS + drift kill switch,through,2.0,0.73,-8164.1820933136405,6,19
+as_drift_kill_switch,AS + drift kill switch,through,2.25,0.98,-14151.079868329281,6,19
+as_drift_kill_switch,AS + drift kill switch,through,2.5,1.23,-20137.977643344922,4,19
+as_drift_kill_switch,AS + drift kill switch,through,2.77,1.5,-26603.827240361818,4,19
+as_drift_kill_switch,AS + drift kill switch,through,3.0,1.73,-32111.773193376197,4,19
+as_drift_kill_switch,AS + drift kill switch,through,3.25,1.98,-38098.670968391845,2,19
+as_drift_kill_switch,AS + drift kill switch,touch,0.0,-1.27,99124.99932861325,18,19
+as_drift_kill_switch,AS + drift kill switch,touch,1.27,0.0,57503.75808541947,18,19
+as_drift_kill_switch,AS + drift kill switch,touch,1.5,0.22999999999999998,49966.05297838437,16,19
+as_drift_kill_switch,AS + drift kill switch,touch,1.75,0.48,41772.89525334622,14,19
+as_drift_kill_switch,AS + drift kill switch,touch,1.9,0.6299999999999999,36857.000618323334,13,19
+as_drift_kill_switch,AS + drift kill switch,touch,2.0,0.73,33579.73752830808,13,19
+as_drift_kill_switch,AS + drift kill switch,touch,2.25,0.98,25386.579803269924,13,19
+as_drift_kill_switch,AS + drift kill switch,touch,2.5,1.23,17193.422078231786,12,19
+as_drift_kill_switch,AS + drift kill switch,touch,2.77,1.5,8344.811735190582,11,19
+as_drift_kill_switch,AS + drift kill switch,touch,3.0,1.73,807.1066281554813,8,19
+as_drift_kill_switch,AS + drift kill switch,touch,3.25,1.98,-7386.051096882657,6,19
+gp_style_discrete,GP-style,through,0.0,-1.27,-65121.99938964849,2,19
+gp_style_discrete,GP-style,through,1.27,0.0,-117937.09441997018,1,19
+gp_style_discrete,GP-style,through,1.5,0.22999999999999998,-127502.03289002844,1,19
+gp_style_discrete,GP-style,through,1.75,0.48,-137898.70514009177,1,19
+gp_style_discrete,GP-style,through,1.9,0.6299999999999999,-144136.70849012973,1,19
+gp_style_discrete,GP-style,through,2.0,0.73,-148295.37739015507,1,19
+gp_style_discrete,GP-style,through,2.25,0.98,-158692.0496402184,1,19
+gp_style_discrete,GP-style,through,2.5,1.23,-169088.72189028174,0,19
+gp_style_discrete,GP-style,through,2.77,1.5,-180317.12792035012,0,19
+gp_style_discrete,GP-style,through,3.0,1.73,-189882.06639040838,0,19
+gp_style_discrete,GP-style,through,3.25,1.98,-200278.7386404717,0,19
+gp_style_discrete,GP-style,touch,0.0,-1.27,31902.999450683572,17,19
+gp_style_discrete,GP-style,touch,1.27,0.0,-41314.14532655673,7,19
+gp_style_discrete,GP-style,touch,1.5,0.22999999999999998,-54573.943199600246,5,19
+gp_style_discrete,GP-style,touch,1.75,0.48,-68986.76697464753,4,19
+gp_style_discrete,GP-style,touch,1.9,0.6299999999999999,-77634.46123967593,4,19
+gp_style_discrete,GP-style,touch,2.0,0.73,-83399.59074969485,4,19
+gp_style_discrete,GP-style,touch,2.25,0.98,-97812.41452474214,4,19
+gp_style_discrete,GP-style,touch,2.5,1.23,-112225.23829978946,4,19
+gp_style_discrete,GP-style,touch,2.77,1.5,-127791.08797684056,3,19
+gp_style_discrete,GP-style,touch,3.0,1.73,-141050.88584988407,1,19
+gp_style_discrete,GP-style,touch,3.25,1.98,-155463.70962493136,0,19
+forced_drift_inventory,强制 drift + 库存,through,0.0,-1.27,-43342.0022125244,4,19
+forced_drift_inventory,强制 drift + 库存,through,1.27,0.0,-99752.9330788829,2,19
+forced_drift_inventory,强制 drift + 库存,through,1.5,0.22999999999999998,-109969.08591294783,2,19
+forced_drift_inventory,强制 drift + 库存,through,1.75,0.48,-121073.5998630184,2,19
+forced_drift_inventory,强制 drift + 库存,through,1.9,0.6299999999999999,-127736.30823306074,2,19
+forced_drift_inventory,强制 drift + 库存,through,2.0,0.73,-132178.11381308897,2,19
+forced_drift_inventory,强制 drift + 库存,through,2.25,0.98,-143282.62776315954,1,19
+forced_drift_inventory,强制 drift + 库存,through,2.5,1.23,-154387.1417132301,1,19
+forced_drift_inventory,强制 drift + 库存,through,2.77,1.5,-166380.01677930634,1,19
+forced_drift_inventory,强制 drift + 库存,through,3.0,1.73,-176596.16961337125,0,19
+forced_drift_inventory,强制 drift + 库存,through,3.25,1.98,-187700.68356344185,0,19
+forced_drift_inventory,强制 drift + 库存,touch,0.0,-1.27,57771.99746704097,15,19
+forced_drift_inventory,强制 drift + 库存,touch,1.27,0.0,-17026.762765420237,8,19
+forced_drift_inventory,强制 drift + 库存,touch,1.5,0.22999999999999998,-30572.994933503767,8,19
+forced_drift_inventory,强制 drift + 库存,touch,1.75,0.48,-45297.160333594555,7,19
+forced_drift_inventory,强制 drift + 库存,touch,1.9,0.6299999999999999,-54131.65957364903,6,19
+forced_drift_inventory,强制 drift + 库存,touch,2.0,0.73,-60021.32573368534,6,19
+forced_drift_inventory,强制 drift + 库存,touch,2.25,0.98,-74745.49113377613,5,19
+forced_drift_inventory,强制 drift + 库存,touch,2.5,1.23,-89469.65653386693,5,19
+forced_drift_inventory,强制 drift + 库存,touch,2.77,1.5,-105371.75516596499,5,19
+forced_drift_inventory,强制 drift + 库存,touch,3.0,1.73,-118917.9873340485,5,19
+forced_drift_inventory,强制 drift + 库存,touch,3.25,1.98,-133642.1527341393,5,19
+original_drift_inventory_kill_switch,原始 drift + 库存 + kill switch,through,0.0,-1.27,-50253.99993896486,4,19
+original_drift_inventory_kill_switch,原始 drift + 库存 + kill switch,through,1.27,0.0,-103733.60722895712,0,19
+original_drift_inventory_kill_switch,原始 drift + 库存 + kill switch,through,1.5,0.22999999999999998,-113418.89043895571,0,19
+original_drift_inventory_kill_switch,原始 drift + 库存 + kill switch,through,1.75,0.48,-123946.37218895418,0,19
+original_drift_inventory_kill_switch,原始 drift + 库存 + kill switch,through,1.9,0.6299999999999999,-130262.86123895326,0,19
+original_drift_inventory_kill_switch,原始 drift + 库存 + kill switch,through,2.0,0.73,-134473.85393895267,0,19
+original_drift_inventory_kill_switch,原始 drift + 库存 + kill switch,through,2.25,0.98,-145001.33568895113,0,19
+original_drift_inventory_kill_switch,原始 drift + 库存 + kill switch,through,2.5,1.23,-155528.8174389496,0,19
+original_drift_inventory_kill_switch,原始 drift + 库存 + kill switch,through,2.77,1.5,-166898.49772894796,0,19
+original_drift_inventory_kill_switch,原始 drift + 库存 + kill switch,through,3.0,1.73,-176583.78093894655,0,19
+original_drift_inventory_kill_switch,原始 drift + 库存 + kill switch,through,3.25,1.98,-187111.26268894505,0,19
+original_drift_inventory_kill_switch,原始 drift + 库存 + kill switch,touch,0.0,-1.27,44398.00088500975,17,19
+original_drift_inventory_kill_switch,原始 drift + 库存 + kill switch,touch,1.27,0.0,-26336.22416887786,9,19
+original_drift_inventory_kill_switch,原始 drift + 库存 + kill switch,touch,1.5,0.22999999999999998,-39146.35941485749,8,19
+original_drift_inventory_kill_switch,原始 drift + 库存 + kill switch,touch,1.75,0.48,-53070.41946483537,4,19
+original_drift_inventory_kill_switch,原始 drift + 库存 + kill switch,touch,1.9,0.6299999999999999,-61424.855494822084,4,19
+original_drift_inventory_kill_switch,原始 drift + 库存 + kill switch,touch,2.0,0.73,-66994.47951481324,4,19
+original_drift_inventory_kill_switch,原始 drift + 库存 + kill switch,touch,2.25,0.98,-80918.53956479112,4,19
+original_drift_inventory_kill_switch,原始 drift + 库存 + kill switch,touch,2.5,1.23,-94842.599614769,4,19
+original_drift_inventory_kill_switch,原始 drift + 库存 + kill switch,touch,2.77,1.5,-109880.58446874512,3,19
+original_drift_inventory_kill_switch,原始 drift + 库存 + kill switch,touch,3.0,1.73,-122690.71971472474,3,19
+original_drift_inventory_kill_switch,原始 drift + 库存 + kill switch,touch,3.25,1.98,-136614.7797647026,2,19

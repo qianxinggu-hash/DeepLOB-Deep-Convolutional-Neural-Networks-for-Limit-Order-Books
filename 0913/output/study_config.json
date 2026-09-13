@@ -1,0 +1,39 @@
+{
+  "method": "original gp_qvi",
+  "market_orders_enabled": true,
+  "fixed_config": {
+    "spread_states": 6,
+    "max_inventory_lots": 10,
+    "quote_horizon_snapshots": 20,
+    "latency_ms": 5,
+    "horizon_seconds": 300.0,
+    "time_steps": 100,
+    "execution_prior_seconds": 30.0,
+    "clock_prior_seconds": 300.0
+  },
+  "gamma_grid": [
+    50.0,
+    25.0,
+    12.5,
+    6.25,
+    5.0,
+    3.125,
+    1.5625,
+    1.0,
+    0.78125,
+    0.5,
+    0.390625,
+    0.1953125,
+    0.1,
+    0.09765625,
+    0.05,
+    0.048828125,
+    0.0244140625,
+    0.01220703125,
+    0.01,
+    0.006103515625,
+    0.0
+  ],
+  "gamma_selection": "none; sensitivity only",
+  "variable": "inventory_penalty_gamma"
+}

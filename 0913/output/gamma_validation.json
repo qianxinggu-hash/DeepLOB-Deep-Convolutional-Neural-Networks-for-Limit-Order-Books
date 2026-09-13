@@ -1,0 +1,287 @@
+{
+  "gamma_50": {
+    "strictly_prior_rolling_calibration": true,
+    "all_policies_enable_market_control": true,
+    "order_lifecycle_reconciles": true,
+    "fill_evidence_reconciles": true,
+    "all_days_end_flat": true,
+    "inventory_within_cap": true,
+    "fees_and_cash_reconcile": true,
+    "inventory_exposure_reconciles": true,
+    "monthly_aggregate_reconciles": true,
+    "all_passed": true
+  },
+  "gamma_25": {
+    "strictly_prior_rolling_calibration": true,
+    "all_policies_enable_market_control": true,
+    "order_lifecycle_reconciles": true,
+    "fill_evidence_reconciles": true,
+    "all_days_end_flat": true,
+    "inventory_within_cap": true,
+    "fees_and_cash_reconcile": true,
+    "inventory_exposure_reconciles": true,
+    "monthly_aggregate_reconciles": true,
+    "all_passed": true
+  },
+  "gamma_12.5": {
+    "strictly_prior_rolling_calibration": true,
+    "all_policies_enable_market_control": true,
+    "order_lifecycle_reconciles": true,
+    "fill_evidence_reconciles": true,
+    "all_days_end_flat": true,
+    "inventory_within_cap": true,
+    "fees_and_cash_reconcile": true,
+    "inventory_exposure_reconciles": true,
+    "monthly_aggregate_reconciles": true,
+    "all_passed": true
+  },
+  "gamma_6.25": {
+    "strictly_prior_rolling_calibration": true,
+    "all_policies_enable_market_control": true,
+    "order_lifecycle_reconciles": true,
+    "fill_evidence_reconciles": true,
+    "all_days_end_flat": true,
+    "inventory_within_cap": true,
+    "fees_and_cash_reconcile": true,
+    "inventory_exposure_reconciles": true,
+    "monthly_aggregate_reconciles": true,
+    "all_passed": true
+  },
+  "gamma_5": {
+    "strictly_prior_rolling_calibration": true,
+    "all_policies_enable_market_control": true,
+    "order_lifecycle_reconciles": true,
+    "fill_evidence_reconciles": true,
+    "all_days_end_flat": true,
+    "inventory_within_cap": true,
+    "fees_and_cash_reconcile": true,
+    "inventory_exposure_reconciles": true,
+    "monthly_aggregate_reconciles": true,
+    "all_passed": true
+  },
+  "gamma_3.125": {
+    "strictly_prior_rolling_calibration": true,
+    "all_policies_enable_market_control": true,
+    "order_lifecycle_reconciles": true,
+    "fill_evidence_reconciles": true,
+    "all_days_end_flat": true,
+    "inventory_within_cap": true,
+    "fees_and_cash_reconcile": true,
+    "inventory_exposure_reconciles": true,
+    "monthly_aggregate_reconciles": true,
+    "all_passed": true
+  },
+  "gamma_1.5625": {
+    "strictly_prior_rolling_calibration": true,
+    "all_policies_enable_market_control": true,
+    "order_lifecycle_reconciles": true,
+    "fill_evidence_reconciles": true,
+    "all_days_end_flat": true,
+    "inventory_within_cap": true,
+    "fees_and_cash_reconcile": true,
+    "inventory_exposure_reconciles": true,
+    "monthly_aggregate_reconciles": true,
+    "all_passed": true
+  },
+  "gamma_1": {
+    "strictly_prior_rolling_calibration": true,
+    "all_policies_enable_market_control": true,
+    "order_lifecycle_reconciles": true,
+    "fill_evidence_reconciles": true,
+    "all_days_end_flat": true,
+    "inventory_within_cap": true,
+    "fees_and_cash_reconcile": true,
+    "inventory_exposure_reconciles": true,
+    "monthly_aggregate_reconciles": true,
+    "all_passed": true
+  },
+  "gamma_0.78125": {
+    "strictly_prior_rolling_calibration": true,
+    "all_policies_enable_market_control": true,
+    "order_lifecycle_reconciles": true,
+    "fill_evidence_reconciles": true,
+    "all_days_end_flat": true,
+    "inventory_within_cap": true,
+    "fees_and_cash_reconcile": true,
+    "inventory_exposure_reconciles": true,
+    "monthly_aggregate_reconciles": true,
+    "all_passed": true
+  },
+  "gamma_0.5": {
+    "strictly_prior_rolling_calibration": true,
+    "all_policies_enable_market_control": true,
+    "order_lifecycle_reconciles": true,
+    "fill_evidence_reconciles": true,
+    "all_days_end_flat": true,
+    "inventory_within_cap": true,
+    "fees_and_cash_reconcile": true,
+    "inventory_exposure_reconciles": true,
+    "monthly_aggregate_reconciles": true,
+    "all_passed": true
+  },
+  "gamma_0.390625": {
+    "strictly_prior_rolling_calibration": true,
+    "all_policies_enable_market_control": true,
+    "order_lifecycle_reconciles": true,
+    "fill_evidence_reconciles": true,
+    "all_days_end_flat": true,
+    "inventory_within_cap": true,
+    "fees_and_cash_reconcile": true,
+    "inventory_exposure_reconciles": true,
+    "monthly_aggregate_reconciles": true,
+    "all_passed": true
+  },
+  "gamma_0.195312": {
+    "strictly_prior_rolling_calibration": true,
+    "all_policies_enable_market_control": true,
+    "order_lifecycle_reconciles": true,
+    "fill_evidence_reconciles": true,
+    "all_days_end_flat": true,
+    "inventory_within_cap": true,
+    "fees_and_cash_reconcile": true,
+    "inventory_exposure_reconciles": true,
+    "monthly_aggregate_reconciles": true,
+    "all_passed": true
+  },
+  "gamma_0.1": {
+    "strictly_prior_rolling_calibration": true,
+    "all_policies_enable_market_control": true,
+    "order_lifecycle_reconciles": true,
+    "fill_evidence_reconciles": true,
+    "all_days_end_flat": true,
+    "inventory_within_cap": true,
+    "fees_and_cash_reconcile": true,
+    "inventory_exposure_reconciles": true,
+    "monthly_aggregate_reconciles": true,
+    "all_passed": true
+  },
+  "gamma_0.0976562": {
+    "strictly_prior_rolling_calibration": true,
+    "all_policies_enable_market_control": true,
+    "order_lifecycle_reconciles": true,
+    "fill_evidence_reconciles": true,
+    "all_days_end_flat": true,
+    "inventory_within_cap": true,
+    "fees_and_cash_reconcile": true,
+    "inventory_exposure_reconciles": true,
+    "monthly_aggregate_reconciles": true,
+    "all_passed": true
+  },
+  "gamma_0.05": {
+    "strictly_prior_rolling_calibration": true,
+    "all_policies_enable_market_control": true,
+    "order_lifecycle_reconciles": true,
+    "fill_evidence_reconciles": true,
+    "all_days_end_flat": true,
+    "inventory_within_cap": true,
+    "fees_and_cash_reconcile": true,
+    "inventory_exposure_reconciles": true,
+    "monthly_aggregate_reconciles": true,
+    "all_passed": true
+  },
+  "gamma_0.0488281": {
+    "strictly_prior_rolling_calibration": true,
+    "all_policies_enable_market_control": true,
+    "order_lifecycle_reconciles": true,
+    "fill_evidence_reconciles": true,
+    "all_days_end_flat": true,
+    "inventory_within_cap": true,
+    "fees_and_cash_reconcile": true,
+    "inventory_exposure_reconciles": true,
+    "monthly_aggregate_reconciles": true,
+    "all_passed": true
+  },
+  "gamma_0.0244141": {
+    "strictly_prior_rolling_calibration": true,
+    "all_policies_enable_market_control": true,
+    "order_lifecycle_reconciles": true,
+    "fill_evidence_reconciles": true,
+    "all_days_end_flat": true,
+    "inventory_within_cap": true,
+    "fees_and_cash_reconcile": true,
+    "inventory_exposure_reconciles": true,
+    "monthly_aggregate_reconciles": true,
+    "all_passed": true
+  },
+  "gamma_0.012207": {
+    "strictly_prior_rolling_calibration": true,
+    "all_policies_enable_market_control": true,
+    "order_lifecycle_reconciles": true,
+    "fill_evidence_reconciles": true,
+    "all_days_end_flat": true,
+    "inventory_within_cap": true,
+    "fees_and_cash_reconcile": true,
+    "inventory_exposure_reconciles": true,
+    "monthly_aggregate_reconciles": true,
+    "all_passed": true
+  },
+  "gamma_0.01": {
+    "strictly_prior_rolling_calibration": true,
+    "all_policies_enable_market_control": true,
+    "order_lifecycle_reconciles": true,
+    "fill_evidence_reconciles": true,
+    "all_days_end_flat": true,
+    "inventory_within_cap": true,
+    "fees_and_cash_reconcile": true,
+    "inventory_exposure_reconciles": true,
+    "monthly_aggregate_reconciles": true,
+    "all_passed": true
+  },
+  "gamma_0.00610352": {
+    "strictly_prior_rolling_calibration": true,
+    "all_policies_enable_market_control": true,
+    "order_lifecycle_reconciles": true,
+    "fill_evidence_reconciles": true,
+    "all_days_end_flat": true,
+    "inventory_within_cap": true,
+    "fees_and_cash_reconcile": true,
+    "inventory_exposure_reconciles": true,
+    "monthly_aggregate_reconciles": true,
+    "all_passed": true
+  },
+  "gamma_0": {
+    "strictly_prior_rolling_calibration": true,
+    "all_policies_enable_market_control": true,
+    "order_lifecycle_reconciles": true,
+    "fill_evidence_reconciles": true,
+    "all_days_end_flat": true,
+    "inventory_within_cap": true,
+    "fees_and_cash_reconcile": true,
+    "inventory_exposure_reconciles": true,
+    "monthly_aggregate_reconciles": true,
+    "all_passed": true
+  },
+  "baseline_matches_0906": {
+    "all_passed": true,
+    "mismatches": []
+  },
+  "original_anchor_matches_gamma_5": {
+    "all_passed": true,
+    "mismatches": []
+  },
+  "original_anchor_matches_gamma_1": {
+    "all_passed": true,
+    "mismatches": []
+  },
+  "original_anchor_matches_gamma_0.5": {
+    "all_passed": true,
+    "mismatches": []
+  },
+  "original_anchor_matches_gamma_0.1": {
+    "all_passed": true,
+    "mismatches": []
+  },
+  "original_anchor_matches_gamma_0.05": {
+    "all_passed": true,
+    "mismatches": []
+  },
+  "original_anchor_matches_gamma_0.01": {
+    "all_passed": true,
+    "mismatches": []
+  },
+  "original_anchor_matches_gamma_0": {
+    "all_passed": true,
+    "mismatches": []
+  },
+  "all_passed": true
+}

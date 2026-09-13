@@ -1,0 +1,315 @@
+{
+  "audience": "product stakeholders",
+  "delivery": "portable html",
+  "structure": [
+    "Title",
+    "Executive Summary",
+    "definitions",
+    "paper mechanism",
+    "gamma trade/risk/policy evidence",
+    "next steps",
+    "further questions",
+    "caveats"
+  ],
+  "chart_map": {
+    "fills": "bar, anchors only for legibility; full 21 rows in table",
+    "inventory": "ordered line, time-weighted inventory RMS",
+    "impulse": "bar, full-horizon equal-weight state surface fraction",
+    "frontier": "scatter, empirical daily net std vs daily mean, not MC IR/NIR"
+  },
+  "analysis_validation": {
+    "gamma_50": {
+      "strictly_prior_rolling_calibration": true,
+      "all_policies_enable_market_control": true,
+      "order_lifecycle_reconciles": true,
+      "fill_evidence_reconciles": true,
+      "all_days_end_flat": true,
+      "inventory_within_cap": true,
+      "fees_and_cash_reconcile": true,
+      "inventory_exposure_reconciles": true,
+      "monthly_aggregate_reconciles": true,
+      "all_passed": true
+    },
+    "gamma_25": {
+      "strictly_prior_rolling_calibration": true,
+      "all_policies_enable_market_control": true,
+      "order_lifecycle_reconciles": true,
+      "fill_evidence_reconciles": true,
+      "all_days_end_flat": true,
+      "inventory_within_cap": true,
+      "fees_and_cash_reconcile": true,
+      "inventory_exposure_reconciles": true,
+      "monthly_aggregate_reconciles": true,
+      "all_passed": true
+    },
+    "gamma_12.5": {
+      "strictly_prior_rolling_calibration": true,
+      "all_policies_enable_market_control": true,
+      "order_lifecycle_reconciles": true,
+      "fill_evidence_reconciles": true,
+      "all_days_end_flat": true,
+      "inventory_within_cap": true,
+      "fees_and_cash_reconcile": true,
+      "inventory_exposure_reconciles": true,
+      "monthly_aggregate_reconciles": true,
+      "all_passed": true
+    },
+    "gamma_6.25": {
+      "strictly_prior_rolling_calibration": true,
+      "all_policies_enable_market_control": true,
+      "order_lifecycle_reconciles": true,
+      "fill_evidence_reconciles": true,
+      "all_days_end_flat": true,
+      "inventory_within_cap": true,
+      "fees_and_cash_reconcile": true,
+      "inventory_exposure_reconciles": true,
+      "monthly_aggregate_reconciles": true,
+      "all_passed": true
+    },
+    "gamma_5": {
+      "strictly_prior_rolling_calibration": true,
+      "all_policies_enable_market_control": true,
+      "order_lifecycle_reconciles": true,
+      "fill_evidence_reconciles": true,
+      "all_days_end_flat": true,
+      "inventory_within_cap": true,
+      "fees_and_cash_reconcile": true,
+      "inventory_exposure_reconciles": true,
+      "monthly_aggregate_reconciles": true,
+      "all_passed": true
+    },
+    "gamma_3.125": {
+      "strictly_prior_rolling_calibration": true,
+      "all_policies_enable_market_control": true,
+      "order_lifecycle_reconciles": true,
+      "fill_evidence_reconciles": true,
+      "all_days_end_flat": true,
+      "inventory_within_cap": true,
+      "fees_and_cash_reconcile": true,
+      "inventory_exposure_reconciles": true,
+      "monthly_aggregate_reconciles": true,
+      "all_passed": true
+    },
+    "gamma_1.5625": {
+      "strictly_prior_rolling_calibration": true,
+      "all_policies_enable_market_control": true,
+      "order_lifecycle_reconciles": true,
+      "fill_evidence_reconciles": true,
+      "all_days_end_flat": true,
+      "inventory_within_cap": true,
+      "fees_and_cash_reconcile": true,
+      "inventory_exposure_reconciles": true,
+      "monthly_aggregate_reconciles": true,
+      "all_passed": true
+    },
+    "gamma_1": {
+      "strictly_prior_rolling_calibration": true,
+      "all_policies_enable_market_control": true,
+      "order_lifecycle_reconciles": true,
+      "fill_evidence_reconciles": true,
+      "all_days_end_flat": true,
+      "inventory_within_cap": true,
+      "fees_and_cash_reconcile": true,
+      "inventory_exposure_reconciles": true,
+      "monthly_aggregate_reconciles": true,
+      "all_passed": true
+    },
+    "gamma_0.78125": {
+      "strictly_prior_rolling_calibration": true,
+      "all_policies_enable_market_control": true,
+      "order_lifecycle_reconciles": true,
+      "fill_evidence_reconciles": true,
+      "all_days_end_flat": true,
+      "inventory_within_cap": true,
+      "fees_and_cash_reconcile": true,
+      "inventory_exposure_reconciles": true,
+      "monthly_aggregate_reconciles": true,
+      "all_passed": true
+    },
+    "gamma_0.5": {
+      "strictly_prior_rolling_calibration": true,
+      "all_policies_enable_market_control": true,
+      "order_lifecycle_reconciles": true,
+      "fill_evidence_reconciles": true,
+      "all_days_end_flat": true,
+      "inventory_within_cap": true,
+      "fees_and_cash_reconcile": true,
+      "inventory_exposure_reconciles": true,
+      "monthly_aggregate_reconciles": true,
+      "all_passed": true
+    },
+    "gamma_0.390625": {
+      "strictly_prior_rolling_calibration": true,
+      "all_policies_enable_market_control": true,
+      "order_lifecycle_reconciles": true,
+      "fill_evidence_reconciles": true,
+      "all_days_end_flat": true,
+      "inventory_within_cap": true,
+      "fees_and_cash_reconcile": true,
+      "inventory_exposure_reconciles": true,
+      "monthly_aggregate_reconciles": true,
+      "all_passed": true
+    },
+    "gamma_0.195312": {
+      "strictly_prior_rolling_calibration": true,
+      "all_policies_enable_market_control": true,
+      "order_lifecycle_reconciles": true,
+      "fill_evidence_reconciles": true,
+      "all_days_end_flat": true,
+      "inventory_within_cap": true,
+      "fees_and_cash_reconcile": true,
+      "inventory_exposure_reconciles": true,
+      "monthly_aggregate_reconciles": true,
+      "all_passed": true
+    },
+    "gamma_0.1": {
+      "strictly_prior_rolling_calibration": true,
+      "all_policies_enable_market_control": true,
+      "order_lifecycle_reconciles": true,
+      "fill_evidence_reconciles": true,
+      "all_days_end_flat": true,
+      "inventory_within_cap": true,
+      "fees_and_cash_reconcile": true,
+      "inventory_exposure_reconciles": true,
+      "monthly_aggregate_reconciles": true,
+      "all_passed": true
+    },
+    "gamma_0.0976562": {
+      "strictly_prior_rolling_calibration": true,
+      "all_policies_enable_market_control": true,
+      "order_lifecycle_reconciles": true,
+      "fill_evidence_reconciles": true,
+      "all_days_end_flat": true,
+      "inventory_within_cap": true,
+      "fees_and_cash_reconcile": true,
+      "inventory_exposure_reconciles": true,
+      "monthly_aggregate_reconciles": true,
+      "all_passed": true
+    },
+    "gamma_0.05": {
+      "strictly_prior_rolling_calibration": true,
+      "all_policies_enable_market_control": true,
+      "order_lifecycle_reconciles": true,
+      "fill_evidence_reconciles": true,
+      "all_days_end_flat": true,
+      "inventory_within_cap": true,
+      "fees_and_cash_reconcile": true,
+      "inventory_exposure_reconciles": true,
+      "monthly_aggregate_reconciles": true,
+      "all_passed": true
+    },
+    "gamma_0.0488281": {
+      "strictly_prior_rolling_calibration": true,
+      "all_policies_enable_market_control": true,
+      "order_lifecycle_reconciles": true,
+      "fill_evidence_reconciles": true,
+      "all_days_end_flat": true,
+      "inventory_within_cap": true,
+      "fees_and_cash_reconcile": true,
+      "inventory_exposure_reconciles": true,
+      "monthly_aggregate_reconciles": true,
+      "all_passed": true
+    },
+    "gamma_0.0244141": {
+      "strictly_prior_rolling_calibration": true,
+      "all_policies_enable_market_control": true,
+      "order_lifecycle_reconciles": true,
+      "fill_evidence_reconciles": true,
+      "all_days_end_flat": true,
+      "inventory_within_cap": true,
+      "fees_and_cash_reconcile": true,
+      "inventory_exposure_reconciles": true,
+      "monthly_aggregate_reconciles": true,
+      "all_passed": true
+    },
+    "gamma_0.012207": {
+      "strictly_prior_rolling_calibration": true,
+      "all_policies_enable_market_control": true,
+      "order_lifecycle_reconciles": true,
+      "fill_evidence_reconciles": true,
+      "all_days_end_flat": true,
+      "inventory_within_cap": true,
+      "fees_and_cash_reconcile": true,
+      "inventory_exposure_reconciles": true,
+      "monthly_aggregate_reconciles": true,
+      "all_passed": true
+    },
+    "gamma_0.01": {
+      "strictly_prior_rolling_calibration": true,
+      "all_policies_enable_market_control": true,
+      "order_lifecycle_reconciles": true,
+      "fill_evidence_reconciles": true,
+      "all_days_end_flat": true,
+      "inventory_within_cap": true,
+      "fees_and_cash_reconcile": true,
+      "inventory_exposure_reconciles": true,
+      "monthly_aggregate_reconciles": true,
+      "all_passed": true
+    },
+    "gamma_0.00610352": {
+      "strictly_prior_rolling_calibration": true,
+      "all_policies_enable_market_control": true,
+      "order_lifecycle_reconciles": true,
+      "fill_evidence_reconciles": true,
+      "all_days_end_flat": true,
+      "inventory_within_cap": true,
+      "fees_and_cash_reconcile": true,
+      "inventory_exposure_reconciles": true,
+      "monthly_aggregate_reconciles": true,
+      "all_passed": true
+    },
+    "gamma_0": {
+      "strictly_prior_rolling_calibration": true,
+      "all_policies_enable_market_control": true,
+      "order_lifecycle_reconciles": true,
+      "fill_evidence_reconciles": true,
+      "all_days_end_flat": true,
+      "inventory_within_cap": true,
+      "fees_and_cash_reconcile": true,
+      "inventory_exposure_reconciles": true,
+      "monthly_aggregate_reconciles": true,
+      "all_passed": true
+    },
+    "baseline_matches_0906": {
+      "all_passed": true,
+      "mismatches": []
+    },
+    "original_anchor_matches_gamma_5": {
+      "all_passed": true,
+      "mismatches": []
+    },
+    "original_anchor_matches_gamma_1": {
+      "all_passed": true,
+      "mismatches": []
+    },
+    "original_anchor_matches_gamma_0.5": {
+      "all_passed": true,
+      "mismatches": []
+    },
+    "original_anchor_matches_gamma_0.1": {
+      "all_passed": true,
+      "mismatches": []
+    },
+    "original_anchor_matches_gamma_0.05": {
+      "all_passed": true,
+      "mismatches": []
+    },
+    "original_anchor_matches_gamma_0.01": {
+      "all_passed": true,
+      "mismatches": []
+    },
+    "original_anchor_matches_gamma_0": {
+      "all_passed": true,
+      "mismatches": []
+    },
+    "all_passed": true
+  },
+  "gamma_selected_using_monthly_pnl": false,
+  "only_variable": "gamma",
+  "paper_sections": [
+    "3.1–3.3",
+    "4 / Table 4 / Table 6"
+  ],
+  "units": "lot coefficient is 10000 times share coefficient for the same cash currency",
+  "original_model_unchanged": true
+}
