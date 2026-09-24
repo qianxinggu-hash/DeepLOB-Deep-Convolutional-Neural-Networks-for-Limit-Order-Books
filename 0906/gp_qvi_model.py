@@ -92,6 +92,11 @@ class GPInputs:
     calibration_reference_price_hkd: float
     mean_lifecycle_seconds: float
     audit: dict[str, Any]
+    # Optional incremental PnL conditional on a maker fill, in HKD per lot.
+    # Each fill mode has a (buy/sell, best/improve, spread state) array. This
+    # excludes the quoted spread, maker fee and inventory liquidation already
+    # represented by the QVI, and may be negative for adverse selection.
+    maker_fill_alpha_hkd_per_lot: dict[str, np.ndarray] | None = None
 
 
 @dataclass
@@ -107,6 +112,168 @@ class GPPolicy:
     fill_mode: str
     clock_bucket: int
     market_orders_enabled: bool
+
+
+@dataclass(frozen=True)
+class GPDriftRegime:
+    """Finite-state approximation of the conditional mid-price drift.
+
+    ``drift_hkd_per_second`` is the conditional mean price change, not PnL.
+    The transition matrix describes how the DeepLOB-derived drift state is
+    expected to evolve over one GP time step.  Keeping this state in the value
+    function avoids treating a short-horizon signal as a permanent price
+    offset.
+    """
+
+    drift_hkd_per_second: np.ndarray
+    transition_probabilities: np.ndarray
+    labels: tuple[str, ...]
+
+
+@dataclass
+class GPDriftPolicy:
+    """GP policy whose state is (time, drift regime, spread, inventory)."""
+
+    values: np.ndarray
+    bid_action: np.ndarray
+    ask_action: np.ndarray
+    impulse_target: np.ndarray
+    make_bid_action: np.ndarray
+    make_ask_action: np.ndarray
+    config: GPConfig
+    tick_hkd: float
+    fill_mode: str
+    clock_bucket: int
+    market_orders_enabled: bool
+    drift_regime: GPDriftRegime
+
+
+def make_gp_drift_regime(
+    drift_hkd_per_second: Iterable[float],
+    transition_probabilities: np.ndarray,
+    labels: Iterable[str] | None = None,
+) -> GPDriftRegime:
+    """Validate and construct a drift regime used by the GP value function."""
+
+    drift = np.asarray(list(drift_hkd_per_second), dtype=np.float64)
+    transition = np.asarray(transition_probabilities, dtype=np.float64)
+    if drift.ndim != 1 or not len(drift) or not np.all(np.isfinite(drift)):
+        raise ValueError("drift_hkd_per_second must be a finite one-dimensional array")
+    if transition.shape != (len(drift), len(drift)):
+        raise ValueError("drift transition matrix has the wrong shape")
+    if not np.all(np.isfinite(transition)) or np.any(transition < 0.0):
+        raise ValueError("drift transition probabilities must be finite and non-negative")
+    row_sums = transition.sum(axis=1)
+    if np.any(row_sums <= 0.0):
+        raise ValueError("every drift transition row must have positive mass")
+    transition = transition / row_sums[:, None]
+    if labels is None:
+        regime_labels = tuple(f"drift_{index}" for index in range(len(drift)))
+    else:
+        regime_labels = tuple(labels)
+        if len(regime_labels) != len(drift):
+            raise ValueError("drift labels have the wrong length")
+    return GPDriftRegime(drift, transition, regime_labels)
+
+
+def assign_gp_drift_states(
+    drift_hkd_per_second: np.ndarray,
+    regime: GPDriftRegime,
+) -> np.ndarray:
+    """Map causal continuous drift estimates to the nearest fitted regime."""
+
+    values = np.asarray(drift_hkd_per_second, dtype=np.float64)
+    if values.ndim != 1 or not np.all(np.isfinite(values)):
+        raise ValueError("drift estimates must be a finite one-dimensional array")
+    distances = np.abs(values[:, None] - regime.drift_hkd_per_second[None, :])
+    return np.argmin(distances, axis=1).astype(np.int16)
+
+
+def fit_gp_drift_regime(
+    drift_sequences_hkd_per_second: Iterable[np.ndarray],
+    state_count: int = 5,
+    transition_smoothing: float = 0.5,
+) -> GPDriftRegime:
+    """Fit representative drift states and transitions on past-only signals.
+
+    Each input array must be one chronological session/day.  Transitions are
+    counted only within an array, which prevents artificial overnight or lunch
+    transitions.  This routine fits the signal process only; callers remain
+    responsible for producing leakage-free DeepLOB probabilities and their
+    probability-to-price calibration.
+    """
+
+    sequences = [
+        np.asarray(values, dtype=np.float64)
+        for values in drift_sequences_hkd_per_second
+        if len(values)
+    ]
+    if state_count < 1:
+        raise ValueError("state_count must be positive")
+    if transition_smoothing < 0.0:
+        raise ValueError("transition_smoothing must be non-negative")
+    if not sequences or any(
+        values.ndim != 1 or not np.all(np.isfinite(values)) for values in sequences
+    ):
+        raise ValueError("at least one finite drift sequence is required")
+    pooled = np.concatenate(sequences)
+    quantiles = np.linspace(0.0, 1.0, min(state_count, len(pooled)))
+    centers = np.unique(np.quantile(pooled, quantiles))
+    provisional = make_gp_drift_regime(
+        centers,
+        np.eye(len(centers), dtype=np.float64),
+        tuple(f"z{index}" for index in range(len(centers))),
+    )
+    counts = np.full(
+        (len(centers), len(centers)), transition_smoothing, dtype=np.float64
+    )
+    for values in sequences:
+        states = assign_gp_drift_states(values, provisional)
+        if len(states) > 1:
+            np.add.at(counts, (states[:-1], states[1:]), 1.0)
+    if transition_smoothing == 0.0:
+        empty = counts.sum(axis=1) == 0.0
+        counts[empty, np.flatnonzero(empty)] = 1.0
+    labels = tuple(
+        f"{value:+.6g}_hkd_per_s" for value in centers
+    )
+    return make_gp_drift_regime(centers, counts, labels)
+
+
+def rescale_gp_drift_regime(
+    regime: GPDriftRegime,
+    source_interval_seconds: float,
+    target_interval_seconds: float,
+) -> GPDriftRegime:
+    """Rescale a fitted drift transition matrix to the GP solver time step."""
+
+    if source_interval_seconds <= 0.0 or target_interval_seconds <= 0.0:
+        raise ValueError("transition intervals must be positive")
+    exponent = target_interval_seconds / source_interval_seconds
+    rounded = int(round(exponent))
+    if rounded >= 1 and abs(exponent - rounded) < 1e-10:
+        transition = np.linalg.matrix_power(
+            regime.transition_probabilities, rounded
+        )
+    else:
+        # Not every empirical discrete transition matrix admits a real matrix
+        # logarithm.  The first-order CTMC embedding below is always a valid
+        # generator because P has non-negative off-diagonals and unit row sums.
+        generator = (
+            regime.transition_probabilities
+            - np.eye(len(regime.drift_hkd_per_second))
+        ) / source_interval_seconds
+        transition = expm(generator * target_interval_seconds)
+    transition = np.clip(np.asarray(transition, dtype=np.float64), 0.0, None)
+    row_sums = transition.sum(axis=1)
+    empty = row_sums <= 0.0
+    if np.any(empty):
+        transition[empty] = regime.transition_probabilities[empty]
+    return make_gp_drift_regime(
+        regime.drift_hkd_per_second,
+        transition,
+        regime.labels,
+    )
 
 
 def infer_tick_hkd(day: Any) -> float:
@@ -413,6 +580,30 @@ def aggregate_calibration_stats(
     )
 
 
+def _maker_fill_alpha(
+    inputs: GPInputs,
+    fill_mode: str,
+    spread_states: int,
+) -> np.ndarray | None:
+    """Validate optional incremental maker-fill PnL for one fill mode."""
+
+    by_mode = inputs.maker_fill_alpha_hkd_per_lot
+    if by_mode is None:
+        return None
+    if fill_mode not in by_mode:
+        raise ValueError(f"maker_fill_alpha_hkd_per_lot lacks {fill_mode!r}")
+    alpha = np.asarray(by_mode[fill_mode], dtype=np.float64)
+    expected_shape = (len(SIDES), len(QUOTE_ACTIONS), spread_states)
+    if alpha.shape != expected_shape:
+        raise ValueError(
+            "maker_fill_alpha_hkd_per_lot must have shape "
+            f"{expected_shape} for {fill_mode!r}"
+        )
+    if not np.all(np.isfinite(alpha)):
+        raise ValueError("maker_fill_alpha_hkd_per_lot must be finite")
+    return alpha
+
+
 def solve_gp_policy(
     inputs: GPInputs,
     tick_hkd: float,
@@ -441,6 +632,7 @@ def solve_gp_policy(
     spread_transition = np.clip(spread_transition, 0.0, 1.0)
     spread_transition /= spread_transition.sum(axis=1, keepdims=True)
     hazards = inputs.execution_intensity_per_second[fill_mode]
+    maker_fill_alpha = _maker_fill_alpha(inputs, fill_mode, m)
 
     values = np.zeros((n_steps + 1, m, q_count), dtype=np.float64)
     bid_action = np.zeros((n_steps + 1, m, q_count), dtype=np.int8)
@@ -489,6 +681,8 @@ def solve_gp_policy(
                                 half_spread
                                 - (tick_hkd if bid == ACTION_IMPROVE else 0.0)
                             ) * LOT_SIZE - fee_per_fill
+                            if maker_fill_alpha is not None:
+                                buy_gain += maker_fill_alpha[0, action_index, spread]
                         if ask == ACTION_NONE:
                             p_sell = 0.0
                             sell_gain = 0.0
@@ -499,6 +693,8 @@ def solve_gp_policy(
                                 half_spread
                                 - (tick_hkd if ask == ACTION_IMPROVE else 0.0)
                             ) * LOT_SIZE - fee_per_fill
+                            if maker_fill_alpha is not None:
+                                sell_gain += maker_fill_alpha[1, action_index, spread]
                         expected = 0.0
                         outcomes = (
                             ((1-p_buy)*(1-p_sell), 0, 0.0),
@@ -566,6 +762,223 @@ def solve_gp_policy(
     )
 
 
+def solve_gp_drift_policy(
+    inputs: GPInputs,
+    tick_hkd: float,
+    fill_mode: str,
+    clock_bucket: int,
+    config: GPConfig,
+    drift_regime: GPDriftRegime,
+    market_orders_enabled: bool = True,
+) -> GPDriftPolicy:
+    """Solve the GP QVI after adding a finite-state DeepLOB drift process.
+
+    Guilbaud--Pham use ``v=x+q*p+phi`` and assume that ``p`` is a martingale.
+    If its conditional dynamics instead satisfy ``E[dp | z] = mu[z] dt``, the
+    reduced Bellman equation gains the running term ``q * lot_size * mu[z]``.
+    The step reward also includes the expected drift exposure after a bid or
+    ask fill, including when inventory starts at zero. This solver retains
+    ``z`` as a state and propagates it with the supplied transition matrix,
+    so a short-lived signal can mean-revert rather than be extrapolated across
+    the full control horizon.
+    """
+
+    if fill_mode not in FILL_MODES:
+        raise ValueError(fill_mode)
+    m = config.spread_states
+    cap = config.max_inventory_lots
+    inventories = np.arange(-cap, cap + 1, dtype=np.int16)
+    q_count = len(inventories)
+    z_count = len(drift_regime.drift_hkd_per_second)
+    n_steps = config.time_steps
+    dt = config.dt_seconds
+    fee_per_fill = (
+        inputs.calibration_reference_price_hkd * LOT_SIZE * ALL_IN_FEE_RATE
+    )
+    generator = inputs.clock_intensity_per_second[clock_bucket] * (
+        inputs.transition_probabilities - np.eye(m)
+    )
+    spread_transition = expm(generator * dt)
+    spread_transition = np.clip(spread_transition, 0.0, 1.0)
+    spread_transition /= spread_transition.sum(axis=1, keepdims=True)
+    drift_transition = np.asarray(
+        drift_regime.transition_probabilities, dtype=np.float64
+    )
+    hazards = inputs.execution_intensity_per_second[fill_mode]
+    maker_fill_alpha = _maker_fill_alpha(inputs, fill_mode, m)
+    # A fill at arrival time T creates one lot of drift exposure until the
+    # end of this Bellman step.  For T ~ Exp(lambda), its unconditional expected
+    # duration is F(lambda) = dt - (1 - exp(-lambda * dt)) / lambda.
+    post_fill_seconds = np.zeros_like(hazards, dtype=np.float64)
+    hazard_dt = hazards * dt
+    small = (hazard_dt > 0.0) & (hazard_dt < 1e-4)
+    x = hazard_dt[small]
+    post_fill_seconds[small] = dt * (x / 2.0 - x * x / 6.0 + x**3 / 24.0)
+    regular = hazard_dt >= 1e-4
+    post_fill_seconds[regular] = (
+        dt + np.expm1(-hazard_dt[regular]) / hazards[regular]
+    )
+
+    shape = (n_steps + 1, z_count, m, q_count)
+    values = np.zeros(shape, dtype=np.float64)
+    bid_action = np.zeros(shape, dtype=np.int8)
+    ask_action = np.zeros_like(bid_action)
+    make_bid_action = np.zeros_like(bid_action)
+    make_ask_action = np.zeros_like(bid_action)
+    impulse_target = np.broadcast_to(
+        np.arange(q_count, dtype=np.int16), shape
+    ).copy()
+
+    for spread in range(m):
+        half_spread = (spread + 1) * tick_hkd / 2.0
+        taker_cost = half_spread * LOT_SIZE + fee_per_fill
+        values[0, :, spread] = -np.abs(inventories) * taker_cost
+
+    action_codes = (ACTION_NONE, ACTION_BEST, ACTION_IMPROVE)
+    for step in range(1, n_steps + 1):
+        # Conditional continuation over independent spread and signal chains.
+        continuation = np.einsum(
+            "za,sb,abq->zsq",
+            drift_transition,
+            spread_transition,
+            values[step - 1],
+            optimize=True,
+        )
+        for drift_state, drift in enumerate(drift_regime.drift_hkd_per_second):
+            for spread in range(m):
+                spread_ticks = spread + 1
+                half_spread = spread_ticks * tick_hkd / 2.0
+                make_values = np.full(q_count, -np.inf, dtype=np.float64)
+                make_bids = np.zeros(q_count, dtype=np.int8)
+                make_asks = np.zeros(q_count, dtype=np.int8)
+                for q_index, inventory in enumerate(inventories):
+                    best_value = -np.inf
+                    best_bid = ACTION_NONE
+                    best_ask = ACTION_NONE
+                    for bid in action_codes:
+                        if inventory >= cap and bid != ACTION_NONE:
+                            continue
+                        if spread_ticks == 1 and bid == ACTION_IMPROVE:
+                            continue
+                        for ask in action_codes:
+                            if inventory <= -cap and ask != ACTION_NONE:
+                                continue
+                            if spread_ticks == 1 and ask == ACTION_IMPROVE:
+                                continue
+                            if bid == ACTION_NONE:
+                                p_buy = 0.0
+                                buy_gain = 0.0
+                                buy_post_fill_seconds = 0.0
+                            else:
+                                action_index = bid - 1
+                                p_buy = 1.0 - np.exp(
+                                    -hazards[0, action_index, spread] * dt
+                                )
+                                buy_post_fill_seconds = post_fill_seconds[
+                                    0, action_index, spread
+                                ]
+                                buy_gain = (
+                                    half_spread
+                                    - (tick_hkd if bid == ACTION_IMPROVE else 0.0)
+                                ) * LOT_SIZE - fee_per_fill
+                                if maker_fill_alpha is not None:
+                                    buy_gain += maker_fill_alpha[0, action_index, spread]
+                            if ask == ACTION_NONE:
+                                p_sell = 0.0
+                                sell_gain = 0.0
+                                sell_post_fill_seconds = 0.0
+                            else:
+                                action_index = ask - 1
+                                p_sell = 1.0 - np.exp(
+                                    -hazards[1, action_index, spread] * dt
+                                )
+                                sell_post_fill_seconds = post_fill_seconds[
+                                    1, action_index, spread
+                                ]
+                                sell_gain = (
+                                    half_spread
+                                    - (tick_hkd if ask == ACTION_IMPROVE else 0.0)
+                                ) * LOT_SIZE - fee_per_fill
+                                if maker_fill_alpha is not None:
+                                    sell_gain += maker_fill_alpha[1, action_index, spread]
+                            expected = 0.0
+                            outcomes = (
+                                ((1 - p_buy) * (1 - p_sell), 0, 0.0),
+                                (p_buy * (1 - p_sell), 1, buy_gain),
+                                ((1 - p_buy) * p_sell, -1, sell_gain),
+                                (p_buy * p_sell, 0, buy_gain + sell_gain),
+                            )
+                            for probability, inventory_delta, gain in outcomes:
+                                target = q_index + inventory_delta
+                                if 0 <= target < q_count:
+                                    expected += probability * (
+                                        continuation[
+                                            drift_state, spread, target
+                                        ]
+                                        + gain
+                                    )
+                            expected += (
+                                LOT_SIZE * float(drift)
+                                * (
+                                    float(inventory) * dt
+                                    + buy_post_fill_seconds
+                                    - sell_post_fill_seconds
+                                )
+                            )
+                            expected -= (
+                                config.inventory_penalty_gamma
+                                * float(inventory * inventory)
+                                * dt
+                            )
+                            if expected > best_value:
+                                best_value = expected
+                                best_bid = bid
+                                best_ask = ask
+                    make_values[q_index] = best_value
+                    make_bids[q_index] = best_bid
+                    make_asks[q_index] = best_ask
+
+                final_values = make_values.copy()
+                targets = np.arange(q_count, dtype=np.int16)
+                if market_orders_enabled:
+                    taker_cost = half_spread * LOT_SIZE + fee_per_fill
+                    zero = cap
+                    for q_index in range(zero + 1, q_count):
+                        candidate = final_values[q_index - 1] - taker_cost
+                        if candidate > final_values[q_index]:
+                            final_values[q_index] = candidate
+                            targets[q_index] = targets[q_index - 1]
+                    for q_index in range(zero - 1, -1, -1):
+                        candidate = final_values[q_index + 1] - taker_cost
+                        if candidate > final_values[q_index]:
+                            final_values[q_index] = candidate
+                            targets[q_index] = targets[q_index + 1]
+
+                values[step, drift_state, spread] = final_values
+                impulse_target[step, drift_state, spread] = targets
+                make_bid_action[step, drift_state, spread] = make_bids
+                make_ask_action[step, drift_state, spread] = make_asks
+                for q_index in range(q_count):
+                    target = int(targets[q_index])
+                    bid_action[step, drift_state, spread, q_index] = make_bids[target]
+                    ask_action[step, drift_state, spread, q_index] = make_asks[target]
+
+    return GPDriftPolicy(
+        values=values,
+        bid_action=bid_action,
+        ask_action=ask_action,
+        impulse_target=impulse_target,
+        make_bid_action=make_bid_action,
+        make_ask_action=make_ask_action,
+        config=config,
+        tick_hkd=tick_hkd,
+        fill_mode=fill_mode,
+        clock_bucket=clock_bucket,
+        market_orders_enabled=market_orders_enabled,
+        drift_regime=drift_regime,
+    )
+
+
 def _action_name(code: int) -> str:
     return {ACTION_NONE: "none", ACTION_BEST: "best", ACTION_IMPROVE: "improve"}[
         int(code)
@@ -575,16 +988,37 @@ def _action_name(code: int) -> str:
 def simulate_gp_day(
     day: Any,
     trades: TradeData,
-    policies: dict[int, GPPolicy] | None,
+    policies: dict[int, GPPolicy | GPDriftPolicy] | None,
     config: GPConfig,
     fill_mode: str,
     strategy_name: str,
+    drift_state_indices: np.ndarray | None = None,
+    flatten_on_segment_change: bool = False,
 ) -> dict[str, Any]:
-    """Replay one day with either a GP policy or the constant-best benchmark."""
+    """Replay a classic/drift-aware GP policy or the constant-best benchmark.
+
+    For a :class:`GPDriftPolicy`, ``drift_state_indices`` must contain one
+    causal DeepLOB drift-state index for every selected quote decision.
+    ``flatten_on_segment_change`` only flattens at a boundary caused by a
+    recorded feed gap; an ordinary session boundary such as lunch is ignored.
+    """
 
     tick = infer_tick_hkd(day)
     times = compact_time_to_day_ms(day.send_times)
     quote_indices = select_quote_indices(day, day.eligible, config.quote_horizon_snapshots)
+    gap_events = (getattr(day, "metadata", {}) or {}).get("gap_events") or []
+    gap_previous_ms = compact_time_to_day_ms(np.asarray(
+        [int(event["previous_send_time"]) for event in gap_events],
+        dtype=np.int64,
+    ))
+    gap_resume_ms = compact_time_to_day_ms(np.asarray(
+        [int(event["resume_send_time"]) for event in gap_events],
+        dtype=np.int64,
+    ))
+    if drift_state_indices is not None:
+        drift_state_indices = np.asarray(drift_state_indices, dtype=np.int64)
+        if len(drift_state_indices) != len(quote_indices):
+            raise ValueError("quote/drift-state length mismatch")
     inventory = 0
     cash = 0.0
     fees = 0.0
@@ -595,12 +1029,14 @@ def simulate_gp_day(
     trade_price_fills = best_ask_fills = best_bid_fills = 0
     quoted_bid = quoted_ask = bid_cancels = ask_cancels = 0
     market_orders = market_order_lots = 0
+    segment_flatten_orders = segment_flatten_lots = 0
     max_abs_inventory = 0
     equity_path = [0.0]
     action_counts = {
         "bid_none": 0, "bid_best": 0, "bid_improve": 0,
         "ask_none": 0, "ask_best": 0, "ask_improve": 0,
     }
+    drift_state_counts: dict[str, int] = {}
     final_session_ms = max(int(times[index]) for index in day.eligible)
 
     def transact_market(target_inventory: int, best_bid: float, best_ask: float) -> None:
@@ -622,7 +1058,7 @@ def simulate_gp_day(
         official_fees += notional * OFFICIAL_FIXED_FEE_RATE
         inventory = target_inventory
 
-    for index_value in quote_indices:
+    for quote_number, index_value in enumerate(quote_indices):
         index = int(index_value)
         expiry = index + config.quote_horizon_snapshots
         if expiry >= len(day.book) or day.segments[index] != day.segments[expiry]:
@@ -641,13 +1077,45 @@ def simulate_gp_day(
             )
             policy = policies[bucket]
             q_index = inventory + config.max_inventory_lots
-            target_index = int(policy.impulse_target[step, spread_state, q_index])
+            if isinstance(policy, GPDriftPolicy):
+                if drift_state_indices is None:
+                    raise ValueError(
+                        "drift_state_indices are required for a GPDriftPolicy"
+                    )
+                drift_state = int(drift_state_indices[quote_number])
+                if not 0 <= drift_state < len(policy.drift_regime.labels):
+                    raise ValueError("drift state index is out of range")
+                label = policy.drift_regime.labels[drift_state]
+                drift_state_counts[label] = drift_state_counts.get(label, 0) + 1
+                target_index = int(
+                    policy.impulse_target[
+                        step, drift_state, spread_state, q_index
+                    ]
+                )
+            else:
+                drift_state = None
+                target_index = int(
+                    policy.impulse_target[step, spread_state, q_index]
+                )
             target_inventory = target_index - config.max_inventory_lots
             if target_inventory != inventory:
                 transact_market(target_inventory, best_bid, best_ask)
                 q_index = target_index
-            bid_code = int(policy.make_bid_action[step, spread_state, q_index])
-            ask_code = int(policy.make_ask_action[step, spread_state, q_index])
+            if isinstance(policy, GPDriftPolicy):
+                assert drift_state is not None
+                bid_code = int(
+                    policy.make_bid_action[
+                        step, drift_state, spread_state, q_index
+                    ]
+                )
+                ask_code = int(
+                    policy.make_ask_action[
+                        step, drift_state, spread_state, q_index
+                    ]
+                )
+            else:
+                bid_code = int(policy.make_bid_action[step, spread_state, q_index])
+                ask_code = int(policy.make_ask_action[step, spread_state, q_index])
 
         if inventory >= config.max_inventory_lots:
             bid_code = ACTION_NONE
@@ -715,14 +1183,34 @@ def simulate_gp_day(
             max_abs_inventory = max(max_abs_inventory, abs(inventory))
         expiry_mid = float((day.book[expiry, 0] + day.book[expiry, 2]) / 2.0)
         equity_path.append(cash + inventory * LOT_SIZE * expiry_mid - fees)
+        next_index = (int(quote_indices[quote_number + 1])
+                      if quote_number + 1 < len(quote_indices) else None)
+        gap_boundary = (
+            next_index is not None
+            and day.segments[index] != day.segments[next_index]
+            and bool(np.any(
+                (gap_previous_ms >= times[expiry])
+                & (gap_resume_ms <= times[next_index])
+            ))
+        )
+        if flatten_on_segment_change and gap_boundary and inventory != 0:
+            # The last reliable book is the expiry snapshot before the gap.
+            segment_flatten_orders += 1
+            segment_flatten_lots += abs(inventory)
+            transact_market(
+                0,
+                float(day.book[expiry, 2]),
+                float(day.book[expiry, 0]),
+            )
+            equity_path.append(cash - fees)
 
     final_index = int(quote_indices[-1] + config.quote_horizon_snapshots)
     final_bid = float(day.book[final_index, 2])
     final_ask = float(day.book[final_index, 0])
     terminal_lots = abs(inventory)
     terminal_side = "none"
-    policy_market_orders = market_orders
-    policy_market_order_lots = market_order_lots
+    policy_market_orders = market_orders - segment_flatten_orders
+    policy_market_order_lots = market_order_lots - segment_flatten_lots
     if inventory > 0:
         terminal_side = "sell"
     elif inventory < 0:
@@ -744,7 +1232,7 @@ def simulate_gp_day(
     feeable_turnover = maker_turnover + market_turnover
     if not np.isclose(fees, feeable_turnover * ALL_IN_FEE_RATE, atol=1e-6):
         raise AssertionError("fee accounting mismatch")
-    return {
+    result = {
         "date": str(day.date),
         "strategy": strategy_name,
         "fill_mode": fill_mode,
@@ -766,6 +1254,8 @@ def simulate_gp_day(
         "market_order_lots": market_order_lots,
         "policy_market_orders": policy_market_orders,
         "policy_market_order_lots": policy_market_order_lots,
+        "segment_flatten_orders": segment_flatten_orders,
+        "segment_flatten_lots": segment_flatten_lots,
         "terminal_flatten_orders": int(terminal_lots > 0),
         "terminal_flatten_side": terminal_side,
         "terminal_flatten_lots": terminal_lots,
@@ -795,11 +1285,44 @@ def simulate_gp_day(
             "all_in_bps_per_side": ALL_IN_FEE_RATE * 10_000,
         },
     }
+    if drift_state_counts:
+        result["drift_state_counts"] = drift_state_counts
+    return result
 
 
-def policy_audit(policy: GPPolicy) -> dict[str, Any]:
+def policy_audit(policy: GPPolicy | GPDriftPolicy) -> dict[str, Any]:
     step = policy.config.time_steps
     center = policy.config.max_inventory_lots
+    if isinstance(policy, GPDriftPolicy):
+        return {
+            "fill_mode": policy.fill_mode,
+            "clock_bucket": policy.clock_bucket,
+            "market_orders_enabled": policy.market_orders_enabled,
+            "tick_hkd": policy.tick_hkd,
+            "drift_regime": {
+                "labels": list(policy.drift_regime.labels),
+                "drift_hkd_per_second": (
+                    policy.drift_regime.drift_hkd_per_second.tolist()
+                ),
+                "transition_probabilities": (
+                    policy.drift_regime.transition_probabilities.tolist()
+                ),
+            },
+            "initial_zero_inventory_actions_by_drift_and_spread": [
+                {
+                    "drift_state": policy.drift_regime.labels[drift_state],
+                    "spread_ticks": spread + 1,
+                    "bid": _action_name(
+                        policy.bid_action[step, drift_state, spread, center]
+                    ),
+                    "ask": _action_name(
+                        policy.ask_action[step, drift_state, spread, center]
+                    ),
+                }
+                for drift_state in range(len(policy.drift_regime.labels))
+                for spread in range(policy.config.spread_states)
+            ],
+        }
     return {
         "fill_mode": policy.fill_mode,
         "clock_bucket": policy.clock_bucket,

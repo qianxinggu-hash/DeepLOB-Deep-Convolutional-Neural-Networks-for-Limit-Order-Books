@@ -1,0 +1,1496 @@
+{
+  "surface": "report",
+  "manifest": {
+    "version": 1,
+    "surface": "report",
+    "title": "Hybrid DeepLOB Drift 与 AS / GP-QVI 详细结果",
+    "description": "Hybrid DeepLOB drift 与 AS、GP-QVI 的单日样本外整合、机制诊断和成交敏感性结果。",
+    "generatedAt": "2026-09-21T23:29:55.125411+08:00",
+    "cards": [
+      {
+        "id": "macro_f1",
+        "description": "2026-08-07 测试集三分类宏平均 F1。",
+        "dataset": "summary",
+        "sourceId": "hybrid_result",
+        "metrics": [
+          {
+            "label": "Hybrid Macro-F1",
+            "field": "macro_f1_pct",
+            "format": "number",
+            "unit": "%"
+          }
+        ]
+      },
+      {
+        "id": "as_touch",
+        "description": "乐观 touch 成交代理下，Drift AS 相对 Classic AS 的净收益差。",
+        "dataset": "summary",
+        "sourceId": "default_integration",
+        "metrics": [
+          {
+            "label": "AS touch 增量",
+            "field": "as_touch_delta_hkd",
+            "format": "number",
+            "unit": "HKD"
+          }
+        ]
+      },
+      {
+        "id": "as_through",
+        "description": "保守 through 成交代理下，Drift AS 相对 Classic AS 的净收益差。",
+        "dataset": "summary",
+        "sourceId": "default_integration",
+        "metrics": [
+          {
+            "label": "AS through 增量",
+            "field": "as_through_delta_hkd",
+            "format": "number",
+            "unit": "HKD"
+          }
+        ]
+      },
+      {
+        "id": "gp_low",
+        "description": "gamma=0.1 机制诊断，through 下 Drift GP 相对 Martingale GP 的净收益差。",
+        "dataset": "summary",
+        "sourceId": "gamma_diagnostic",
+        "metrics": [
+          {
+            "label": "GP 低 γ through 增量",
+            "field": "gp_low_through_delta_hkd",
+            "format": "number",
+            "unit": "HKD"
+          }
+        ]
+      }
+    ],
+    "charts": [
+      {
+        "id": "drift_distribution",
+        "title": "测试日 drift 状态分布",
+        "subtitle": "3,080 个报价决策；五状态按校准日分位数生成",
+        "type": "bar",
+        "dataset": "drift_states",
+        "sourceId": "default_integration",
+        "encodings": {
+          "x": {
+            "field": "state",
+            "type": "nominal",
+            "label": "drift 状态"
+          },
+          "y": {
+            "field": "share_pct",
+            "type": "quantitative",
+            "label": "决策占比（%）"
+          }
+        },
+        "yAxisTitle": "%",
+        "valueFormat": "number",
+        "layout": "full"
+      },
+      {
+        "id": "as_net",
+        "title": "AS：drift 改变报价后的净收益",
+        "subtitle": "同一测试日；已扣 2.77 bp 每执行边费用；touch/through 为两种排队代理",
+        "type": "bar",
+        "dataset": "as_results",
+        "sourceId": "default_integration",
+        "encodings": {
+          "x": {
+            "field": "fill_mode",
+            "type": "nominal",
+            "label": "成交代理"
+          },
+          "y": {
+            "field": "net_pnl_hkd",
+            "type": "quantitative",
+            "label": "净收益（HKD）"
+          },
+          "color": {
+            "field": "strategy",
+            "type": "nominal",
+            "label": "策略"
+          }
+        },
+        "yAxisTitle": "HKD",
+        "valueFormat": "number",
+        "layout": "full"
+      },
+      {
+        "id": "gp_delta",
+        "title": "GP：加入 drift 后的净收益增量",
+        "subtitle": "gamma=5 为默认结果；gamma=0.1 只用于机制敏感性，不是选参结果",
+        "type": "bar",
+        "dataset": "gp_deltas",
+        "sourceId": "gamma_diagnostic",
+        "encodings": {
+          "x": {
+            "field": "scenario",
+            "type": "nominal",
+            "label": "模型 / 成交代理"
+          },
+          "y": {
+            "field": "net_delta_hkd",
+            "type": "quantitative",
+            "label": "Drift − baseline（HKD）"
+          }
+        },
+        "yAxisTitle": "HKD",
+        "valueFormat": "number",
+        "layout": "full"
+      }
+    ],
+    "tables": [
+      {
+        "id": "class_metrics",
+        "title": "Hybrid DeepLOB 测试集逐类指标",
+        "subtitle": "最终未参与训练的 2026-08-07；共 61,583 个标签样本",
+        "dataset": "class_metrics",
+        "sourceId": "hybrid_result",
+        "density": "dense",
+        "layout": "full",
+        "columns": [
+          {
+            "field": "class",
+            "label": "真实类别",
+            "type": "text"
+          },
+          {
+            "field": "precision_pct",
+            "label": "Precision %",
+            "format": "number"
+          },
+          {
+            "field": "recall_pct",
+            "label": "Recall %",
+            "format": "number"
+          },
+          {
+            "field": "f1_pct",
+            "label": "F1 %",
+            "format": "number"
+          },
+          {
+            "field": "support",
+            "label": "样本数",
+            "format": "number"
+          }
+        ]
+      },
+      {
+        "id": "confusion",
+        "title": "Hybrid DeepLOB 测试集混淆矩阵",
+        "dataset": "confusion",
+        "sourceId": "hybrid_result",
+        "density": "dense",
+        "layout": "full",
+        "columns": [
+          {
+            "field": "actual",
+            "label": "真实类别",
+            "type": "text"
+          },
+          {
+            "field": "pred_down",
+            "label": "预测 down",
+            "format": "number"
+          },
+          {
+            "field": "pred_stationary",
+            "label": "预测 stationary",
+            "format": "number"
+          },
+          {
+            "field": "pred_up",
+            "label": "预测 up",
+            "format": "number"
+          }
+        ]
+      },
+      {
+        "id": "drift_states",
+        "title": "GP drift regime 明细",
+        "subtitle": "自转移概率已从 4.146 秒观测间隔重标到 3 秒 Bellman 步长",
+        "dataset": "drift_states",
+        "sourceId": "default_integration",
+        "density": "dense",
+        "layout": "full",
+        "columns": [
+          {
+            "field": "state",
+            "label": "状态",
+            "type": "text"
+          },
+          {
+            "field": "drift_hkd_per_second",
+            "label": "HKD/秒",
+            "format": "number"
+          },
+          {
+            "field": "count",
+            "label": "测试决策数",
+            "format": "number"
+          },
+          {
+            "field": "share_pct",
+            "label": "占比 %",
+            "format": "number"
+          },
+          {
+            "field": "self_transition_pct",
+            "label": "3秒自转移 %",
+            "format": "number"
+          }
+        ]
+      },
+      {
+        "id": "as_detail",
+        "title": "AS 完整交易结果",
+        "dataset": "as_results",
+        "sourceId": "default_integration",
+        "density": "dense",
+        "layout": "full",
+        "defaultSort": {
+          "field": "fill_mode",
+          "direction": "asc"
+        },
+        "columns": [
+          {
+            "field": "fill_mode",
+            "label": "成交代理",
+            "type": "text"
+          },
+          {
+            "field": "strategy",
+            "label": "策略",
+            "type": "text"
+          },
+          {
+            "field": "gross_pnl_hkd",
+            "label": "毛收益",
+            "format": "number"
+          },
+          {
+            "field": "fees_hkd",
+            "label": "费用",
+            "format": "number"
+          },
+          {
+            "field": "net_pnl_hkd",
+            "label": "净收益",
+            "format": "number",
+            "movement": true
+          },
+          {
+            "field": "max_drawdown_hkd",
+            "label": "最大回撤",
+            "format": "number"
+          },
+          {
+            "field": "net_bps",
+            "label": "净bps",
+            "format": "number"
+          }
+        ]
+      },
+      {
+        "id": "as_activity",
+        "title": "AS 报价与成交活动",
+        "dataset": "as_results",
+        "sourceId": "default_integration",
+        "density": "dense",
+        "layout": "full",
+        "columns": [
+          {
+            "field": "fill_mode",
+            "label": "成交代理",
+            "type": "text"
+          },
+          {
+            "field": "strategy",
+            "label": "策略",
+            "type": "text"
+          },
+          {
+            "field": "quoted_bid",
+            "label": "Bid报价",
+            "format": "number"
+          },
+          {
+            "field": "quoted_ask",
+            "label": "Ask报价",
+            "format": "number"
+          },
+          {
+            "field": "maker_fills",
+            "label": "Maker成交",
+            "format": "number"
+          },
+          {
+            "field": "max_inventory_lots",
+            "label": "最大库存",
+            "format": "number"
+          },
+          {
+            "field": "feeable_turnover_hkd",
+            "label": "计费成交额",
+            "format": "number"
+          }
+        ]
+      },
+      {
+        "id": "gp_default",
+        "title": "GP 默认 gamma=5 完整结果",
+        "dataset": "gp_default",
+        "sourceId": "default_integration",
+        "density": "dense",
+        "layout": "full",
+        "columns": [
+          {
+            "field": "fill_mode",
+            "label": "成交代理",
+            "type": "text"
+          },
+          {
+            "field": "strategy",
+            "label": "策略",
+            "type": "text"
+          },
+          {
+            "field": "net_pnl_hkd",
+            "label": "净收益",
+            "format": "number",
+            "movement": true
+          },
+          {
+            "field": "maker_fills",
+            "label": "Maker成交",
+            "format": "number"
+          },
+          {
+            "field": "market_order_lots",
+            "label": "市价手数",
+            "format": "number"
+          },
+          {
+            "field": "bid_best",
+            "label": "Bid best",
+            "format": "number"
+          },
+          {
+            "field": "ask_best",
+            "label": "Ask best",
+            "format": "number"
+          }
+        ]
+      },
+      {
+        "id": "gp_gamma",
+        "title": "GP gamma=0.1 机制敏感性",
+        "subtitle": "测试日事后诊断，不得作为生产参数选择依据",
+        "dataset": "gp_gamma",
+        "sourceId": "gamma_diagnostic",
+        "density": "dense",
+        "layout": "full",
+        "columns": [
+          {
+            "field": "fill_mode",
+            "label": "成交代理",
+            "type": "text"
+          },
+          {
+            "field": "strategy",
+            "label": "策略",
+            "type": "text"
+          },
+          {
+            "field": "gross_pnl_hkd",
+            "label": "毛收益",
+            "format": "number"
+          },
+          {
+            "field": "fees_hkd",
+            "label": "费用",
+            "format": "number"
+          },
+          {
+            "field": "net_pnl_hkd",
+            "label": "净收益",
+            "format": "number",
+            "movement": true
+          },
+          {
+            "field": "maker_fills",
+            "label": "成交",
+            "format": "number"
+          },
+          {
+            "field": "max_drawdown_hkd",
+            "label": "最大回撤",
+            "format": "number"
+          }
+        ]
+      },
+      {
+        "id": "gp_actions",
+        "title": "GP 动作计数（默认与低 gamma）",
+        "dataset": "gp_actions",
+        "sourceId": "report_analysis",
+        "density": "dense",
+        "layout": "full",
+        "columns": [
+          {
+            "field": "gamma",
+            "label": "gamma",
+            "format": "number"
+          },
+          {
+            "field": "fill_mode",
+            "label": "成交代理",
+            "type": "text"
+          },
+          {
+            "field": "strategy",
+            "label": "策略",
+            "type": "text"
+          },
+          {
+            "field": "bid_best",
+            "label": "Bid best",
+            "format": "number"
+          },
+          {
+            "field": "bid_improve",
+            "label": "Bid improve",
+            "format": "number"
+          },
+          {
+            "field": "ask_best",
+            "label": "Ask best",
+            "format": "number"
+          },
+          {
+            "field": "ask_improve",
+            "label": "Ask improve",
+            "format": "number"
+          }
+        ]
+      },
+      {
+        "id": "delta_detail",
+        "title": "Drift 相对基线的结果差",
+        "dataset": "deltas",
+        "sourceId": "report_analysis",
+        "density": "dense",
+        "layout": "full",
+        "columns": [
+          {
+            "field": "model",
+            "label": "模型",
+            "type": "text"
+          },
+          {
+            "field": "fill_mode",
+            "label": "成交代理",
+            "type": "text"
+          },
+          {
+            "field": "net_delta_hkd",
+            "label": "净收益差",
+            "format": "number",
+            "movement": true
+          }
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "hybrid_result",
+        "label": "Hybrid DeepLOB 训练与测试结果",
+        "path": "output/results/7709_hybrid_deeplob.json",
+        "description": "包含时间切分、标签、训练过程以及 2026-08-07 测试集分类指标。",
+        "query": {
+          "engine": "duckdb",
+          "sql": "SELECT * FROM read_json_auto('output/results/7709_hybrid_deeplob.json')",
+          "description": "包含时间切分、标签、训练过程以及 2026-08-07 测试集分类指标。",
+          "id": "hybrid_result-json"
+        }
+      },
+      {
+        "id": "default_integration",
+        "label": "AS / GP 默认参数整合回测",
+        "path": "0906/output/hybrid_deeplob_as_gp_integration.json",
+        "description": "Hybrid drift 与 AS、GP-QVI 在 gamma=5 下的逐日回放机器结果。",
+        "query": {
+          "engine": "duckdb",
+          "sql": "SELECT * FROM read_json_auto('0906/output/hybrid_deeplob_as_gp_integration.json')",
+          "description": "Hybrid drift 与 AS、GP-QVI 在 gamma=5 下的逐日回放机器结果。",
+          "id": "default_integration-json"
+        }
+      },
+      {
+        "id": "gamma_diagnostic",
+        "label": "GP gamma=0.1 机制诊断",
+        "path": "0906/output/hybrid_deeplob_as_gp_gamma_0_1_diagnostic.json",
+        "description": "仅用于验证 drift 是否会改变离散 GP 动作，不用于测试集选参。",
+        "query": {
+          "engine": "duckdb",
+          "sql": "SELECT * FROM read_json_auto('0906/output/hybrid_deeplob_as_gp_gamma_0_1_diagnostic.json')",
+          "description": "仅用于验证 drift 是否会改变离散 GP 动作，不用于测试集选参。",
+          "id": "gamma_diagnostic-json"
+        }
+      },
+      {
+        "id": "report_analysis",
+        "label": "报告构建与指标整理",
+        "path": "0906/build_hybrid_drift_report.py",
+        "description": "从三份机器结果生成图表、差值和技术解释，不重新拟合模型。",
+        "query": {
+          "engine": "duckdb",
+          "sql": "SELECT * FROM read_json_auto(['0906/output/hybrid_deeplob_as_gp_integration.json', '0906/output/hybrid_deeplob_as_gp_gamma_0_1_diagnostic.json'])",
+          "description": "读取默认整合回测与低 gamma 诊断，并在报告构建脚本中计算 drift 相对基线的差值。",
+          "id": "hybrid-drift-delta-inputs"
+        }
+      },
+      {
+        "id": "drift_adapter",
+        "label": "Hybrid drift 适配器",
+        "path": "hybrid_drift_adapter.py",
+        "description": "概率到预期价格变动及 drift regime 的转换实现。"
+      },
+      {
+        "id": "gp_implementation",
+        "label": "GP drift-QVI 实现",
+        "path": "0906/gp_qvi_model.py",
+        "description": "在时间、drift、spread、库存状态上求解 Bellman/QVI。"
+      }
+    ],
+    "blocks": [
+      {
+        "id": "summary",
+        "type": "markdown",
+        "body": "## 技术结论\n\nDrift 已成功进入 AS 和 GP 两个定价框架。 当前结果不支持稳定提高样本外收益。 Hybrid DeepLOB 测试集宏平均 F1 为 56.24%。 AS 的乐观增量为正 128.79 港元。 AS 的保守增量为负 209.27 港元。 GP 默认参数下，基线与 Drift 动作完全相同。 GP 低风险厌恶诊断会改变动作，但收益不稳健。 验证等级为有保留地分享。结果适合研究和审阅，不适合上线。",
+        "layout": "full"
+      },
+      {
+        "id": "signal_quality",
+        "type": "markdown",
+        "body": "## 1. Hybrid DeepLOB 信号质量\n\n训练集覆盖 6 个历史交易日，2026-08-04 用于验证与 checkpoint 选择，2026-08-07 完全留作测试。测试集 61,583 个样本，Accuracy 55.66%，Balanced Accuracy 56.06%，Macro-F1 56.24%。模型对 down/up 的精度较高（约 72.0% / 70.2%），但 stationary 精度只有 38.8%；这意味着三分类概率可以提供方向排序，却不能直接当作价格变动幅度，必须再做概率到 tick move 的校准。",
+        "layout": "full"
+      },
+      {
+        "id": "class_table",
+        "type": "table",
+        "tableId": "class_metrics",
+        "layout": "full"
+      },
+      {
+        "id": "confusion_table",
+        "type": "table",
+        "tableId": "confusion",
+        "layout": "full"
+      },
+      {
+        "id": "calibration",
+        "type": "markdown",
+        "body": "## 2. 从分类概率到可交易 drift\n\n校准日使用 3,814 个不重叠报价点。 目标是未来 20 个快照的中间价变化。 回归截距为正 0.04616 tick。 三个概率系数为负 0.15966、负 0.02721、正 0.18686 tick。 输出截断在正负 2 tick。 测试日共有 3,080 个报价决策。 预测均值为正 0.0500 tick，标准差为 0.0800 tick。 20 个快照的中位实际跨度为 5.6625 秒。 AS 直接偏移保留价格。GP 先换算为每秒港元漂移，再离散成五状态转移链。",
+        "layout": "full"
+      },
+      {
+        "id": "drift_chart",
+        "type": "chart",
+        "chartId": "drift_distribution",
+        "layout": "full"
+      },
+      {
+        "id": "drift_table",
+        "type": "table",
+        "tableId": "drift_states",
+        "layout": "full"
+      },
+      {
+        "id": "as_finding",
+        "type": "markdown",
+        "body": "## 3. AS：偏移确实改变挂单，但收益依赖成交代理\n\n保守成交代理： 多 155 次被动成交。 毛收益减少 86.00 港元。 费用增加 123.27 港元。 净收益减少 209.27 港元。 最大回撤增加 207.26 港元。 乐观成交代理： 多 167 次被动成交。 毛收益增加 262.00 港元。 费用增加 133.21 港元。 净收益增加 128.79 港元。 最大回撤减少 136.19 港元。 结论随排队假设翻转，因此尚不能确认存在可交易的超额收益。",
+        "layout": "full"
+      },
+      {
+        "id": "as_chart",
+        "type": "chart",
+        "chartId": "as_net",
+        "layout": "full"
+      },
+      {
+        "id": "as_table",
+        "type": "table",
+        "tableId": "as_detail",
+        "layout": "full"
+      },
+      {
+        "id": "as_activity_table",
+        "type": "table",
+        "tableId": "as_activity",
+        "layout": "full"
+      },
+      {
+        "id": "gp_default_finding",
+        "type": "markdown",
+        "body": "## 4. GP 默认参数：drift 在价值函数中，但未改变最优动作\n\n风险厌恶参数为 5。 规划期为 300 秒，共 100 个时间步。 最大库存为 5 手。 保守代理下，3,080 次决策全部选择双边不挂单。 乐观代理下，买卖两侧各有 24 次最优价挂单。 被动成交 32 次，市价减仓 10 手。 毛收益 42.00 港元，费用 35.04 港元。 净收益 6.96 港元。 基线与 Drift 的动作计数完全相同。 Drift 已改变状态价值，但幅度不足以跨过离散动作阈值。",
+        "layout": "full"
+      },
+      {
+        "id": "gp_default_table",
+        "type": "table",
+        "tableId": "gp_default",
+        "layout": "full"
+      },
+      {
+        "id": "gp_sensitivity",
+        "type": "markdown",
+        "body": "## 5. GP 低 gamma 机制敏感性\n\n将 gamma 降至 0.1 后，drift 开始改变动作。through 下 Drift GP 相对 baseline 少 4 次成交，净收益从 −HKD 1,046.91 改善至 −HKD 1,043.52；touch 下多 3 次成交，净收益从 −HKD 247.16 降至 −HKD 250.75。改变量很小，方向仍随成交代理翻转。 这一组是**机制诊断而非参数选择**：gamma=0.1 是查看测试日后追加的敏感性实验，不能用于宣称样本外提升。它只能证明 GP drift 状态确实能穿透 Bellman 价值函数并改变报价动作。",
+        "layout": "full"
+      },
+      {
+        "id": "gp_delta_chart",
+        "type": "chart",
+        "chartId": "gp_delta",
+        "layout": "full"
+      },
+      {
+        "id": "gp_gamma_table",
+        "type": "table",
+        "tableId": "gp_gamma",
+        "layout": "full"
+      },
+      {
+        "id": "delta_table",
+        "type": "table",
+        "tableId": "delta_detail",
+        "layout": "full"
+      },
+      {
+        "id": "scope",
+        "type": "markdown",
+        "body": "## 6. 范围、单位与收益定义\n\n标的是 HK 07709。信号校准日为 2026-08-04，最终回放日为 2026-08-07。神经网络输入价格与执行回放价格之间存在 100 倍尺度差，整合器已显式转换；测试日合法 tick 为 HKD 0.02。每手 100 股。 净收益 = 报价和日终平仓现金流形成的毛收益 − 每个执行边 2.77 bp 的全包费用。`touch` 表示未来窗口内触及挂单价即可成交，较乐观；`through` 要求价格穿过挂单价，较保守。两者是排队敏感性边界，不是统计置信区间。",
+        "layout": "full"
+      },
+      {
+        "id": "methodology",
+        "type": "markdown",
+        "body": "## 7. 方法与实现\n\nAS 版本以经典库存 reservation-price 逻辑为基线，加入 `signal_strength × expected_move_ticks`，随后按风险厌恶和订单到达衰减确定双边距离。参数为风险厌恶 0.02/tick、订单衰减 1.0/tick、20-snapshot 方差 5.39785 tick²、最大库存 5 手。 GP 版本使用 `(剩余时间, drift状态, spread状态, inventory)` 状态，在每个 Bellman 步加入 `q × 100 × μ × dt` 持仓收益，并用校准得到的五状态 Markov 转移传播 drift。零 drift 时单元测试要求并确认精确回退到原 martingale GP。执行回放使用 5ms 生效延迟及未来 20 snapshot 成交窗口。",
+        "layout": "full"
+      },
+      {
+        "id": "validation",
+        "type": "markdown",
+        "body": "## 8. 验证与稳健性\n\n19 个相关单元测试全部通过，包括零 drift 等价、状态重标、动作求解和适配器输入输出。 报告从机器 JSON 直接派生；毛收益减费用与净收益、买卖成交合计与 maker 成交数均已交叉核对。 最关键的稳健性检查是 touch/through：AS 和低 gamma GP 的增量方向都发生翻转，因此不能把单一成交代理的正值解释为稳健提升。 默认 GP 的 baseline/drift 动作逐项相同，低 gamma 下动作计数不同，排除了‘代码路径根本未使用 drift’这一解释。",
+        "layout": "full"
+      },
+      {
+        "id": "limitations",
+        "type": "markdown",
+        "body": "## 9. 限制与解释边界\n\n最终测试只有一个交易日。 尚无日间方差或置信区间。 成交代理不含真实排队位置。 未建模隐藏流动性和盘口冲击。 未建模最低佣金和借券限制。 AS 参数尚未严格滚动选择。 验证集同时用于模型选择和概率校准。 GP 仅有三个离散限价动作。 漂移与价差转移按条件独立组合。",
+        "layout": "full"
+      },
+      {
+        "id": "next_steps",
+        "type": "markdown",
+        "body": "## 10. 下一步建议\n\n在多个未见交易日做滚动前推验证。 每天只使用过去数据重新校准。 将 GP 扩展到多档报价距离。 记录各动作之间的价值差。 用真实排队位置重放成交。 加入最低佣金、撤单和冲击成本。 只在滚动验证集选择参数。 最终测试集保留一次性评估。 跨日且跨成交代理稳定后，再进入模拟交易。",
+        "layout": "full"
+      },
+      {
+        "id": "questions",
+        "type": "markdown",
+        "body": "## 11. 仍需回答的问题\n\nDeepLOB 的有效 horizon 应固定为 20 snapshot，还是按市场事件速度动态换算？GP 是否需要把 drift 与 spread 合并为联合状态链？真实账户费用和 queue position 数据能否获得？这三项会直接决定信号是否足以跨过 GP 动作阈值，以及 AS 的 touch 优势是否可成交。",
+        "layout": "full"
+      }
+    ]
+  },
+  "snapshot": {
+    "version": 1,
+    "generatedAt": "2026-09-21T23:29:55.125411+08:00",
+    "status": "ready",
+    "datasets": {
+      "summary": [
+        {
+          "macro_f1_pct": 56.24132708525325,
+          "accuracy_pct": 55.65821736518195,
+          "as_touch_delta_hkd": 128.78912957809416,
+          "as_through_delta_hkd": -209.26657042190755,
+          "gp_low_through_delta_hkd": 3.3851364104157255,
+          "test_quotes": 3080
+        }
+      ],
+      "class_metrics": [
+        {
+          "class": "down",
+          "precision_pct": 71.98612905419188,
+          "recall_pct": 50.41428571428571,
+          "f1_pct": 59.299297056599556,
+          "support": 21000
+        },
+        {
+          "class": "stationary",
+          "precision_pct": 38.771056400463756,
+          "recall_pct": 63.27564138238076,
+          "f1_pct": 48.08119251506502,
+          "support": 17969
+        },
+        {
+          "class": "up",
+          "precision_pct": 70.19373219373219,
+          "recall_pct": 54.47510391792695,
+          "f1_pct": 61.343491684095206,
+          "support": 22614
+        }
+      ],
+      "confusion": [
+        {
+          "actual": "down",
+          "pred_down": 10587,
+          "pred_stationary": 8872,
+          "pred_up": 1541
+        },
+        {
+          "actual": "stationary",
+          "pred_down": 2909,
+          "pred_stationary": 11370,
+          "pred_up": 3690
+        },
+        {
+          "actual": "up",
+          "pred_down": 1211,
+          "pred_stationary": 9084,
+          "pred_up": 12319
+        }
+      ],
+      "drift_states": [
+        {
+          "state": "S1",
+          "label": "-0.00179065_hkd_per_s",
+          "drift_hkd_per_second": -0.0017906508036710817,
+          "count": 14,
+          "share_pct": 0.45454545454545453,
+          "self_transition_pct": 52.01363046984366
+        },
+        {
+          "state": "S2",
+          "label": "-0.000179061_hkd_per_s",
+          "drift_hkd_per_second": -0.00017906129845548203,
+          "count": 801,
+          "share_pct": 26.006493506493506,
+          "self_transition_pct": 66.78184364824205
+        },
+        {
+          "state": "S3",
+          "label": "+0.000163784_hkd_per_s",
+          "drift_hkd_per_second": 0.00016378352438240133,
+          "count": 1513,
+          "share_pct": 49.12337662337662,
+          "self_transition_pct": 67.68245149560681
+        },
+        {
+          "state": "S4",
+          "label": "+0.000651798_hkd_per_s",
+          "drift_hkd_per_second": 0.0006517979494120555,
+          "count": 750,
+          "share_pct": 24.350649350649352,
+          "self_transition_pct": 69.96902923322034
+        },
+        {
+          "state": "S5",
+          "label": "+0.00600826_hkd_per_s",
+          "drift_hkd_per_second": 0.006008257840668054,
+          "count": 2,
+          "share_pct": 0.06493506493506493,
+          "self_transition_pct": 56.09642280283732
+        }
+      ],
+      "as_results": [
+        {
+          "model": "AS",
+          "gamma": 0.02,
+          "fill_mode": "through",
+          "strategy": "Classic AS",
+          "gross_pnl_hkd": -948.0001831054688,
+          "fees_hkd": 958.2803920507203,
+          "net_pnl_hkd": -1906.2805751561878,
+          "maker_fills": 1188,
+          "buy_fills": 593,
+          "sell_fills": 595,
+          "quoted_bid": 3080,
+          "quoted_ask": 2260,
+          "max_inventory_lots": 5,
+          "max_drawdown_hkd": 1999.901839918532,
+          "feeable_turnover_hkd": 3459496.0001831055,
+          "net_bps": -5.520189961440192,
+          "market_order_lots": 0,
+          "bid_none": null,
+          "bid_best": null,
+          "bid_improve": null,
+          "ask_none": null,
+          "ask_best": null,
+          "ask_improve": null
+        },
+        {
+          "model": "AS",
+          "gamma": 0.02,
+          "fill_mode": "through",
+          "strategy": "Drift AS",
+          "gross_pnl_hkd": -1034.0000915527344,
+          "fees_hkd": 1081.5470540253602,
+          "net_pnl_hkd": -2115.5471455780953,
+          "maker_fills": 1343,
+          "buy_fills": 671,
+          "sell_fills": 672,
+          "quoted_bid": 3079,
+          "quoted_ask": 2880,
+          "max_inventory_lots": 5,
+          "max_drawdown_hkd": 2207.1656403404395,
+          "feeable_turnover_hkd": 3904502.0000915527,
+          "net_bps": -5.422536089827531,
+          "market_order_lots": 0,
+          "bid_none": null,
+          "bid_best": null,
+          "bid_improve": null,
+          "ask_none": null,
+          "ask_best": null,
+          "ask_improve": null
+        },
+        {
+          "model": "AS",
+          "gamma": 0.02,
+          "fill_mode": "touch",
+          "strategy": "Classic AS",
+          "gross_pnl_hkd": 2847.9996337890625,
+          "fees_hkd": 2271.5839281014405,
+          "net_pnl_hkd": 576.4157056876124,
+          "maker_fills": 2818,
+          "buy_fills": 1407,
+          "sell_fills": 1411,
+          "quoted_bid": 3067,
+          "quoted_ask": 2523,
+          "max_inventory_lots": 5,
+          "max_drawdown_hkd": 450.9661266636683,
+          "feeable_turnover_hkd": 8200664.000366211,
+          "net_bps": 0.7039548700620847,
+          "market_order_lots": 0,
+          "bid_none": null,
+          "bid_best": null,
+          "bid_improve": null,
+          "ask_none": null,
+          "ask_best": null,
+          "ask_improve": null
+        },
+        {
+          "model": "AS",
+          "gamma": 0.02,
+          "fill_mode": "touch",
+          "strategy": "Drift AS",
+          "gross_pnl_hkd": 3109.999725341797,
+          "fees_hkd": 2404.7948900760803,
+          "net_pnl_hkd": 705.2048352657066,
+          "maker_fills": 2985,
+          "buy_fills": 1491,
+          "sell_fills": 1494,
+          "quoted_bid": 3072,
+          "quoted_ask": 2945,
+          "max_inventory_lots": 5,
+          "max_drawdown_hkd": 314.7737976405663,
+          "feeable_turnover_hkd": 8681570.000274658,
+          "net_bps": 0.8131732649855512,
+          "market_order_lots": 0,
+          "bid_none": null,
+          "bid_best": null,
+          "bid_improve": null,
+          "ask_none": null,
+          "ask_best": null,
+          "ask_improve": null
+        }
+      ],
+      "gp_default": [
+        {
+          "model": "GP",
+          "gamma": 5.0,
+          "fill_mode": "through",
+          "strategy": "Martingale GP",
+          "gross_pnl_hkd": 0.0,
+          "fees_hkd": 0.0,
+          "net_pnl_hkd": 0.0,
+          "maker_fills": 0,
+          "buy_fills": 0,
+          "sell_fills": 0,
+          "quoted_bid": 0,
+          "quoted_ask": 0,
+          "max_inventory_lots": 0,
+          "max_drawdown_hkd": 0.0,
+          "feeable_turnover_hkd": 0.0,
+          "net_bps": null,
+          "market_order_lots": 0,
+          "bid_none": 3080,
+          "bid_best": 0,
+          "bid_improve": 0,
+          "ask_none": 3080,
+          "ask_best": 0,
+          "ask_improve": 0
+        },
+        {
+          "model": "GP",
+          "gamma": 5.0,
+          "fill_mode": "through",
+          "strategy": "Drift GP",
+          "gross_pnl_hkd": 0.0,
+          "fees_hkd": 0.0,
+          "net_pnl_hkd": 0.0,
+          "maker_fills": 0,
+          "buy_fills": 0,
+          "sell_fills": 0,
+          "quoted_bid": 0,
+          "quoted_ask": 0,
+          "max_inventory_lots": 0,
+          "max_drawdown_hkd": 0.0,
+          "feeable_turnover_hkd": 0.0,
+          "net_bps": null,
+          "market_order_lots": 0,
+          "bid_none": 3080,
+          "bid_best": 0,
+          "bid_improve": 0,
+          "ask_none": 3080,
+          "ask_best": 0,
+          "ask_improve": 0
+        },
+        {
+          "model": "GP",
+          "gamma": 5.0,
+          "fill_mode": "touch",
+          "strategy": "Martingale GP",
+          "gross_pnl_hkd": 41.999220848083496,
+          "fees_hkd": 35.042162044644364,
+          "net_pnl_hkd": 6.957058803439132,
+          "maker_fills": 32,
+          "buy_fills": 15,
+          "sell_fills": 17,
+          "quoted_bid": 24,
+          "quoted_ask": 24,
+          "max_inventory_lots": 1,
+          "max_drawdown_hkd": 27.695211016535758,
+          "feeable_turnover_hkd": 126506.00016117096,
+          "net_bps": 0.5499390380358016,
+          "market_order_lots": 10,
+          "bid_none": 3056,
+          "bid_best": 24,
+          "bid_improve": 0,
+          "ask_none": 3056,
+          "ask_best": 24,
+          "ask_improve": 0
+        },
+        {
+          "model": "GP",
+          "gamma": 5.0,
+          "fill_mode": "touch",
+          "strategy": "Drift GP",
+          "gross_pnl_hkd": 41.999220848083496,
+          "fees_hkd": 35.042162044644364,
+          "net_pnl_hkd": 6.957058803439132,
+          "maker_fills": 32,
+          "buy_fills": 15,
+          "sell_fills": 17,
+          "quoted_bid": 24,
+          "quoted_ask": 24,
+          "max_inventory_lots": 1,
+          "max_drawdown_hkd": 27.695211016535758,
+          "feeable_turnover_hkd": 126506.00016117096,
+          "net_bps": 0.5499390380358016,
+          "market_order_lots": 10,
+          "bid_none": 3056,
+          "bid_best": 24,
+          "bid_improve": 0,
+          "ask_none": 3056,
+          "ask_best": 24,
+          "ask_improve": 0
+        }
+      ],
+      "gp_gamma": [
+        {
+          "model": "GP",
+          "gamma": 0.1,
+          "fill_mode": "through",
+          "strategy": "Martingale GP",
+          "gross_pnl_hkd": -660.0070271492004,
+          "fees_hkd": 386.89919699551626,
+          "net_pnl_hkd": -1046.9062241447168,
+          "maker_fills": 477,
+          "buy_fills": 238,
+          "sell_fills": 239,
+          "quoted_bid": 809,
+          "quoted_ask": 727,
+          "max_inventory_lots": 1,
+          "max_drawdown_hkd": 1069.5872089049417,
+          "feeable_turnover_hkd": 1396748.0035939217,
+          "net_bps": -7.495312121090993,
+          "market_order_lots": 1,
+          "bid_none": 2271,
+          "bid_best": 801,
+          "bid_improve": 8,
+          "ask_none": 2353,
+          "ask_best": 721,
+          "ask_improve": 6
+        },
+        {
+          "model": "GP",
+          "gamma": 0.1,
+          "fill_mode": "through",
+          "strategy": "Drift GP",
+          "gross_pnl_hkd": -660.0068306922913,
+          "fees_hkd": 383.5142570420098,
+          "net_pnl_hkd": -1043.521087734301,
+          "maker_fills": 473,
+          "buy_fills": 236,
+          "sell_fills": 237,
+          "quoted_bid": 801,
+          "quoted_ask": 728,
+          "max_inventory_lots": 1,
+          "max_drawdown_hkd": 1066.202072494526,
+          "feeable_turnover_hkd": 1384528.0037617683,
+          "net_bps": -7.537016838222485,
+          "market_order_lots": 1,
+          "bid_none": 2279,
+          "bid_best": 793,
+          "bid_improve": 8,
+          "ask_none": 2352,
+          "ask_best": 728,
+          "ask_improve": 0
+        },
+        {
+          "model": "GP",
+          "gamma": 0.1,
+          "fill_mode": "touch",
+          "strategy": "Martingale GP",
+          "gross_pnl_hkd": 559.9847435951233,
+          "fees_hkd": 807.1480845007294,
+          "net_pnl_hkd": -247.1633409056061,
+          "maker_fills": 997,
+          "buy_fills": 499,
+          "sell_fills": 498,
+          "quoted_bid": 768,
+          "quoted_ask": 730,
+          "max_inventory_lots": 2,
+          "max_drawdown_hkd": 358.0958753293745,
+          "feeable_turnover_hkd": 2913892.0018076897,
+          "net_bps": -0.8482240959935149,
+          "market_order_lots": 1,
+          "bid_none": 2312,
+          "bid_best": 768,
+          "bid_improve": 0,
+          "ask_none": 2350,
+          "ask_best": 730,
+          "ask_improve": 0
+        },
+        {
+          "model": "GP",
+          "gamma": 0.1,
+          "fill_mode": "touch",
+          "strategy": "Drift GP",
+          "gross_pnl_hkd": 557.9847097396851,
+          "fees_hkd": 808.737510493993,
+          "net_pnl_hkd": -250.75280075430794,
+          "maker_fills": 1000,
+          "buy_fills": 500,
+          "sell_fills": 500,
+          "quoted_bid": 769,
+          "quoted_ask": 732,
+          "max_inventory_lots": 2,
+          "max_drawdown_hkd": 359.6858553320161,
+          "feeable_turnover_hkd": 2919630.001783371,
+          "net_bps": -0.8588512948597695,
+          "market_order_lots": 0,
+          "bid_none": 2311,
+          "bid_best": 769,
+          "bid_improve": 0,
+          "ask_none": 2348,
+          "ask_best": 732,
+          "ask_improve": 0
+        }
+      ],
+      "gp_actions": [
+        {
+          "model": "GP",
+          "gamma": 5.0,
+          "fill_mode": "through",
+          "strategy": "Martingale GP",
+          "gross_pnl_hkd": 0.0,
+          "fees_hkd": 0.0,
+          "net_pnl_hkd": 0.0,
+          "maker_fills": 0,
+          "buy_fills": 0,
+          "sell_fills": 0,
+          "quoted_bid": 0,
+          "quoted_ask": 0,
+          "max_inventory_lots": 0,
+          "max_drawdown_hkd": 0.0,
+          "feeable_turnover_hkd": 0.0,
+          "net_bps": null,
+          "market_order_lots": 0,
+          "bid_none": 3080,
+          "bid_best": 0,
+          "bid_improve": 0,
+          "ask_none": 3080,
+          "ask_best": 0,
+          "ask_improve": 0
+        },
+        {
+          "model": "GP",
+          "gamma": 5.0,
+          "fill_mode": "through",
+          "strategy": "Drift GP",
+          "gross_pnl_hkd": 0.0,
+          "fees_hkd": 0.0,
+          "net_pnl_hkd": 0.0,
+          "maker_fills": 0,
+          "buy_fills": 0,
+          "sell_fills": 0,
+          "quoted_bid": 0,
+          "quoted_ask": 0,
+          "max_inventory_lots": 0,
+          "max_drawdown_hkd": 0.0,
+          "feeable_turnover_hkd": 0.0,
+          "net_bps": null,
+          "market_order_lots": 0,
+          "bid_none": 3080,
+          "bid_best": 0,
+          "bid_improve": 0,
+          "ask_none": 3080,
+          "ask_best": 0,
+          "ask_improve": 0
+        },
+        {
+          "model": "GP",
+          "gamma": 5.0,
+          "fill_mode": "touch",
+          "strategy": "Martingale GP",
+          "gross_pnl_hkd": 41.999220848083496,
+          "fees_hkd": 35.042162044644364,
+          "net_pnl_hkd": 6.957058803439132,
+          "maker_fills": 32,
+          "buy_fills": 15,
+          "sell_fills": 17,
+          "quoted_bid": 24,
+          "quoted_ask": 24,
+          "max_inventory_lots": 1,
+          "max_drawdown_hkd": 27.695211016535758,
+          "feeable_turnover_hkd": 126506.00016117096,
+          "net_bps": 0.5499390380358016,
+          "market_order_lots": 10,
+          "bid_none": 3056,
+          "bid_best": 24,
+          "bid_improve": 0,
+          "ask_none": 3056,
+          "ask_best": 24,
+          "ask_improve": 0
+        },
+        {
+          "model": "GP",
+          "gamma": 5.0,
+          "fill_mode": "touch",
+          "strategy": "Drift GP",
+          "gross_pnl_hkd": 41.999220848083496,
+          "fees_hkd": 35.042162044644364,
+          "net_pnl_hkd": 6.957058803439132,
+          "maker_fills": 32,
+          "buy_fills": 15,
+          "sell_fills": 17,
+          "quoted_bid": 24,
+          "quoted_ask": 24,
+          "max_inventory_lots": 1,
+          "max_drawdown_hkd": 27.695211016535758,
+          "feeable_turnover_hkd": 126506.00016117096,
+          "net_bps": 0.5499390380358016,
+          "market_order_lots": 10,
+          "bid_none": 3056,
+          "bid_best": 24,
+          "bid_improve": 0,
+          "ask_none": 3056,
+          "ask_best": 24,
+          "ask_improve": 0
+        },
+        {
+          "model": "GP",
+          "gamma": 0.1,
+          "fill_mode": "through",
+          "strategy": "Martingale GP",
+          "gross_pnl_hkd": -660.0070271492004,
+          "fees_hkd": 386.89919699551626,
+          "net_pnl_hkd": -1046.9062241447168,
+          "maker_fills": 477,
+          "buy_fills": 238,
+          "sell_fills": 239,
+          "quoted_bid": 809,
+          "quoted_ask": 727,
+          "max_inventory_lots": 1,
+          "max_drawdown_hkd": 1069.5872089049417,
+          "feeable_turnover_hkd": 1396748.0035939217,
+          "net_bps": -7.495312121090993,
+          "market_order_lots": 1,
+          "bid_none": 2271,
+          "bid_best": 801,
+          "bid_improve": 8,
+          "ask_none": 2353,
+          "ask_best": 721,
+          "ask_improve": 6
+        },
+        {
+          "model": "GP",
+          "gamma": 0.1,
+          "fill_mode": "through",
+          "strategy": "Drift GP",
+          "gross_pnl_hkd": -660.0068306922913,
+          "fees_hkd": 383.5142570420098,
+          "net_pnl_hkd": -1043.521087734301,
+          "maker_fills": 473,
+          "buy_fills": 236,
+          "sell_fills": 237,
+          "quoted_bid": 801,
+          "quoted_ask": 728,
+          "max_inventory_lots": 1,
+          "max_drawdown_hkd": 1066.202072494526,
+          "feeable_turnover_hkd": 1384528.0037617683,
+          "net_bps": -7.537016838222485,
+          "market_order_lots": 1,
+          "bid_none": 2279,
+          "bid_best": 793,
+          "bid_improve": 8,
+          "ask_none": 2352,
+          "ask_best": 728,
+          "ask_improve": 0
+        },
+        {
+          "model": "GP",
+          "gamma": 0.1,
+          "fill_mode": "touch",
+          "strategy": "Martingale GP",
+          "gross_pnl_hkd": 559.9847435951233,
+          "fees_hkd": 807.1480845007294,
+          "net_pnl_hkd": -247.1633409056061,
+          "maker_fills": 997,
+          "buy_fills": 499,
+          "sell_fills": 498,
+          "quoted_bid": 768,
+          "quoted_ask": 730,
+          "max_inventory_lots": 2,
+          "max_drawdown_hkd": 358.0958753293745,
+          "feeable_turnover_hkd": 2913892.0018076897,
+          "net_bps": -0.8482240959935149,
+          "market_order_lots": 1,
+          "bid_none": 2312,
+          "bid_best": 768,
+          "bid_improve": 0,
+          "ask_none": 2350,
+          "ask_best": 730,
+          "ask_improve": 0
+        },
+        {
+          "model": "GP",
+          "gamma": 0.1,
+          "fill_mode": "touch",
+          "strategy": "Drift GP",
+          "gross_pnl_hkd": 557.9847097396851,
+          "fees_hkd": 808.737510493993,
+          "net_pnl_hkd": -250.75280075430794,
+          "maker_fills": 1000,
+          "buy_fills": 500,
+          "sell_fills": 500,
+          "quoted_bid": 769,
+          "quoted_ask": 732,
+          "max_inventory_lots": 2,
+          "max_drawdown_hkd": 359.6858553320161,
+          "feeable_turnover_hkd": 2919630.001783371,
+          "net_bps": -0.8588512948597695,
+          "market_order_lots": 0,
+          "bid_none": 2311,
+          "bid_best": 769,
+          "bid_improve": 0,
+          "ask_none": 2348,
+          "ask_best": 732,
+          "ask_improve": 0
+        }
+      ],
+      "gp_deltas": [
+        {
+          "model": "GP γ=5",
+          "gamma": 5.0,
+          "scenario": "GP γ=5 / through",
+          "fill_mode": "through",
+          "net_delta_hkd": 0.0,
+          "gross_delta_hkd": 0.0,
+          "fee_delta_hkd": 0.0,
+          "fill_delta": 0,
+          "drawdown_delta_hkd": 0.0
+        },
+        {
+          "model": "GP γ=0.1",
+          "gamma": 0.1,
+          "scenario": "GP γ=0.1 / through",
+          "fill_mode": "through",
+          "net_delta_hkd": 3.3851364104157255,
+          "gross_delta_hkd": 0.0001964569091796875,
+          "fee_delta_hkd": -3.384939953506489,
+          "fill_delta": -4,
+          "drawdown_delta_hkd": -3.3851364104157255
+        },
+        {
+          "model": "GP γ=5",
+          "gamma": 5.0,
+          "scenario": "GP γ=5 / touch",
+          "fill_mode": "touch",
+          "net_delta_hkd": 0.0,
+          "gross_delta_hkd": 0.0,
+          "fee_delta_hkd": 0.0,
+          "fill_delta": 0,
+          "drawdown_delta_hkd": 0.0
+        },
+        {
+          "model": "GP γ=0.1",
+          "gamma": 0.1,
+          "scenario": "GP γ=0.1 / touch",
+          "fill_mode": "touch",
+          "net_delta_hkd": -3.5894598487018357,
+          "gross_delta_hkd": -2.0000338554382324,
+          "fee_delta_hkd": 1.5894259932636032,
+          "fill_delta": 3,
+          "drawdown_delta_hkd": 1.589980002641596
+        }
+      ],
+      "deltas": [
+        {
+          "model": "AS",
+          "gamma": 0.02,
+          "scenario": "AS / through",
+          "fill_mode": "through",
+          "net_delta_hkd": -209.26657042190755,
+          "gross_delta_hkd": -85.99990844726562,
+          "fee_delta_hkd": 123.26666197463999,
+          "fill_delta": 155,
+          "drawdown_delta_hkd": 207.2638004219075
+        },
+        {
+          "model": "GP γ=5",
+          "gamma": 5.0,
+          "scenario": "GP γ=5 / through",
+          "fill_mode": "through",
+          "net_delta_hkd": 0.0,
+          "gross_delta_hkd": 0.0,
+          "fee_delta_hkd": 0.0,
+          "fill_delta": 0,
+          "drawdown_delta_hkd": 0.0
+        },
+        {
+          "model": "GP γ=0.1",
+          "gamma": 0.1,
+          "scenario": "GP γ=0.1 / through",
+          "fill_mode": "through",
+          "net_delta_hkd": 3.3851364104157255,
+          "gross_delta_hkd": 0.0001964569091796875,
+          "fee_delta_hkd": -3.384939953506489,
+          "fill_delta": -4,
+          "drawdown_delta_hkd": -3.3851364104157255
+        },
+        {
+          "model": "AS",
+          "gamma": 0.02,
+          "scenario": "AS / touch",
+          "fill_mode": "touch",
+          "net_delta_hkd": 128.78912957809416,
+          "gross_delta_hkd": 262.0000915527344,
+          "fee_delta_hkd": 133.21096197463976,
+          "fill_delta": 167,
+          "drawdown_delta_hkd": -136.19232902310205
+        },
+        {
+          "model": "GP γ=5",
+          "gamma": 5.0,
+          "scenario": "GP γ=5 / touch",
+          "fill_mode": "touch",
+          "net_delta_hkd": 0.0,
+          "gross_delta_hkd": 0.0,
+          "fee_delta_hkd": 0.0,
+          "fill_delta": 0,
+          "drawdown_delta_hkd": 0.0
+        },
+        {
+          "model": "GP γ=0.1",
+          "gamma": 0.1,
+          "scenario": "GP γ=0.1 / touch",
+          "fill_mode": "touch",
+          "net_delta_hkd": -3.5894598487018357,
+          "gross_delta_hkd": -2.0000338554382324,
+          "fee_delta_hkd": 1.5894259932636032,
+          "fill_delta": 3,
+          "drawdown_delta_hkd": 1.589980002641596
+        }
+      ]
+    }
+  },
+  "sources": [
+    {
+      "id": "hybrid_result",
+      "label": "Hybrid DeepLOB 训练与测试结果",
+      "path": "output/results/7709_hybrid_deeplob.json",
+      "description": "包含时间切分、标签、训练过程以及 2026-08-07 测试集分类指标。",
+      "query": {
+        "engine": "duckdb",
+        "sql": "SELECT * FROM read_json_auto('output/results/7709_hybrid_deeplob.json')",
+        "description": "包含时间切分、标签、训练过程以及 2026-08-07 测试集分类指标。",
+        "id": "hybrid_result-json"
+      }
+    },
+    {
+      "id": "default_integration",
+      "label": "AS / GP 默认参数整合回测",
+      "path": "0906/output/hybrid_deeplob_as_gp_integration.json",
+      "description": "Hybrid drift 与 AS、GP-QVI 在 gamma=5 下的逐日回放机器结果。",
+      "query": {
+        "engine": "duckdb",
+        "sql": "SELECT * FROM read_json_auto('0906/output/hybrid_deeplob_as_gp_integration.json')",
+        "description": "Hybrid drift 与 AS、GP-QVI 在 gamma=5 下的逐日回放机器结果。",
+        "id": "default_integration-json"
+      }
+    },
+    {
+      "id": "gamma_diagnostic",
+      "label": "GP gamma=0.1 机制诊断",
+      "path": "0906/output/hybrid_deeplob_as_gp_gamma_0_1_diagnostic.json",
+      "description": "仅用于验证 drift 是否会改变离散 GP 动作，不用于测试集选参。",
+      "query": {
+        "engine": "duckdb",
+        "sql": "SELECT * FROM read_json_auto('0906/output/hybrid_deeplob_as_gp_gamma_0_1_diagnostic.json')",
+        "description": "仅用于验证 drift 是否会改变离散 GP 动作，不用于测试集选参。",
+        "id": "gamma_diagnostic-json"
+      }
+    },
+    {
+      "id": "report_analysis",
+      "label": "报告构建与指标整理",
+      "path": "0906/build_hybrid_drift_report.py",
+      "description": "从三份机器结果生成图表、差值和技术解释，不重新拟合模型。",
+      "query": {
+        "engine": "duckdb",
+        "sql": "SELECT * FROM read_json_auto(['0906/output/hybrid_deeplob_as_gp_integration.json', '0906/output/hybrid_deeplob_as_gp_gamma_0_1_diagnostic.json'])",
+        "description": "读取默认整合回测与低 gamma 诊断，并在报告构建脚本中计算 drift 相对基线的差值。",
+        "id": "hybrid-drift-delta-inputs"
+      }
+    },
+    {
+      "id": "drift_adapter",
+      "label": "Hybrid drift 适配器",
+      "path": "hybrid_drift_adapter.py",
+      "description": "概率到预期价格变动及 drift regime 的转换实现。"
+    },
+    {
+      "id": "gp_implementation",
+      "label": "GP drift-QVI 实现",
+      "path": "0906/gp_qvi_model.py",
+      "description": "在时间、drift、spread、库存状态上求解 Bellman/QVI。"
+    }
+  ],
+  "package_info": {}
+}

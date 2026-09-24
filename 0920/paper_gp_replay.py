@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Original 0906 GP replay plus inventory exposure bookkeeping.
+"""Signed-inventory GP replay plus long/short exposure bookkeeping.
 
 Quote decisions, cashflows, fees and event matching are unchanged. The
 inventory clock aligns policy market events and terminal flattening to
 snapshot+latency, matching the inherited order expiry clock. Risk diagnostics
-include wall-clock gaps, including lunch, while inventory is held.
+include wall-clock gaps, including lunch, while inventory is held. Negative
+inventory is explicitly allowed down to the symmetric GP state-space bound.
 """
 from __future__ import annotations
 from dataclasses import dataclass, field
@@ -40,6 +41,10 @@ class InventoryExposure:
 
     def metrics(self) -> dict:
         duration_ms = self.last_ms - self.start_ms
+        negative_time_ms = sum(ms for q, ms in self.time_by_inventory_ms.items() if q < 0)
+        positive_time_ms = sum(ms for q, ms in self.time_by_inventory_ms.items() if q > 0)
+        short_lot_ms = sum(-q * ms for q, ms in self.time_by_inventory_ms.items() if q < 0)
+        long_lot_ms = sum(q * ms for q, ms in self.time_by_inventory_ms.items() if q > 0)
         return {
             "exposure_duration_seconds": duration_ms / 1000.0,
             "absolute_inventory_lot_seconds": self.absolute_ms / 1000.0,
@@ -47,6 +52,12 @@ class InventoryExposure:
             "time_mean_abs_inventory_lots": self.absolute_ms / max(duration_ms, 1),
             "time_rms_inventory_lots": float(np.sqrt(self.square_ms / max(duration_ms, 1))),
             "nonzero_inventory_time_share": 1.0 - self.time_by_inventory_ms.get(0, 0) / max(duration_ms, 1),
+            "negative_inventory_time_seconds": negative_time_ms / 1000.0,
+            "positive_inventory_time_seconds": positive_time_ms / 1000.0,
+            "short_inventory_lot_seconds": short_lot_ms / 1000.0,
+            "long_inventory_lot_seconds": long_lot_ms / 1000.0,
+            "negative_inventory_time_share": negative_time_ms / max(duration_ms, 1),
+            "positive_inventory_time_share": positive_time_ms / max(duration_ms, 1),
             "time_at_inventory_lots_seconds": {str(q): ms / 1000.0 for q, ms in sorted(self.time_by_inventory_ms.items())},
         }
 
@@ -67,6 +78,8 @@ def simulate_gp_day(
     times = compact_time_to_day_ms(day.send_times)
     quote_indices = select_quote_indices(day, day.eligible, config.quote_horizon_snapshots)
     inventory = 0
+    min_inventory = 0
+    max_inventory = 0
     exposure = InventoryExposure(int(times[int(quote_indices[0])]) + config.latency_ms)
     cash = 0.0
     fees = 0.0
@@ -105,6 +118,7 @@ def simulate_gp_day(
                         kind: str = "market") -> None:
         nonlocal inventory, cash, fees, official_fees, market_turnover
         nonlocal market_orders, market_order_lots
+        nonlocal min_inventory, max_inventory
         delta = target_inventory - inventory
         if delta == 0:
             return
@@ -123,6 +137,8 @@ def simulate_gp_day(
         fees += notional * ALL_IN_FEE_RATE
         official_fees += notional * OFFICIAL_FIXED_FEE_RATE
         inventory = target_inventory
+        min_inventory = min(min_inventory, inventory)
+        max_inventory = max(max_inventory, inventory)
 
     for index_value in quote_indices:
         index = int(index_value)
@@ -216,6 +232,8 @@ def simulate_gp_day(
                 cash += notional
                 inventory -= 1
                 sell_fills += 1
+            min_inventory = min(min_inventory, inventory)
+            max_inventory = max(max_inventory, inventory)
             maker_fills += 1
             maker_turnover += notional
             fees += notional * ALL_IN_FEE_RATE
@@ -288,6 +306,8 @@ def simulate_gp_day(
         "terminal_flatten_side": terminal_side,
         "terminal_flatten_lots": terminal_lots,
         "end_inventory_lots": inventory,
+        "min_inventory_lots": min_inventory,
+        "max_inventory_lots": max_inventory,
         "max_abs_inventory_lots": max_abs_inventory,
         "gross_pnl_hkd": gross_pnl,
         "official_only_fees_hkd": official_fees,

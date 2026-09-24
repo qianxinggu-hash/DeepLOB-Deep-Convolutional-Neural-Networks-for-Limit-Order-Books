@@ -1,0 +1,2045 @@
+{
+  "definitions": {
+    "raw_field_missing": "Empty CSV cell, reported by MsgType; required fields follow replay needs, so optional trade-only/order-only columns are excluded from the required-field rate.",
+    "unknown_order_event": "MsgType 31 or 32 refers to an OrderID absent from the current tolerant MBO reconstruction state; counts events, not provably lost messages.",
+    "time_gap": "Two consecutive SendTime values in the same continuous HK trading session differ by more than 30,000 ms; this detects suspicious quiet intervals, not exact missing-message counts.",
+    "cache_scope": "The July/August reconstruction metadata may come from raw files not present in this checkout; local raw availability is reported per date."
+  },
+  "raw": {
+    "2025-11-06": {
+      "file": "7709_tickdata/hk07709_2025-11-06.csv",
+      "columns": [
+        "SendTime",
+        "MsgType",
+        "SecurityCode",
+        "TradeID",
+        "OrderID",
+        "Price",
+        "Quantity",
+        "TrdType",
+        "TradeTime",
+        "Side",
+        "OrderType",
+        "OrderBookPosition",
+        "AggregateQuantity",
+        "CoolingOffStartTime",
+        "CoolingOffEndTime",
+        "VCMReferencePrice",
+        "VCMLowerPrice",
+        "VCMUpperPrice",
+        "ReferencePrice",
+        "LowerPrice",
+        "UpperPrice",
+        "OrderImbalanceDirection",
+        "OrderImbalanceQuantity",
+        "SuspensionIndicator"
+      ],
+      "counts": {
+        "rows": 139375,
+        "type_30": 62504,
+        "type_31": 6621,
+        "type_32": 62036,
+        "type_41": 326,
+        "type_43": 4,
+        "type_50": 7294,
+        "type_56": 590
+      },
+      "blank_cells_by_type": {
+        "30": {
+          "AggregateQuantity": 62504,
+          "CoolingOffEndTime": 62504,
+          "CoolingOffStartTime": 62504,
+          "LowerPrice": 62504,
+          "OrderImbalanceDirection": 62504,
+          "OrderImbalanceQuantity": 62504,
+          "ReferencePrice": 62504,
+          "SuspensionIndicator": 62504,
+          "TradeID": 62504,
+          "TradeTime": 62504,
+          "TrdType": 62504,
+          "UpperPrice": 62504,
+          "VCMLowerPrice": 62504,
+          "VCMReferencePrice": 62504,
+          "VCMUpperPrice": 62504
+        },
+        "31": {
+          "AggregateQuantity": 6621,
+          "CoolingOffEndTime": 6621,
+          "CoolingOffStartTime": 6621,
+          "LowerPrice": 6621,
+          "OrderImbalanceDirection": 6621,
+          "OrderImbalanceQuantity": 6621,
+          "OrderType": 6621,
+          "Price": 6621,
+          "ReferencePrice": 6621,
+          "SuspensionIndicator": 6621,
+          "TradeID": 6621,
+          "TradeTime": 6621,
+          "TrdType": 6621,
+          "UpperPrice": 6621,
+          "VCMLowerPrice": 6621,
+          "VCMReferencePrice": 6621,
+          "VCMUpperPrice": 6621
+        },
+        "32": {
+          "AggregateQuantity": 62036,
+          "CoolingOffEndTime": 62036,
+          "CoolingOffStartTime": 62036,
+          "LowerPrice": 62036,
+          "OrderBookPosition": 62036,
+          "OrderImbalanceDirection": 62036,
+          "OrderImbalanceQuantity": 62036,
+          "OrderType": 62036,
+          "Price": 62036,
+          "Quantity": 62036,
+          "ReferencePrice": 62036,
+          "SuspensionIndicator": 62036,
+          "TradeID": 62036,
+          "TradeTime": 62036,
+          "TrdType": 62036,
+          "UpperPrice": 62036,
+          "VCMLowerPrice": 62036,
+          "VCMReferencePrice": 62036,
+          "VCMUpperPrice": 62036
+        },
+        "41": {
+          "CoolingOffEndTime": 326,
+          "CoolingOffStartTime": 326,
+          "LowerPrice": 326,
+          "OrderBookPosition": 326,
+          "OrderID": 326,
+          "OrderImbalanceDirection": 326,
+          "OrderImbalanceQuantity": 326,
+          "OrderType": 326,
+          "Quantity": 326,
+          "ReferencePrice": 326,
+          "Side": 326,
+          "SuspensionIndicator": 326,
+          "TradeID": 326,
+          "TradeTime": 326,
+          "TrdType": 326,
+          "UpperPrice": 326,
+          "VCMLowerPrice": 326,
+          "VCMReferencePrice": 326,
+          "VCMUpperPrice": 326
+        },
+        "43": {
+          "AggregateQuantity": 4,
+          "CoolingOffEndTime": 4,
+          "CoolingOffStartTime": 4,
+          "OrderBookPosition": 4,
+          "OrderID": 4,
+          "OrderImbalanceDirection": 4,
+          "OrderImbalanceQuantity": 4,
+          "OrderType": 4,
+          "Price": 4,
+          "Quantity": 4,
+          "Side": 4,
+          "SuspensionIndicator": 4,
+          "TradeID": 4,
+          "TradeTime": 4,
+          "TrdType": 4,
+          "VCMLowerPrice": 4,
+          "VCMReferencePrice": 4,
+          "VCMUpperPrice": 4
+        },
+        "50": {
+          "AggregateQuantity": 7294,
+          "CoolingOffEndTime": 7294,
+          "CoolingOffStartTime": 7294,
+          "LowerPrice": 7294,
+          "OrderBookPosition": 7294,
+          "OrderID": 7294,
+          "OrderImbalanceDirection": 7294,
+          "OrderImbalanceQuantity": 7294,
+          "OrderType": 7294,
+          "ReferencePrice": 7294,
+          "Side": 7294,
+          "SuspensionIndicator": 7294,
+          "UpperPrice": 7294,
+          "VCMLowerPrice": 7294,
+          "VCMReferencePrice": 7294,
+          "VCMUpperPrice": 7294
+        },
+        "56": {
+          "AggregateQuantity": 590,
+          "CoolingOffEndTime": 590,
+          "CoolingOffStartTime": 590,
+          "LowerPrice": 590,
+          "OrderBookPosition": 590,
+          "OrderID": 590,
+          "OrderImbalanceDirection": 2,
+          "OrderType": 590,
+          "Price": 590,
+          "Quantity": 590,
+          "ReferencePrice": 590,
+          "Side": 590,
+          "SuspensionIndicator": 590,
+          "TradeID": 590,
+          "TradeTime": 590,
+          "TrdType": 590,
+          "UpperPrice": 590,
+          "VCMLowerPrice": 590,
+          "VCMReferencePrice": 590,
+          "VCMUpperPrice": 590
+        }
+      },
+      "required_blank_cells_by_type": {},
+      "malformed": {
+        "out_of_order_send_time": 1
+      },
+      "same_session_gaps_over_30s": [
+        {
+          "before": "20251106152820430",
+          "after": "20251106152854330",
+          "gap_ms": 33900
+        }
+      ]
+    },
+    "2025-11-13": {
+      "file": "7709_tickdata/hk07709_2025-11-13.csv",
+      "columns": [
+        "SendTime",
+        "MsgType",
+        "SecurityCode",
+        "TradeID",
+        "OrderID",
+        "Price",
+        "Quantity",
+        "TrdType",
+        "TradeTime",
+        "Side",
+        "OrderType",
+        "OrderBookPosition",
+        "AggregateQuantity",
+        "CoolingOffStartTime",
+        "CoolingOffEndTime",
+        "VCMReferencePrice",
+        "VCMLowerPrice",
+        "VCMUpperPrice",
+        "ReferencePrice",
+        "LowerPrice",
+        "UpperPrice",
+        "OrderImbalanceDirection",
+        "OrderImbalanceQuantity",
+        "SuspensionIndicator"
+      ],
+      "counts": {
+        "rows": 109616,
+        "type_30": 46894,
+        "type_31": 7874,
+        "type_32": 46427,
+        "type_41": 103,
+        "type_43": 4,
+        "type_50": 8160,
+        "type_56": 154
+      },
+      "blank_cells_by_type": {
+        "30": {
+          "AggregateQuantity": 46894,
+          "CoolingOffEndTime": 46894,
+          "CoolingOffStartTime": 46894,
+          "LowerPrice": 46894,
+          "OrderImbalanceDirection": 46894,
+          "OrderImbalanceQuantity": 46894,
+          "ReferencePrice": 46894,
+          "SuspensionIndicator": 46894,
+          "TradeID": 46894,
+          "TradeTime": 46894,
+          "TrdType": 46894,
+          "UpperPrice": 46894,
+          "VCMLowerPrice": 46894,
+          "VCMReferencePrice": 46894,
+          "VCMUpperPrice": 46894
+        },
+        "31": {
+          "AggregateQuantity": 7874,
+          "CoolingOffEndTime": 7874,
+          "CoolingOffStartTime": 7874,
+          "LowerPrice": 7874,
+          "OrderImbalanceDirection": 7874,
+          "OrderImbalanceQuantity": 7874,
+          "OrderType": 7874,
+          "Price": 7874,
+          "ReferencePrice": 7874,
+          "SuspensionIndicator": 7874,
+          "TradeID": 7874,
+          "TradeTime": 7874,
+          "TrdType": 7874,
+          "UpperPrice": 7874,
+          "VCMLowerPrice": 7874,
+          "VCMReferencePrice": 7874,
+          "VCMUpperPrice": 7874
+        },
+        "32": {
+          "AggregateQuantity": 46427,
+          "CoolingOffEndTime": 46427,
+          "CoolingOffStartTime": 46427,
+          "LowerPrice": 46427,
+          "OrderBookPosition": 46427,
+          "OrderImbalanceDirection": 46427,
+          "OrderImbalanceQuantity": 46427,
+          "OrderType": 46427,
+          "Price": 46427,
+          "Quantity": 46427,
+          "ReferencePrice": 46427,
+          "SuspensionIndicator": 46427,
+          "TradeID": 46427,
+          "TradeTime": 46427,
+          "TrdType": 46427,
+          "UpperPrice": 46427,
+          "VCMLowerPrice": 46427,
+          "VCMReferencePrice": 46427,
+          "VCMUpperPrice": 46427
+        },
+        "41": {
+          "CoolingOffEndTime": 103,
+          "CoolingOffStartTime": 103,
+          "LowerPrice": 103,
+          "OrderBookPosition": 103,
+          "OrderID": 103,
+          "OrderImbalanceDirection": 103,
+          "OrderImbalanceQuantity": 103,
+          "OrderType": 103,
+          "Quantity": 103,
+          "ReferencePrice": 103,
+          "Side": 103,
+          "SuspensionIndicator": 103,
+          "TradeID": 103,
+          "TradeTime": 103,
+          "TrdType": 103,
+          "UpperPrice": 103,
+          "VCMLowerPrice": 103,
+          "VCMReferencePrice": 103,
+          "VCMUpperPrice": 103
+        },
+        "43": {
+          "AggregateQuantity": 4,
+          "CoolingOffEndTime": 4,
+          "CoolingOffStartTime": 4,
+          "OrderBookPosition": 4,
+          "OrderID": 4,
+          "OrderImbalanceDirection": 4,
+          "OrderImbalanceQuantity": 4,
+          "OrderType": 4,
+          "Price": 4,
+          "Quantity": 4,
+          "Side": 4,
+          "SuspensionIndicator": 4,
+          "TradeID": 4,
+          "TradeTime": 4,
+          "TrdType": 4,
+          "VCMLowerPrice": 4,
+          "VCMReferencePrice": 4,
+          "VCMUpperPrice": 4
+        },
+        "50": {
+          "AggregateQuantity": 8160,
+          "CoolingOffEndTime": 8160,
+          "CoolingOffStartTime": 8160,
+          "LowerPrice": 8160,
+          "OrderBookPosition": 8160,
+          "OrderID": 8160,
+          "OrderImbalanceDirection": 8160,
+          "OrderImbalanceQuantity": 8160,
+          "OrderType": 8160,
+          "ReferencePrice": 8160,
+          "Side": 8160,
+          "SuspensionIndicator": 8160,
+          "UpperPrice": 8160,
+          "VCMLowerPrice": 8160,
+          "VCMReferencePrice": 8160,
+          "VCMUpperPrice": 8160
+        },
+        "56": {
+          "AggregateQuantity": 154,
+          "CoolingOffEndTime": 154,
+          "CoolingOffStartTime": 154,
+          "LowerPrice": 154,
+          "OrderBookPosition": 154,
+          "OrderID": 154,
+          "OrderImbalanceDirection": 2,
+          "OrderType": 154,
+          "Price": 154,
+          "Quantity": 154,
+          "ReferencePrice": 154,
+          "Side": 154,
+          "SuspensionIndicator": 154,
+          "TradeID": 154,
+          "TradeTime": 154,
+          "TrdType": 154,
+          "UpperPrice": 154,
+          "VCMLowerPrice": 154,
+          "VCMReferencePrice": 154,
+          "VCMUpperPrice": 154
+        }
+      },
+      "required_blank_cells_by_type": {},
+      "malformed": {},
+      "same_session_gaps_over_30s": []
+    },
+    "2025-12-09": {
+      "file": "7709_tickdata/hk07709_2025-12-09.csv",
+      "columns": [
+        "SendTime",
+        "MsgType",
+        "SecurityCode",
+        "TradeID",
+        "OrderID",
+        "Price",
+        "Quantity",
+        "TrdType",
+        "TradeTime",
+        "Side",
+        "OrderType",
+        "OrderBookPosition",
+        "AggregateQuantity",
+        "CoolingOffStartTime",
+        "CoolingOffEndTime",
+        "VCMReferencePrice",
+        "VCMLowerPrice",
+        "VCMUpperPrice",
+        "ReferencePrice",
+        "LowerPrice",
+        "UpperPrice",
+        "OrderImbalanceDirection",
+        "OrderImbalanceQuantity",
+        "SuspensionIndicator"
+      ],
+      "counts": {
+        "rows": 66440,
+        "type_30": 30491,
+        "type_31": 3207,
+        "type_32": 30222,
+        "type_41": 37,
+        "type_43": 4,
+        "type_50": 2418,
+        "type_56": 61
+      },
+      "blank_cells_by_type": {
+        "30": {
+          "AggregateQuantity": 30491,
+          "CoolingOffEndTime": 30491,
+          "CoolingOffStartTime": 30491,
+          "LowerPrice": 30491,
+          "OrderImbalanceDirection": 30491,
+          "OrderImbalanceQuantity": 30491,
+          "ReferencePrice": 30491,
+          "SuspensionIndicator": 30491,
+          "TradeID": 30491,
+          "TradeTime": 30491,
+          "TrdType": 30491,
+          "UpperPrice": 30491,
+          "VCMLowerPrice": 30491,
+          "VCMReferencePrice": 30491,
+          "VCMUpperPrice": 30491
+        },
+        "31": {
+          "AggregateQuantity": 3207,
+          "CoolingOffEndTime": 3207,
+          "CoolingOffStartTime": 3207,
+          "LowerPrice": 3207,
+          "OrderImbalanceDirection": 3207,
+          "OrderImbalanceQuantity": 3207,
+          "OrderType": 3207,
+          "Price": 3207,
+          "ReferencePrice": 3207,
+          "SuspensionIndicator": 3207,
+          "TradeID": 3207,
+          "TradeTime": 3207,
+          "TrdType": 3207,
+          "UpperPrice": 3207,
+          "VCMLowerPrice": 3207,
+          "VCMReferencePrice": 3207,
+          "VCMUpperPrice": 3207
+        },
+        "32": {
+          "AggregateQuantity": 30222,
+          "CoolingOffEndTime": 30222,
+          "CoolingOffStartTime": 30222,
+          "LowerPrice": 30222,
+          "OrderBookPosition": 30222,
+          "OrderImbalanceDirection": 30222,
+          "OrderImbalanceQuantity": 30222,
+          "OrderType": 30222,
+          "Price": 30222,
+          "Quantity": 30222,
+          "ReferencePrice": 30222,
+          "SuspensionIndicator": 30222,
+          "TradeID": 30222,
+          "TradeTime": 30222,
+          "TrdType": 30222,
+          "UpperPrice": 30222,
+          "VCMLowerPrice": 30222,
+          "VCMReferencePrice": 30222,
+          "VCMUpperPrice": 30222
+        },
+        "41": {
+          "CoolingOffEndTime": 37,
+          "CoolingOffStartTime": 37,
+          "LowerPrice": 37,
+          "OrderBookPosition": 37,
+          "OrderID": 37,
+          "OrderImbalanceDirection": 37,
+          "OrderImbalanceQuantity": 37,
+          "OrderType": 37,
+          "Quantity": 37,
+          "ReferencePrice": 37,
+          "Side": 37,
+          "SuspensionIndicator": 37,
+          "TradeID": 37,
+          "TradeTime": 37,
+          "TrdType": 37,
+          "UpperPrice": 37,
+          "VCMLowerPrice": 37,
+          "VCMReferencePrice": 37,
+          "VCMUpperPrice": 37
+        },
+        "43": {
+          "AggregateQuantity": 4,
+          "CoolingOffEndTime": 4,
+          "CoolingOffStartTime": 4,
+          "OrderBookPosition": 4,
+          "OrderID": 4,
+          "OrderImbalanceDirection": 4,
+          "OrderImbalanceQuantity": 4,
+          "OrderType": 4,
+          "Price": 4,
+          "Quantity": 4,
+          "Side": 4,
+          "SuspensionIndicator": 4,
+          "TradeID": 4,
+          "TradeTime": 4,
+          "TrdType": 4,
+          "VCMLowerPrice": 4,
+          "VCMReferencePrice": 4,
+          "VCMUpperPrice": 4
+        },
+        "50": {
+          "AggregateQuantity": 2418,
+          "CoolingOffEndTime": 2418,
+          "CoolingOffStartTime": 2418,
+          "LowerPrice": 2418,
+          "OrderBookPosition": 2418,
+          "OrderID": 2418,
+          "OrderImbalanceDirection": 2418,
+          "OrderImbalanceQuantity": 2418,
+          "OrderType": 2418,
+          "ReferencePrice": 2418,
+          "Side": 2418,
+          "SuspensionIndicator": 2418,
+          "UpperPrice": 2418,
+          "VCMLowerPrice": 2418,
+          "VCMReferencePrice": 2418,
+          "VCMUpperPrice": 2418
+        },
+        "56": {
+          "AggregateQuantity": 61,
+          "CoolingOffEndTime": 61,
+          "CoolingOffStartTime": 61,
+          "LowerPrice": 61,
+          "OrderBookPosition": 61,
+          "OrderID": 61,
+          "OrderImbalanceDirection": 2,
+          "OrderType": 61,
+          "Price": 61,
+          "Quantity": 61,
+          "ReferencePrice": 61,
+          "Side": 61,
+          "SuspensionIndicator": 61,
+          "TradeID": 61,
+          "TradeTime": 61,
+          "TrdType": 61,
+          "UpperPrice": 61,
+          "VCMLowerPrice": 61,
+          "VCMReferencePrice": 61,
+          "VCMUpperPrice": 61
+        }
+      },
+      "required_blank_cells_by_type": {},
+      "malformed": {},
+      "same_session_gaps_over_30s": [
+        {
+          "before": "20251209114845918",
+          "after": "20251209114928748",
+          "gap_ms": 42830
+        },
+        {
+          "before": "20251209143556224",
+          "after": "20251209143633678",
+          "gap_ms": 37454
+        },
+        {
+          "before": "20251209143823444",
+          "after": "20251209143854725",
+          "gap_ms": 31281
+        }
+      ]
+    },
+    "2025-12-19": {
+      "file": "7709_tickdata/hk07709_2025-12-19.csv",
+      "columns": [
+        "SendTime",
+        "MsgType",
+        "SecurityCode",
+        "TradeID",
+        "OrderID",
+        "Price",
+        "Quantity",
+        "TrdType",
+        "TradeTime",
+        "Side",
+        "OrderType",
+        "OrderBookPosition",
+        "AggregateQuantity",
+        "CoolingOffStartTime",
+        "CoolingOffEndTime",
+        "VCMReferencePrice",
+        "VCMLowerPrice",
+        "VCMUpperPrice",
+        "ReferencePrice",
+        "LowerPrice",
+        "UpperPrice",
+        "OrderImbalanceDirection",
+        "OrderImbalanceQuantity",
+        "SuspensionIndicator"
+      ],
+      "counts": {
+        "rows": 95541,
+        "type_30": 43859,
+        "type_31": 4774,
+        "type_32": 43504,
+        "type_41": 87,
+        "type_43": 4,
+        "type_50": 3182,
+        "type_56": 131
+      },
+      "blank_cells_by_type": {
+        "30": {
+          "AggregateQuantity": 43859,
+          "CoolingOffEndTime": 43859,
+          "CoolingOffStartTime": 43859,
+          "LowerPrice": 43859,
+          "OrderImbalanceDirection": 43859,
+          "OrderImbalanceQuantity": 43859,
+          "ReferencePrice": 43859,
+          "SuspensionIndicator": 43859,
+          "TradeID": 43859,
+          "TradeTime": 43859,
+          "TrdType": 43859,
+          "UpperPrice": 43859,
+          "VCMLowerPrice": 43859,
+          "VCMReferencePrice": 43859,
+          "VCMUpperPrice": 43859
+        },
+        "31": {
+          "AggregateQuantity": 4774,
+          "CoolingOffEndTime": 4774,
+          "CoolingOffStartTime": 4774,
+          "LowerPrice": 4774,
+          "OrderImbalanceDirection": 4774,
+          "OrderImbalanceQuantity": 4774,
+          "OrderType": 4774,
+          "Price": 4774,
+          "ReferencePrice": 4774,
+          "SuspensionIndicator": 4774,
+          "TradeID": 4774,
+          "TradeTime": 4774,
+          "TrdType": 4774,
+          "UpperPrice": 4774,
+          "VCMLowerPrice": 4774,
+          "VCMReferencePrice": 4774,
+          "VCMUpperPrice": 4774
+        },
+        "32": {
+          "AggregateQuantity": 43504,
+          "CoolingOffEndTime": 43504,
+          "CoolingOffStartTime": 43504,
+          "LowerPrice": 43504,
+          "OrderBookPosition": 43504,
+          "OrderImbalanceDirection": 43504,
+          "OrderImbalanceQuantity": 43504,
+          "OrderType": 43504,
+          "Price": 43504,
+          "Quantity": 43504,
+          "ReferencePrice": 43504,
+          "SuspensionIndicator": 43504,
+          "TradeID": 43504,
+          "TradeTime": 43504,
+          "TrdType": 43504,
+          "UpperPrice": 43504,
+          "VCMLowerPrice": 43504,
+          "VCMReferencePrice": 43504,
+          "VCMUpperPrice": 43504
+        },
+        "41": {
+          "CoolingOffEndTime": 87,
+          "CoolingOffStartTime": 87,
+          "LowerPrice": 87,
+          "OrderBookPosition": 87,
+          "OrderID": 87,
+          "OrderImbalanceDirection": 87,
+          "OrderImbalanceQuantity": 87,
+          "OrderType": 87,
+          "Quantity": 87,
+          "ReferencePrice": 87,
+          "Side": 87,
+          "SuspensionIndicator": 87,
+          "TradeID": 87,
+          "TradeTime": 87,
+          "TrdType": 87,
+          "UpperPrice": 87,
+          "VCMLowerPrice": 87,
+          "VCMReferencePrice": 87,
+          "VCMUpperPrice": 87
+        },
+        "43": {
+          "AggregateQuantity": 4,
+          "CoolingOffEndTime": 4,
+          "CoolingOffStartTime": 4,
+          "OrderBookPosition": 4,
+          "OrderID": 4,
+          "OrderImbalanceDirection": 4,
+          "OrderImbalanceQuantity": 4,
+          "OrderType": 4,
+          "Price": 4,
+          "Quantity": 4,
+          "Side": 4,
+          "SuspensionIndicator": 4,
+          "TradeID": 4,
+          "TradeTime": 4,
+          "TrdType": 4,
+          "VCMLowerPrice": 4,
+          "VCMReferencePrice": 4,
+          "VCMUpperPrice": 4
+        },
+        "50": {
+          "AggregateQuantity": 3182,
+          "CoolingOffEndTime": 3182,
+          "CoolingOffStartTime": 3182,
+          "LowerPrice": 3182,
+          "OrderBookPosition": 3182,
+          "OrderID": 3182,
+          "OrderImbalanceDirection": 3182,
+          "OrderImbalanceQuantity": 3182,
+          "OrderType": 3182,
+          "ReferencePrice": 3182,
+          "Side": 3182,
+          "SuspensionIndicator": 3182,
+          "UpperPrice": 3182,
+          "VCMLowerPrice": 3182,
+          "VCMReferencePrice": 3182,
+          "VCMUpperPrice": 3182
+        },
+        "56": {
+          "AggregateQuantity": 131,
+          "CoolingOffEndTime": 131,
+          "CoolingOffStartTime": 131,
+          "LowerPrice": 131,
+          "OrderBookPosition": 131,
+          "OrderID": 131,
+          "OrderImbalanceDirection": 2,
+          "OrderType": 131,
+          "Price": 131,
+          "Quantity": 131,
+          "ReferencePrice": 131,
+          "Side": 131,
+          "SuspensionIndicator": 131,
+          "TradeID": 131,
+          "TradeTime": 131,
+          "TrdType": 131,
+          "UpperPrice": 131,
+          "VCMLowerPrice": 131,
+          "VCMReferencePrice": 131,
+          "VCMUpperPrice": 131
+        }
+      },
+      "required_blank_cells_by_type": {},
+      "malformed": {},
+      "same_session_gaps_over_30s": []
+    },
+    "2026-07-09": {
+      "file": "7709_tickdata/hk07709_2026-07-09.csv",
+      "columns": [
+        "SendTime",
+        "MsgType",
+        "SecurityId",
+        "Price",
+        "Quantity",
+        "Side",
+        "OrderID",
+        "OrderBookPosition",
+        "TradeID",
+        "TradeTime",
+        "TrdType",
+        "PriceLevel",
+        "UpdateAction",
+        "NumOrders"
+      ],
+      "counts": {
+        "rows": 5494189,
+        "type_30": 2495276,
+        "type_31": 239819,
+        "type_32": 2489208,
+        "type_50": 269886
+      },
+      "blank_cells_by_type": {
+        "30": {
+          "NumOrders": 2495276,
+          "PriceLevel": 2495276,
+          "TradeID": 2495276,
+          "TradeTime": 2495276,
+          "TrdType": 2495276,
+          "UpdateAction": 2495276
+        },
+        "31": {
+          "NumOrders": 239819,
+          "Price": 239819,
+          "PriceLevel": 239819,
+          "TradeID": 239819,
+          "TradeTime": 239819,
+          "TrdType": 239819,
+          "UpdateAction": 239819
+        },
+        "32": {
+          "NumOrders": 2489208,
+          "OrderBookPosition": 2489208,
+          "Price": 2489208,
+          "PriceLevel": 2489208,
+          "Quantity": 2489208,
+          "TradeID": 2489208,
+          "TradeTime": 2489208,
+          "TrdType": 2489208,
+          "UpdateAction": 2489208
+        },
+        "50": {
+          "NumOrders": 269886,
+          "OrderBookPosition": 269886,
+          "OrderID": 269886,
+          "PriceLevel": 269886,
+          "UpdateAction": 269886
+        }
+      },
+      "required_blank_cells_by_type": {},
+      "malformed": {},
+      "same_session_gaps_over_30s": []
+    },
+    "2026-07-21": {
+      "file": "7709_tickdata/hk07709_2026-07-21.csv",
+      "columns": [
+        "SendTime",
+        "MsgType",
+        "SecurityId",
+        "Price",
+        "Quantity",
+        "Side",
+        "OrderID",
+        "OrderBookPosition",
+        "TradeID",
+        "TradeTime",
+        "TrdType",
+        "PriceLevel",
+        "UpdateAction",
+        "NumOrders"
+      ],
+      "counts": {
+        "rows": 2376553,
+        "type_30": 1030388,
+        "type_31": 161363,
+        "type_32": 1025352,
+        "type_50": 159450
+      },
+      "blank_cells_by_type": {
+        "30": {
+          "NumOrders": 1030388,
+          "PriceLevel": 1030388,
+          "TradeID": 1030388,
+          "TradeTime": 1030388,
+          "TrdType": 1030388,
+          "UpdateAction": 1030388
+        },
+        "31": {
+          "NumOrders": 161363,
+          "Price": 161363,
+          "PriceLevel": 161363,
+          "TradeID": 161363,
+          "TradeTime": 161363,
+          "TrdType": 161363,
+          "UpdateAction": 161363
+        },
+        "32": {
+          "NumOrders": 1025352,
+          "OrderBookPosition": 1025352,
+          "Price": 1025352,
+          "PriceLevel": 1025352,
+          "Quantity": 1025352,
+          "TradeID": 1025352,
+          "TradeTime": 1025352,
+          "TrdType": 1025352,
+          "UpdateAction": 1025352
+        },
+        "50": {
+          "NumOrders": 159450,
+          "OrderBookPosition": 159450,
+          "OrderID": 159450,
+          "PriceLevel": 159450,
+          "UpdateAction": 159450
+        }
+      },
+      "required_blank_cells_by_type": {},
+      "malformed": {},
+      "same_session_gaps_over_30s": []
+    },
+    "2026-08-04": {
+      "file": "7709_tickdata/hk07709_2026-08-04.csv",
+      "columns": [
+        "SendTime",
+        "MsgType",
+        "SecurityId",
+        "Price",
+        "Quantity",
+        "Side",
+        "OrderID",
+        "OrderBookPosition",
+        "TradeID",
+        "TradeTime",
+        "TrdType",
+        "PriceLevel",
+        "UpdateAction",
+        "NumOrders"
+      ],
+      "counts": {
+        "rows": 2178048,
+        "type_30": 949969,
+        "type_31": 141475,
+        "type_32": 945041,
+        "type_50": 141563
+      },
+      "blank_cells_by_type": {
+        "30": {
+          "NumOrders": 949969,
+          "PriceLevel": 949969,
+          "TradeID": 949969,
+          "TradeTime": 949969,
+          "TrdType": 949969,
+          "UpdateAction": 949969
+        },
+        "31": {
+          "NumOrders": 141475,
+          "Price": 141475,
+          "PriceLevel": 141475,
+          "TradeID": 141475,
+          "TradeTime": 141475,
+          "TrdType": 141475,
+          "UpdateAction": 141475
+        },
+        "32": {
+          "NumOrders": 945041,
+          "OrderBookPosition": 945041,
+          "Price": 945041,
+          "PriceLevel": 945041,
+          "Quantity": 945041,
+          "TradeID": 945041,
+          "TradeTime": 945041,
+          "TrdType": 945041,
+          "UpdateAction": 945041
+        },
+        "50": {
+          "NumOrders": 141563,
+          "OrderBookPosition": 141563,
+          "OrderID": 141563,
+          "PriceLevel": 141563,
+          "UpdateAction": 141563
+        }
+      },
+      "required_blank_cells_by_type": {},
+      "malformed": {},
+      "same_session_gaps_over_30s": [
+        {
+          "before": "20260804094744750",
+          "after": "20260804095059721",
+          "gap_ms": 194971
+        }
+      ]
+    },
+    "2026-08-07": {
+      "file": "7709_tickdata/hk07709_2026-08-07.csv",
+      "columns": [
+        "SendTime",
+        "MsgType",
+        "SecurityId",
+        "Price",
+        "Quantity",
+        "Side",
+        "OrderID",
+        "OrderBookPosition",
+        "TradeID",
+        "TradeTime",
+        "TrdType",
+        "PriceLevel",
+        "UpdateAction",
+        "NumOrders"
+      ],
+      "counts": {
+        "rows": 1779817,
+        "type_30": 742626,
+        "type_31": 151715,
+        "type_32": 730996,
+        "type_50": 154480
+      },
+      "blank_cells_by_type": {
+        "30": {
+          "NumOrders": 742626,
+          "PriceLevel": 742626,
+          "TradeID": 742626,
+          "TradeTime": 742626,
+          "TrdType": 742626,
+          "UpdateAction": 742626
+        },
+        "31": {
+          "NumOrders": 151715,
+          "Price": 151715,
+          "PriceLevel": 151715,
+          "TradeID": 151715,
+          "TradeTime": 151715,
+          "TrdType": 151715,
+          "UpdateAction": 151715
+        },
+        "32": {
+          "NumOrders": 730996,
+          "OrderBookPosition": 730996,
+          "Price": 730996,
+          "PriceLevel": 730996,
+          "Quantity": 730996,
+          "TradeID": 730996,
+          "TradeTime": 730996,
+          "TrdType": 730996,
+          "UpdateAction": 730996
+        },
+        "50": {
+          "NumOrders": 154480,
+          "OrderBookPosition": 154480,
+          "OrderID": 154480,
+          "PriceLevel": 154480,
+          "UpdateAction": 154480
+        }
+      },
+      "required_blank_cells_by_type": {},
+      "malformed": {},
+      "same_session_gaps_over_30s": []
+    }
+  },
+  "caches": {
+    "2026-07-02": {
+      "cache": "0824/data/july_2026/hk07709_2026-07-02_mbo_tolerant_5m_s10.npz",
+      "raw_source_available": false,
+      "message_counts": {
+        "30": 1318231,
+        "31": 219695,
+        "32": 1314197,
+        "50": 240735
+      },
+      "order_errors": {},
+      "modify_delete_attempts": 1533892,
+      "unknown_order_events": 0,
+      "gap_events": [],
+      "snapshot_count": 108282,
+      "final_state_tainted": false,
+      "first_snapshot": 20260702093001800,
+      "last_snapshot": 20260702155959628,
+      "quality_counts": {
+        "accepted_message_30": 1318231,
+        "accepted_message_31": 219695,
+        "accepted_message_32": 1314197,
+        "changed_groups_outside_continuous_session": 355,
+        "changed_groups_session_1": 592592,
+        "changed_groups_session_2": 491504,
+        "skipped_crossed_or_locked": 94,
+        "skipped_insufficient_depth": 33,
+        "snapshot_attempts": 108409
+      }
+    },
+    "2026-07-03": {
+      "cache": "0824/data/july_2026/hk07709_2026-07-03_mbo_tolerant_5m_s10.npz",
+      "raw_source_available": false,
+      "message_counts": {
+        "30": 1349615,
+        "31": 190661,
+        "32": 1342147,
+        "50": 216354
+      },
+      "order_errors": {
+        "delete_missing_order": 2723,
+        "modify_missing_order": 134
+      },
+      "modify_delete_attempts": 1532808,
+      "unknown_order_events": 2857,
+      "gap_events": [
+        {
+          "previous_send_time": 20260703093344404,
+          "resume_send_time": 20260703093647406,
+          "gap_ms": 183002,
+          "recovery_until_day_ms": 34907406,
+          "new_segment": 2
+        }
+      ],
+      "snapshot_count": 98102,
+      "final_state_tainted": false,
+      "first_snapshot": 20260703093000023,
+      "last_snapshot": 20260703155959352,
+      "quality_counts": {
+        "accepted_message_30": 1349615,
+        "accepted_message_31": 190527,
+        "accepted_message_32": 1339424,
+        "changed_groups_outside_continuous_session": 585,
+        "changed_groups_session_1": 530736,
+        "changed_groups_session_2": 450845,
+        "detected_continuous_session_gaps": 1,
+        "gap_state_resets": 1,
+        "skipped_crossed_or_locked": 55,
+        "skipped_recovery_changed_groups": 29436,
+        "snapshot_attempts": 98157
+      }
+    },
+    "2026-07-06": {
+      "cache": "0824/data/july_2026/hk07709_2026-07-06_mbo_tolerant_5m_s10.npz",
+      "raw_source_available": false,
+      "message_counts": {
+        "30": 1193007,
+        "31": 102986,
+        "32": 1186509,
+        "50": 121189
+      },
+      "order_errors": {
+        "delete_missing_order": 3734,
+        "modify_missing_order": 515
+      },
+      "modify_delete_attempts": 1289495,
+      "unknown_order_events": 4249,
+      "gap_events": [
+        {
+          "previous_send_time": 20260706093144352,
+          "resume_send_time": 20260706093413642,
+          "gap_ms": 149290,
+          "recovery_until_day_ms": 34753642,
+          "new_segment": 2
+        },
+        {
+          "previous_send_time": 20260706101044355,
+          "resume_send_time": 20260706101421747,
+          "gap_ms": 217392,
+          "recovery_until_day_ms": 37161747,
+          "new_segment": 3
+        }
+      ],
+      "snapshot_count": 87408,
+      "final_state_tainted": false,
+      "first_snapshot": 20260706093000028,
+      "last_snapshot": 20260706155959396,
+      "quality_counts": {
+        "accepted_message_30": 1193007,
+        "accepted_message_31": 102471,
+        "accepted_message_32": 1182775,
+        "changed_groups_outside_continuous_session": 180,
+        "changed_groups_session_1": 538938,
+        "changed_groups_session_2": 335425,
+        "detected_continuous_session_gaps": 2,
+        "gap_state_resets": 2,
+        "skipped_crossed_or_locked": 27,
+        "skipped_recovery_changed_groups": 41119,
+        "snapshot_attempts": 87435
+      }
+    },
+    "2026-07-07": {
+      "cache": "0824/data/july_2026/hk07709_2026-07-07_mbo_tolerant_5m_s10.npz",
+      "raw_source_available": false,
+      "message_counts": {
+        "30": 2322015,
+        "31": 268295,
+        "32": 2315760,
+        "50": 307908
+      },
+      "order_errors": {},
+      "modify_delete_attempts": 2584055,
+      "unknown_order_events": 0,
+      "gap_events": [],
+      "snapshot_count": 152283,
+      "final_state_tainted": false,
+      "first_snapshot": 20260707093000080,
+      "last_snapshot": 20260707155959716,
+      "quality_counts": {
+        "accepted_message_30": 2322015,
+        "accepted_message_31": 268295,
+        "accepted_message_32": 2315760,
+        "changed_groups_outside_continuous_session": 432,
+        "changed_groups_session_1": 852048,
+        "changed_groups_session_2": 671574,
+        "skipped_crossed_or_locked": 73,
+        "skipped_insufficient_depth": 5,
+        "snapshot_attempts": 152361
+      }
+    },
+    "2026-07-08": {
+      "cache": "0824/data/july_2026/hk07709_2026-07-08_mbo_tolerant_5m_s10.npz",
+      "raw_source_available": false,
+      "message_counts": {
+        "30": 2400311,
+        "31": 246931,
+        "32": 2392954,
+        "50": 296708
+      },
+      "order_errors": {
+        "delete_missing_order": 4329,
+        "modify_missing_order": 342
+      },
+      "modify_delete_attempts": 2639885,
+      "unknown_order_events": 4671,
+      "gap_events": [
+        {
+          "previous_send_time": 20260708093144422,
+          "resume_send_time": 20260708093422233,
+          "gap_ms": 157811,
+          "recovery_until_day_ms": 34762233,
+          "new_segment": 2
+        },
+        {
+          "previous_send_time": 20260708093544476,
+          "resume_send_time": 20260708093724688,
+          "gap_ms": 100212,
+          "recovery_until_day_ms": 34944688,
+          "new_segment": 3
+        },
+        {
+          "previous_send_time": 20260708150644368,
+          "resume_send_time": 20260708151137451,
+          "gap_ms": 293083,
+          "recovery_until_day_ms": 54997451,
+          "new_segment": 5
+        }
+      ],
+      "snapshot_count": 143613,
+      "final_state_tainted": false,
+      "first_snapshot": 20260708093000033,
+      "last_snapshot": 20260708155959482,
+      "quality_counts": {
+        "accepted_message_30": 2400311,
+        "accepted_message_31": 246589,
+        "accepted_message_32": 2388625,
+        "changed_groups_outside_continuous_session": 630,
+        "changed_groups_session_1": 775334,
+        "changed_groups_session_2": 661491,
+        "detected_continuous_session_gaps": 3,
+        "gap_state_resets": 3,
+        "skipped_crossed_or_locked": 68,
+        "skipped_recovery_changed_groups": 49882,
+        "snapshot_attempts": 143681
+      }
+    },
+    "2026-07-09": {
+      "cache": "0824/data/july_2026/hk07709_2026-07-09_mbo_tolerant_5m_s10.npz",
+      "raw_source_available": true,
+      "message_counts": {
+        "30": 2495276,
+        "31": 239819,
+        "32": 2489208,
+        "50": 269886
+      },
+      "order_errors": {},
+      "modify_delete_attempts": 2729027,
+      "unknown_order_events": 0,
+      "gap_events": [],
+      "snapshot_count": 160676,
+      "final_state_tainted": false,
+      "first_snapshot": 20260709093000101,
+      "last_snapshot": 20260709155959950,
+      "quality_counts": {
+        "accepted_message_30": 2495276,
+        "accepted_message_31": 239819,
+        "accepted_message_32": 2489208,
+        "changed_groups_outside_continuous_session": 230,
+        "changed_groups_session_1": 1010976,
+        "changed_groups_session_2": 596410,
+        "skipped_crossed_or_locked": 60,
+        "skipped_insufficient_depth": 2,
+        "snapshot_attempts": 160738
+      }
+    },
+    "2026-07-10": {
+      "cache": "0824/data/july_2026/hk07709_2026-07-10_mbo_tolerant_5m_s10.npz",
+      "raw_source_available": false,
+      "message_counts": {
+        "30": 1468870,
+        "31": 141862,
+        "32": 1463659,
+        "50": 164882
+      },
+      "order_errors": {
+        "delete_missing_order": 4234,
+        "modify_missing_order": 259
+      },
+      "modify_delete_attempts": 1605521,
+      "unknown_order_events": 4493,
+      "gap_events": [
+        {
+          "previous_send_time": 20260710095844662,
+          "resume_send_time": 20260710100200940,
+          "gap_ms": 196278,
+          "recovery_until_day_ms": 36420940,
+          "new_segment": 2
+        },
+        {
+          "previous_send_time": 20260710141144408,
+          "resume_send_time": 20260710141739286,
+          "gap_ms": 354878,
+          "recovery_until_day_ms": 51759286,
+          "new_segment": 4
+        }
+      ],
+      "snapshot_count": 93419,
+      "final_state_tainted": false,
+      "first_snapshot": 20260710093000028,
+      "last_snapshot": 20260710155959869,
+      "quality_counts": {
+        "accepted_message_30": 1468870,
+        "accepted_message_31": 141603,
+        "accepted_message_32": 1459425,
+        "changed_groups_outside_continuous_session": 294,
+        "changed_groups_session_1": 550160,
+        "changed_groups_session_2": 384399,
+        "detected_continuous_session_gaps": 2,
+        "gap_state_resets": 2,
+        "skipped_crossed_or_locked": 35,
+        "skipped_recovery_changed_groups": 45979,
+        "snapshot_attempts": 93454
+      }
+    },
+    "2026-07-13": {
+      "cache": "0824/data/july_2026/hk07709_2026-07-13_mbo_tolerant_5m_s10.npz",
+      "raw_source_available": false,
+      "message_counts": {
+        "30": 2188557,
+        "31": 269157,
+        "32": 2183560,
+        "50": 318977
+      },
+      "order_errors": {
+        "delete_missing_order": 12931,
+        "modify_missing_order": 804
+      },
+      "modify_delete_attempts": 2452717,
+      "unknown_order_events": 13735,
+      "gap_events": [
+        {
+          "previous_send_time": 20260713094644410,
+          "resume_send_time": 20260713094928883,
+          "gap_ms": 164473,
+          "recovery_until_day_ms": 35668883,
+          "new_segment": 2
+        },
+        {
+          "previous_send_time": 20260713095044487,
+          "resume_send_time": 20260713095342538,
+          "gap_ms": 178051,
+          "recovery_until_day_ms": 35922538,
+          "new_segment": 3
+        },
+        {
+          "previous_send_time": 20260713101944443,
+          "resume_send_time": 20260713102234224,
+          "gap_ms": 169781,
+          "recovery_until_day_ms": 37654224,
+          "new_segment": 4
+        },
+        {
+          "previous_send_time": 20260713103844414,
+          "resume_send_time": 20260713104205613,
+          "gap_ms": 201199,
+          "recovery_until_day_ms": 38825613,
+          "new_segment": 5
+        },
+        {
+          "previous_send_time": 20260713140404504,
+          "resume_send_time": 20260713140846126,
+          "gap_ms": 281622,
+          "recovery_until_day_ms": 51226126,
+          "new_segment": 7
+        },
+        {
+          "previous_send_time": 20260713150744702,
+          "resume_send_time": 20260713151409981,
+          "gap_ms": 385279,
+          "recovery_until_day_ms": 55149981,
+          "new_segment": 8
+        }
+      ],
+      "snapshot_count": 11981,
+      "final_state_tainted": true,
+      "first_snapshot": 20260713093000161,
+      "last_snapshot": 20260713094644331,
+      "quality_counts": {
+        "accepted_message_30": 2188557,
+        "accepted_message_31": 268353,
+        "accepted_message_32": 2170629,
+        "changed_groups_outside_continuous_session": 260,
+        "changed_groups_session_1": 665485,
+        "changed_groups_session_2": 658588,
+        "detected_continuous_session_gaps": 6,
+        "gap_state_resets": 6,
+        "out_of_order_send_times": 1,
+        "skipped_crossed_or_locked": 12,
+        "skipped_insufficient_depth": 3,
+        "skipped_recovery_changed_groups": 136675,
+        "skipped_tainted_mbo_state": 120408,
+        "snapshot_attempts": 132404
+      }
+    },
+    "2026-07-14": {
+      "cache": "0824/data/july_2026/hk07709_2026-07-14_mbo_tolerant_5m_s10.npz",
+      "raw_source_available": false,
+      "message_counts": {
+        "30": 2183691,
+        "31": 341427,
+        "32": 2179542,
+        "50": 336064
+      },
+      "order_errors": {
+        "delete_missing_order": 9633,
+        "modify_missing_order": 938
+      },
+      "modify_delete_attempts": 2520969,
+      "unknown_order_events": 10571,
+      "gap_events": [
+        {
+          "previous_send_time": 20260714104744512,
+          "resume_send_time": 20260714105149654,
+          "gap_ms": 245142,
+          "recovery_until_day_ms": 39409654,
+          "new_segment": 2
+        },
+        {
+          "previous_send_time": 20260714132344479,
+          "resume_send_time": 20260714132802997,
+          "gap_ms": 258518,
+          "recovery_until_day_ms": 48782997,
+          "new_segment": 4
+        },
+        {
+          "previous_send_time": 20260714134344690,
+          "resume_send_time": 20260714134806160,
+          "gap_ms": 261470,
+          "recovery_until_day_ms": 49986160,
+          "new_segment": 5
+        },
+        {
+          "previous_send_time": 20260714135245068,
+          "resume_send_time": 20260714135753061,
+          "gap_ms": 307993,
+          "recovery_until_day_ms": 50573061,
+          "new_segment": 6
+        },
+        {
+          "previous_send_time": 20260714140244466,
+          "resume_send_time": 20260714140727688,
+          "gap_ms": 283222,
+          "recovery_until_day_ms": 51147688,
+          "new_segment": 7
+        },
+        {
+          "previous_send_time": 20260714143644922,
+          "resume_send_time": 20260714143944478,
+          "gap_ms": 179556,
+          "recovery_until_day_ms": 53084478,
+          "new_segment": 8
+        },
+        {
+          "previous_send_time": 20260714143957658,
+          "resume_send_time": 20260714144344532,
+          "gap_ms": 226874,
+          "recovery_until_day_ms": 53324532,
+          "new_segment": 9
+        },
+        {
+          "previous_send_time": 20260714144344561,
+          "resume_send_time": 20260714145027941,
+          "gap_ms": 403380,
+          "recovery_until_day_ms": 53727941,
+          "new_segment": 10
+        },
+        {
+          "previous_send_time": 20260714145644688,
+          "resume_send_time": 20260714150307675,
+          "gap_ms": 382987,
+          "recovery_until_day_ms": 54487675,
+          "new_segment": 11
+        },
+        {
+          "previous_send_time": 20260714152744963,
+          "resume_send_time": 20260714153144452,
+          "gap_ms": 239489,
+          "recovery_until_day_ms": 56204452,
+          "new_segment": 12
+        },
+        {
+          "previous_send_time": 20260714153147954,
+          "resume_send_time": 20260714153944507,
+          "gap_ms": 476553,
+          "recovery_until_day_ms": 56684507,
+          "new_segment": 13
+        },
+        {
+          "previous_send_time": 20260714153944793,
+          "resume_send_time": 20260714154755474,
+          "gap_ms": 490681,
+          "recovery_until_day_ms": 57175474,
+          "new_segment": 14
+        }
+      ],
+      "snapshot_count": 133179,
+      "final_state_tainted": false,
+      "first_snapshot": 20260714093000037,
+      "last_snapshot": 20260714155959587,
+      "quality_counts": {
+        "accepted_message_30": 2183691,
+        "accepted_message_31": 340489,
+        "accepted_message_32": 2169909,
+        "changed_groups_outside_continuous_session": 293,
+        "changed_groups_session_1": 972020,
+        "changed_groups_session_2": 360809,
+        "detected_continuous_session_gaps": 12,
+        "gap_state_resets": 12,
+        "skipped_crossed_or_locked": 87,
+        "skipped_insufficient_depth": 13,
+        "skipped_recovery_changed_groups": 163971,
+        "snapshot_attempts": 133279
+      }
+    },
+    "2026-07-15": {
+      "cache": "0824/data/july_2026/hk07709_2026-07-15_mbo_tolerant_5m_s10.npz",
+      "raw_source_available": false,
+      "message_counts": {
+        "30": 1509893,
+        "31": 237892,
+        "32": 1505026,
+        "50": 234077
+      },
+      "order_errors": {},
+      "modify_delete_attempts": 1742918,
+      "unknown_order_events": 0,
+      "gap_events": [],
+      "snapshot_count": 112909,
+      "final_state_tainted": false,
+      "first_snapshot": 20260715093000312,
+      "last_snapshot": 20260715155959534,
+      "quality_counts": {
+        "accepted_message_30": 1509893,
+        "accepted_message_31": 237892,
+        "accepted_message_32": 1505026,
+        "changed_groups_outside_continuous_session": 223,
+        "changed_groups_session_1": 546967,
+        "changed_groups_session_2": 583104,
+        "skipped_crossed_or_locked": 88,
+        "skipped_insufficient_depth": 9,
+        "snapshot_attempts": 113006
+      }
+    },
+    "2026-07-16": {
+      "cache": "0824/data/july_2026/hk07709_2026-07-16_mbo_tolerant_5m_s10.npz",
+      "raw_source_available": false,
+      "message_counts": {
+        "30": 1486212,
+        "31": 211542,
+        "32": 1479363,
+        "50": 207350
+      },
+      "order_errors": {
+        "delete_missing_order": 7403,
+        "modify_missing_order": 562
+      },
+      "modify_delete_attempts": 1690905,
+      "unknown_order_events": 7965,
+      "gap_events": [
+        {
+          "previous_send_time": 20260716110644498,
+          "resume_send_time": 20260716111131444,
+          "gap_ms": 286946,
+          "recovery_until_day_ms": 40591444,
+          "new_segment": 2
+        },
+        {
+          "previous_send_time": 20260716144644585,
+          "resume_send_time": 20260716145329382,
+          "gap_ms": 404797,
+          "recovery_until_day_ms": 53909382,
+          "new_segment": 4
+        }
+      ],
+      "snapshot_count": 106860,
+      "final_state_tainted": false,
+      "first_snapshot": 20260716093000628,
+      "last_snapshot": 20260716155959853,
+      "quality_counts": {
+        "accepted_message_30": 1486212,
+        "accepted_message_31": 210980,
+        "accepted_message_32": 1471960,
+        "changed_groups_outside_continuous_session": 201,
+        "changed_groups_session_1": 585343,
+        "changed_groups_session_2": 483946,
+        "detected_continuous_session_gaps": 2,
+        "gap_state_resets": 2,
+        "skipped_crossed_or_locked": 60,
+        "skipped_insufficient_depth": 8,
+        "skipped_recovery_changed_groups": 22872,
+        "snapshot_attempts": 106928
+      }
+    },
+    "2026-07-17": {
+      "cache": "0824/data/july_2026/hk07709_2026-07-17_mbo_tolerant_5m_s10.npz",
+      "raw_source_available": false,
+      "message_counts": {
+        "30": 594612,
+        "31": 198130,
+        "32": 591141,
+        "50": 151116
+      },
+      "order_errors": {
+        "delete_missing_order": 7962,
+        "modify_missing_order": 930
+      },
+      "modify_delete_attempts": 789271,
+      "unknown_order_events": 8892,
+      "gap_events": [
+        {
+          "previous_send_time": 20260717095044460,
+          "resume_send_time": 20260717095355132,
+          "gap_ms": 190672,
+          "recovery_until_day_ms": 35935132,
+          "new_segment": 2
+        },
+        {
+          "previous_send_time": 20260717102544213,
+          "resume_send_time": 20260717102956222,
+          "gap_ms": 252009,
+          "recovery_until_day_ms": 38096222,
+          "new_segment": 3
+        }
+      ],
+      "snapshot_count": 47828,
+      "final_state_tainted": false,
+      "first_snapshot": 20260717093000020,
+      "last_snapshot": 20260717155959714,
+      "quality_counts": {
+        "accepted_message_30": 594612,
+        "accepted_message_31": 197200,
+        "accepted_message_32": 583179,
+        "changed_groups_outside_continuous_session": 143,
+        "changed_groups_session_1": 229121,
+        "changed_groups_session_2": 249665,
+        "detected_continuous_session_gaps": 2,
+        "gap_state_resets": 2,
+        "skipped_crossed_or_locked": 48,
+        "skipped_recovery_changed_groups": 18370,
+        "snapshot_attempts": 47876
+      }
+    },
+    "2026-07-20": {
+      "cache": "0824/data/july_2026/hk07709_2026-07-20_mbo_tolerant_5m_s10.npz",
+      "raw_source_available": false,
+      "message_counts": {
+        "30": 1420384,
+        "31": 177584,
+        "32": 1414925,
+        "50": 176996
+      },
+      "order_errors": {},
+      "modify_delete_attempts": 1592509,
+      "unknown_order_events": 0,
+      "gap_events": [],
+      "snapshot_count": 104076,
+      "final_state_tainted": false,
+      "first_snapshot": 20260720093001057,
+      "last_snapshot": 20260720155959434,
+      "quality_counts": {
+        "accepted_message_30": 1420384,
+        "accepted_message_31": 177584,
+        "accepted_message_32": 1414925,
+        "changed_groups_outside_continuous_session": 247,
+        "changed_groups_session_1": 660252,
+        "changed_groups_session_2": 381149,
+        "skipped_crossed_or_locked": 54,
+        "skipped_insufficient_depth": 9,
+        "snapshot_attempts": 104139
+      }
+    },
+    "2026-07-21": {
+      "cache": "0824/data/july_2026/hk07709_2026-07-21_mbo_tolerant_5m_s10.npz",
+      "raw_source_available": true,
+      "message_counts": {
+        "30": 1030388,
+        "31": 161363,
+        "32": 1025352,
+        "50": 159450
+      },
+      "order_errors": {},
+      "modify_delete_attempts": 1186715,
+      "unknown_order_events": 0,
+      "gap_events": [],
+      "snapshot_count": 79283,
+      "final_state_tainted": false,
+      "first_snapshot": 20260721093000022,
+      "last_snapshot": 20260721155959246,
+      "quality_counts": {
+        "accepted_message_30": 1030388,
+        "accepted_message_31": 161363,
+        "accepted_message_32": 1025352,
+        "changed_groups_outside_continuous_session": 256,
+        "changed_groups_session_1": 454182,
+        "changed_groups_session_2": 339037,
+        "skipped_crossed_or_locked": 38,
+        "snapshot_attempts": 79321
+      }
+    },
+    "2026-07-22": {
+      "cache": "0824/data/july_2026/hk07709_2026-07-22_mbo_tolerant_5m_s10.npz",
+      "raw_source_available": false,
+      "message_counts": {
+        "30": 1155155,
+        "31": 177304,
+        "32": 1150846,
+        "50": 160679
+      },
+      "order_errors": {
+        "delete_missing_order": 4455,
+        "modify_missing_order": 399
+      },
+      "modify_delete_attempts": 1328150,
+      "unknown_order_events": 4854,
+      "gap_events": [
+        {
+          "previous_send_time": 20260722094644580,
+          "resume_send_time": 20260722095006159,
+          "gap_ms": 201579,
+          "recovery_until_day_ms": 35706159,
+          "new_segment": 2
+        },
+        {
+          "previous_send_time": 20260722100644453,
+          "resume_send_time": 20260722101027483,
+          "gap_ms": 223030,
+          "recovery_until_day_ms": 36927483,
+          "new_segment": 3
+        }
+      ],
+      "snapshot_count": 86431,
+      "final_state_tainted": false,
+      "first_snapshot": 20260722093000047,
+      "last_snapshot": 20260722155959579,
+      "quality_counts": {
+        "accepted_message_30": 1155155,
+        "accepted_message_31": 176905,
+        "accepted_message_32": 1146391,
+        "changed_groups_outside_continuous_session": 185,
+        "changed_groups_session_1": 372739,
+        "changed_groups_session_2": 492023,
+        "detected_continuous_session_gaps": 2,
+        "gap_state_resets": 2,
+        "skipped_crossed_or_locked": 42,
+        "skipped_insufficient_depth": 1,
+        "skipped_recovery_changed_groups": 23974,
+        "snapshot_attempts": 86474
+      }
+    },
+    "2026-07-23": {
+      "cache": "0824/data/july_2026/hk07709_2026-07-23_mbo_tolerant_5m_s10.npz",
+      "raw_source_available": false,
+      "message_counts": {
+        "30": 1127855,
+        "31": 127407,
+        "32": 1123535,
+        "50": 120892
+      },
+      "order_errors": {},
+      "modify_delete_attempts": 1250942,
+      "unknown_order_events": 0,
+      "gap_events": [],
+      "snapshot_count": 82037,
+      "final_state_tainted": false,
+      "first_snapshot": 20260723093000028,
+      "last_snapshot": 20260723155959507,
+      "quality_counts": {
+        "accepted_message_30": 1127855,
+        "accepted_message_31": 127407,
+        "accepted_message_32": 1123535,
+        "changed_groups_outside_continuous_session": 219,
+        "changed_groups_session_1": 492479,
+        "changed_groups_session_2": 328205,
+        "skipped_crossed_or_locked": 30,
+        "snapshot_attempts": 82067
+      }
+    },
+    "2026-07-24": {
+      "cache": "0824/data/july_2026/hk07709_2026-07-24_mbo_tolerant_5m_s10.npz",
+      "raw_source_available": false,
+      "message_counts": {
+        "30": 997264,
+        "31": 128419,
+        "32": 992349,
+        "50": 125688
+      },
+      "order_errors": {
+        "delete_missing_order": 2954,
+        "modify_missing_order": 207
+      },
+      "modify_delete_attempts": 1120768,
+      "unknown_order_events": 3161,
+      "gap_events": [
+        {
+          "previous_send_time": 20260724101244523,
+          "resume_send_time": 20260724101634905,
+          "gap_ms": 230382,
+          "recovery_until_day_ms": 37294905,
+          "new_segment": 2
+        },
+        {
+          "previous_send_time": 20260724150744194,
+          "resume_send_time": 20260724151602443,
+          "gap_ms": 498249,
+          "recovery_until_day_ms": 55262443,
+          "new_segment": 4
+        }
+      ],
+      "snapshot_count": 75938,
+      "final_state_tainted": false,
+      "first_snapshot": 20260724093000030,
+      "last_snapshot": 20260724155959372,
+      "quality_counts": {
+        "accepted_message_30": 997264,
+        "accepted_message_31": 128212,
+        "accepted_message_32": 989395,
+        "changed_groups_outside_continuous_session": 154,
+        "changed_groups_session_1": 412620,
+        "changed_groups_session_2": 347001,
+        "detected_continuous_session_gaps": 2,
+        "gap_state_resets": 2,
+        "skipped_crossed_or_locked": 22,
+        "skipped_recovery_changed_groups": 17824,
+        "snapshot_attempts": 75960
+      }
+    },
+    "2026-07-27": {
+      "cache": "0824/data/july_2026/hk07709_2026-07-27_mbo_tolerant_5m_s10.npz",
+      "raw_source_available": false,
+      "message_counts": {
+        "30": 943820,
+        "31": 125560,
+        "32": 939234,
+        "50": 117129
+      },
+      "order_errors": {},
+      "modify_delete_attempts": 1064794,
+      "unknown_order_events": 0,
+      "gap_events": [],
+      "snapshot_count": 73879,
+      "final_state_tainted": false,
+      "first_snapshot": 20260727093000031,
+      "last_snapshot": 20260727155959243,
+      "quality_counts": {
+        "accepted_message_30": 943820,
+        "accepted_message_31": 125560,
+        "accepted_message_32": 939234,
+        "changed_groups_outside_continuous_session": 127,
+        "changed_groups_session_1": 462940,
+        "changed_groups_session_2": 276167,
+        "skipped_crossed_or_locked": 31,
+        "snapshot_attempts": 73910
+      }
+    },
+    "2026-07-28": {
+      "cache": "0824/data/july_2026/hk07709_2026-07-28_mbo_tolerant_5m_s10.npz",
+      "raw_source_available": false,
+      "message_counts": {
+        "30": 1214055,
+        "31": 220489,
+        "32": 1208660,
+        "50": 222210
+      },
+      "order_errors": {},
+      "modify_delete_attempts": 1429149,
+      "unknown_order_events": 0,
+      "gap_events": [],
+      "snapshot_count": 92452,
+      "final_state_tainted": false,
+      "first_snapshot": 20260728093001038,
+      "last_snapshot": 20260728155959678,
+      "quality_counts": {
+        "accepted_message_30": 1214055,
+        "accepted_message_31": 220489,
+        "accepted_message_32": 1208660,
+        "changed_groups_outside_continuous_session": 250,
+        "changed_groups_session_1": 520617,
+        "changed_groups_session_2": 404844,
+        "skipped_crossed_or_locked": 81,
+        "skipped_insufficient_depth": 12,
+        "snapshot_attempts": 92545
+      }
+    },
+    "2026-07-29": {
+      "cache": "0824/data/july_2026/hk07709_2026-07-29_mbo_tolerant_5m_s10.npz",
+      "raw_source_available": false,
+      "message_counts": {
+        "30": 1859487,
+        "31": 344060,
+        "32": 1854051,
+        "50": 365201
+      },
+      "order_errors": {},
+      "modify_delete_attempts": 2198111,
+      "unknown_order_events": 0,
+      "gap_events": [],
+      "snapshot_count": 137888,
+      "final_state_tainted": false,
+      "first_snapshot": 20260729093000024,
+      "last_snapshot": 20260729155959626,
+      "quality_counts": {
+        "accepted_message_30": 1859487,
+        "accepted_message_31": 344060,
+        "accepted_message_32": 1854051,
+        "changed_groups_outside_continuous_session": 538,
+        "changed_groups_session_1": 700321,
+        "changed_groups_session_2": 679772,
+        "skipped_crossed_or_locked": 120,
+        "skipped_insufficient_depth": 1,
+        "snapshot_attempts": 138009
+      }
+    },
+    "2026-07-30": {
+      "cache": "0824/data/july_2026/hk07709_2026-07-30_mbo_tolerant_5m_s10.npz",
+      "raw_source_available": false,
+      "message_counts": {
+        "30": 1614780,
+        "31": 261948,
+        "32": 1609291,
+        "50": 277157
+      },
+      "order_errors": {},
+      "modify_delete_attempts": 1871239,
+      "unknown_order_events": 0,
+      "gap_events": [],
+      "snapshot_count": 120017,
+      "final_state_tainted": false,
+      "first_snapshot": 20260730093000025,
+      "last_snapshot": 20260730155959830,
+      "quality_counts": {
+        "accepted_message_30": 1614780,
+        "accepted_message_31": 261948,
+        "accepted_message_32": 1609291,
+        "changed_groups_outside_continuous_session": 349,
+        "changed_groups_session_1": 780287,
+        "changed_groups_session_2": 420734,
+        "skipped_crossed_or_locked": 84,
+        "snapshot_attempts": 120101
+      }
+    },
+    "2026-07-31": {
+      "cache": "0824/data/july_2026/hk07709_2026-07-31_mbo_tolerant_5m_s10.npz",
+      "raw_source_available": false,
+      "message_counts": {
+        "30": 1198953,
+        "31": 281342,
+        "32": 1189192,
+        "50": 289249
+      },
+      "order_errors": {
+        "delete_missing_order": 578,
+        "modify_missing_order": 132
+      },
+      "modify_delete_attempts": 1470534,
+      "unknown_order_events": 710,
+      "gap_events": [],
+      "snapshot_count": 6136,
+      "final_state_tainted": false,
+      "first_snapshot": 20260731093001154,
+      "last_snapshot": 20260731093438656,
+      "quality_counts": {
+        "accepted_message_30": 1198953,
+        "accepted_message_31": 281210,
+        "accepted_message_32": 1188614,
+        "changed_groups_outside_continuous_session": 626,
+        "changed_groups_session_1": 579380,
+        "changed_groups_session_2": 334159,
+        "skipped_crossed_or_locked": 85198,
+        "skipped_insufficient_depth": 19,
+        "snapshot_attempts": 91353
+      }
+    },
+    "2026-08-04": {
+      "cache": "0920/output/august_holdout/hk07709_2026-08-04_mbo_tolerant_5m_s10.npz",
+      "raw_source_available": true,
+      "message_counts": {
+        "30": 949969,
+        "31": 141475,
+        "32": 945041,
+        "50": 141563
+      },
+      "order_errors": {
+        "delete_missing_order": 2594,
+        "modify_missing_order": 247
+      },
+      "modify_delete_attempts": 1086516,
+      "unknown_order_events": 2841,
+      "gap_events": [
+        {
+          "previous_send_time": 20260804094744750,
+          "resume_send_time": 20260804095059721,
+          "gap_ms": 194971,
+          "recovery_until_day_ms": 35759721,
+          "new_segment": 2
+        }
+      ],
+      "snapshot_count": 74510,
+      "final_state_tainted": false,
+      "first_snapshot": 20260804093000018,
+      "last_snapshot": 20260804155959001,
+      "quality_counts": {
+        "accepted_message_30": 949969,
+        "accepted_message_31": 141228,
+        "accepted_message_32": 942447,
+        "changed_groups_outside_continuous_session": 148,
+        "changed_groups_session_1": 395231,
+        "changed_groups_session_2": 350298,
+        "detected_continuous_session_gaps": 1,
+        "gap_state_resets": 1,
+        "skipped_crossed_or_locked": 41,
+        "skipped_recovery_changed_groups": 19029,
+        "snapshot_attempts": 74551
+      }
+    },
+    "2026-08-07": {
+      "cache": "0920/output/august_holdout/hk07709_2026-08-07_mbo_tolerant_5m_s10.npz",
+      "raw_source_available": true,
+      "message_counts": {
+        "30": 742626,
+        "31": 151715,
+        "32": 730996,
+        "50": 154480
+      },
+      "order_errors": {},
+      "modify_delete_attempts": 882711,
+      "unknown_order_events": 0,
+      "gap_events": [],
+      "snapshot_count": 61798,
+      "final_state_tainted": false,
+      "first_snapshot": 20260807093000019,
+      "last_snapshot": 20260807155959908,
+      "quality_counts": {
+        "accepted_message_30": 742626,
+        "accepted_message_31": 151715,
+        "accepted_message_32": 730996,
+        "changed_groups_outside_continuous_session": 304,
+        "changed_groups_session_1": 356546,
+        "changed_groups_session_2": 262061,
+        "skipped_crossed_or_locked": 62,
+        "snapshot_attempts": 61860
+      }
+    }
+  }
+}

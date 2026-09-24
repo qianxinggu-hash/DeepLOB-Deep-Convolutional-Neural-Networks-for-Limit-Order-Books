@@ -41,7 +41,6 @@ import torch
 from torch import nn
 from torch.utils.data import ConcatDataset, DataLoader, Dataset
 
-from prepare_hkex_lob import RECONSTRUCTION_VERSION, reconstruct
 from train_pytorch_mac import DeepLOB, choose_device
 
 
@@ -153,6 +152,8 @@ def load_metadata(path: Path) -> dict[str, object] | None:
 def compatible_cache(
     processed_dir: Path, raw_path: Path, snapshot_every: int, security_id: int
 ) -> Path | None:
+    from prepare_hkex_lob import RECONSTRUCTION_VERSION
+
     candidates = list(processed_dir.glob("*.npz"))
     candidates += list((PROJECT_ROOT / "data/processed").glob("hk07709*.npz"))
     for candidate in candidates:
@@ -178,6 +179,8 @@ def prepare_day(
     security_id: int,
     force: bool,
 ) -> tuple[Path, dict[str, object]]:
+    from prepare_hkex_lob import reconstruct
+
     date = date_from_path(raw_path)
     destination = processed_dir / f"hk07709_{date}_s{snapshot_every}_lob.npz"
     cache = None if force else compatible_cache(

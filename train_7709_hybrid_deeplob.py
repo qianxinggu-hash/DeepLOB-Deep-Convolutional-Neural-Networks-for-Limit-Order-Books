@@ -38,6 +38,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent
 PRICE_COLUMNS = np.arange(0, 40, 2)
 SIZE_COLUMNS = np.arange(1, 40, 2)
 NUM_CLASSES = 3
+AUXILIARY_MAX_LAG = 100
 
 
 def parse_args() -> argparse.Namespace:
@@ -363,7 +364,9 @@ def main() -> None:
         else:
             stride = 1
         indices[day.date] = eligible_targets(
-            day, returns[day.date], args.sequence_length, stride
+            # causal_features reads the mid-price 100 snapshots back.  The
+            # first 100-window endpoint is only 99 snapshots into a session.
+            day, returns[day.date], max(args.sequence_length, AUXILIARY_MAX_LAG + 1), stride
         )
         if day.date in train_dates:
             calibration.append(returns[day.date][indices[day.date]])

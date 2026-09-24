@@ -357,9 +357,12 @@ def quote_prices(
     alpha_ticks: float,
     inventory_lots: int,
     parameters: QuoteParameters,
+    tick_hkd: float = TICK_HKD,
 ) -> tuple[float, float, float]:
-    best_bid_tick = _rounded_tick(best_bid_hkd / TICK_HKD)
-    best_ask_tick = _rounded_tick(best_ask_hkd / TICK_HKD)
+    if tick_hkd <= 0:
+        raise ValueError("tick_hkd must be positive")
+    best_bid_tick = _rounded_tick(best_bid_hkd / tick_hkd)
+    best_ask_tick = _rounded_tick(best_ask_hkd / tick_hkd)
     inventory_shift = -parameters.inventory_skew_ticks * (
         inventory_lots / parameters.max_inventory_lots
     )
@@ -374,7 +377,7 @@ def quote_prices(
     ask_tick = max(ask_tick, best_bid_tick + 1)
     if bid_tick >= ask_tick:
         raise AssertionError("crossed quote")
-    return bid_tick * TICK_HKD, ask_tick * TICK_HKD, center_shift
+    return bid_tick * tick_hkd, ask_tick * tick_hkd, center_shift
 
 
 def classic_as_quote_prices(
@@ -382,6 +385,7 @@ def classic_as_quote_prices(
     best_ask_hkd: float,
     inventory_lots: int,
     parameters: ASParameters,
+    tick_hkd: float = TICK_HKD,
 ) -> tuple[float, float, float]:
     """Return passive classic AS quotes using a fixed quote-lifetime horizon.
 
@@ -395,8 +399,10 @@ def classic_as_quote_prices(
     opposite best price.
     """
 
-    best_bid_tick = _rounded_tick(best_bid_hkd / TICK_HKD)
-    best_ask_tick = _rounded_tick(best_ask_hkd / TICK_HKD)
+    if tick_hkd <= 0:
+        raise ValueError("tick_hkd must be positive")
+    best_bid_tick = _rounded_tick(best_bid_hkd / tick_hkd)
+    best_ask_tick = _rounded_tick(best_ask_hkd / tick_hkd)
     mid_tick = (best_bid_tick + best_ask_tick) / 2.0
     gamma = parameters.risk_aversion_per_tick
     decay = parameters.order_decay_per_tick
@@ -411,7 +417,7 @@ def classic_as_quote_prices(
     ask_tick = max(ask_tick, best_bid_tick + 1)
     if bid_tick >= ask_tick:
         raise AssertionError("crossed AS quote")
-    return bid_tick * TICK_HKD, ask_tick * TICK_HKD, inventory_shift
+    return bid_tick * tick_hkd, ask_tick * tick_hkd, inventory_shift
 
 
 def as_drift_quote_prices(
@@ -420,6 +426,7 @@ def as_drift_quote_prices(
     alpha_ticks: float,
     inventory_lots: int,
     parameters: ASDriftParameters,
+    tick_hkd: float = TICK_HKD,
 ) -> tuple[float, float, float]:
     """Return passive AS quotes with drift in the reservation price.
 
@@ -432,8 +439,10 @@ def as_drift_quote_prices(
     Thus alpha changes the quote center but not the AS optimal spread.
     """
 
-    best_bid_tick = _rounded_tick(best_bid_hkd / TICK_HKD)
-    best_ask_tick = _rounded_tick(best_ask_hkd / TICK_HKD)
+    if tick_hkd <= 0:
+        raise ValueError("tick_hkd must be positive")
+    best_bid_tick = _rounded_tick(best_bid_hkd / tick_hkd)
+    best_ask_tick = _rounded_tick(best_ask_hkd / tick_hkd)
     mid_tick = (best_bid_tick + best_ask_tick) / 2.0
     gamma = parameters.risk_aversion_per_tick
     decay = parameters.order_decay_per_tick
@@ -450,7 +459,7 @@ def as_drift_quote_prices(
     ask_tick = max(ask_tick, best_bid_tick + 1)
     if bid_tick >= ask_tick:
         raise AssertionError("crossed AS+drift quote")
-    return bid_tick * TICK_HKD, ask_tick * TICK_HKD, center_shift
+    return bid_tick * tick_hkd, ask_tick * tick_hkd, center_shift
 
 
 def simulate_market_maker(
@@ -462,11 +471,14 @@ def simulate_market_maker(
     fill_mode: str,
     strategy_name: str,
     record_events: bool = False,
+    tick_hkd: float = TICK_HKD,
 ) -> tuple[dict[str, object], list[dict[str, object]]]:
     if fill_mode not in {"touch", "through"}:
         raise ValueError(fill_mode)
     if len(quote_indices) != len(alpha_ticks):
         raise ValueError("quote/signal length mismatch")
+    if tick_hkd <= 0:
+        raise ValueError("tick_hkd must be positive")
     quote_times = compact_time_to_day_ms(day.send_times)
     inventory = 0
     cash = 0.0
@@ -491,15 +503,17 @@ def simulate_market_maker(
         best_bid = float(day.book[index, 2])
         if isinstance(parameters, ASDriftParameters):
             bid_quote, ask_quote, center_shift = as_drift_quote_prices(
-                best_bid, best_ask, float(alpha_value), inventory, parameters
+                best_bid, best_ask, float(alpha_value), inventory, parameters,
+                tick_hkd,
             )
         elif isinstance(parameters, ASParameters):
             bid_quote, ask_quote, center_shift = classic_as_quote_prices(
-                best_bid, best_ask, inventory, parameters
+                best_bid, best_ask, inventory, parameters, tick_hkd,
             )
         else:
             bid_quote, ask_quote, center_shift = quote_prices(
-                best_bid, best_ask, float(alpha_value), inventory, parameters
+                best_bid, best_ask, float(alpha_value), inventory, parameters,
+                tick_hkd,
             )
         place_bid = inventory < parameters.max_inventory_lots
         place_ask = inventory > -parameters.max_inventory_lots
@@ -514,8 +528,8 @@ def simulate_market_maker(
             bid_hits = np.flatnonzero(prices <= bid_quote + 1e-9) if place_bid else np.empty(0, dtype=np.int64)
             ask_hits = np.flatnonzero(prices >= ask_quote - 1e-9) if place_ask else np.empty(0, dtype=np.int64)
         else:
-            bid_hits = np.flatnonzero(prices <= bid_quote - TICK_HKD + 1e-9) if place_bid else np.empty(0, dtype=np.int64)
-            ask_hits = np.flatnonzero(prices >= ask_quote + TICK_HKD - 1e-9) if place_ask else np.empty(0, dtype=np.int64)
+            bid_hits = np.flatnonzero(prices <= bid_quote - tick_hkd + 1e-9) if place_bid else np.empty(0, dtype=np.int64)
+            ask_hits = np.flatnonzero(prices >= ask_quote + tick_hkd - 1e-9) if place_ask else np.empty(0, dtype=np.int64)
         pending: list[tuple[int, str, float]] = []
         if len(bid_hits):
             pending.append((int(bid_hits[0]), "buy", bid_quote))

@@ -51,6 +51,7 @@ gamma从5增至50的实际成交与现金损益相同，说明当前回放路径
 ## 文件与复跑
 
 - [完整报告](output/report.html)
+- [亏损逐笔诊断](output/loss_diagnostics/README.md)、[损益分解图](output/loss_diagnostics/loss_decomposition.png)
 - [21档汇总](output/gamma_summary.csv)、[逐日结果](output/gamma_daily.csv)
 - [库存与spread政策状态表](output/gamma_policy_surface.csv)
 - [完整机器结果](output/gamma_results.json)、[核对结果](output/gamma_validation.json)

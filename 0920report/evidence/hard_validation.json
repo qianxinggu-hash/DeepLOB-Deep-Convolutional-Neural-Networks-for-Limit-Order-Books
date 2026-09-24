@@ -1,0 +1,471 @@
+{
+  "prediction_day_bootstrap": {
+    "h5_all": {
+      "old_minus_deeplob": {
+        "delta_percentage_points": 3.3633820954987224,
+        "day_bootstrap_95pp": [
+          2.6999085846209723,
+          4.098170463076597
+        ],
+        "positive_days": 19,
+        "days": 19
+      },
+      "new_minus_old": {
+        "delta_percentage_points": 0.45073143248083386,
+        "day_bootstrap_95pp": [
+          0.22619727809963142,
+          0.7051197578243018
+        ],
+        "positive_days": 10,
+        "days": 19
+      }
+    },
+    "h5_l3_available": {
+      "old_minus_deeplob": {
+        "delta_percentage_points": 3.546341375779243,
+        "day_bootstrap_95pp": [
+          2.694574482957591,
+          4.465270900937503
+        ],
+        "positive_days": 10,
+        "days": 10
+      },
+      "new_minus_old": {
+        "delta_percentage_points": 0.8048434328009629,
+        "day_bootstrap_95pp": [
+          0.5280381562918822,
+          1.0970103679673096
+        ],
+        "positive_days": 10,
+        "days": 10
+      }
+    },
+    "h20_all": {
+      "old_minus_deeplob": {
+        "delta_percentage_points": 2.04841338511379,
+        "day_bootstrap_95pp": [
+          1.7549335074894343,
+          2.3579517971177686
+        ],
+        "positive_days": 19,
+        "days": 19
+      },
+      "new_minus_old": {
+        "delta_percentage_points": 0.19618890476286294,
+        "day_bootstrap_95pp": [
+          -0.006325845745705658,
+          0.4500235682101879
+        ],
+        "positive_days": 7,
+        "days": 19
+      }
+    },
+    "h20_l3_available": {
+      "old_minus_deeplob": {
+        "delta_percentage_points": 2.0085155309631175,
+        "day_bootstrap_95pp": [
+          1.612467692782471,
+          2.428902634277878
+        ],
+        "positive_days": 10,
+        "days": 10
+      },
+      "new_minus_old": {
+        "delta_percentage_points": 0.3503224763307763,
+        "day_bootstrap_95pp": [
+          -0.0018516319644207742,
+          0.7733582844812771
+        ],
+        "positive_days": 7,
+        "days": 10
+      }
+    }
+  },
+  "economic_paired_days": {
+    "AS_through_None_all": {
+      "old_vs_deeplob": {
+        "net_delta_hkd": 13460.481091984677,
+        "day_bootstrap_95_hkd": [
+          3318.1048516955134,
+          24432.89319884884
+        ],
+        "positive_days": 13,
+        "negative_days": 6,
+        "equal_days": 0
+      },
+      "new_vs_old": {
+        "net_delta_hkd": -2406.1965771421164,
+        "day_bootstrap_95_hkd": [
+          -5475.481577422543,
+          335.25086688889644
+        ],
+        "positive_days": 4,
+        "negative_days": 6,
+        "equal_days": 9
+      },
+      "new_vs_no_drift": {
+        "net_delta_hkd": 5955.737327683652,
+        "day_bootstrap_95_hkd": [
+          -4335.235175778853,
+          16141.747036481029
+        ],
+        "positive_days": 13,
+        "negative_days": 6,
+        "equal_days": 0
+      }
+    },
+    "AS_through_None_l3_available": {
+      "old_vs_deeplob": {
+        "net_delta_hkd": 6744.316603311154,
+        "day_bootstrap_95_hkd": [
+          740.0660503576414,
+          12676.782799209703
+        ],
+        "positive_days": 8,
+        "negative_days": 2,
+        "equal_days": 0
+      },
+      "new_vs_old": {
+        "net_delta_hkd": -2406.1965771421164,
+        "day_bootstrap_95_hkd": [
+          -5180.531047770069,
+          250.83016691843454
+        ],
+        "positive_days": 4,
+        "negative_days": 6,
+        "equal_days": 0
+      },
+      "new_vs_no_drift": {
+        "net_delta_hkd": 4013.0864687823077,
+        "day_bootstrap_95_hkd": [
+          -3841.66252889105,
+          11753.182205925757
+        ],
+        "positive_days": 7,
+        "negative_days": 3,
+        "equal_days": 0
+      }
+    },
+    "AS_touch_None_all": {
+      "old_vs_deeplob": {
+        "net_delta_hkd": 8236.900069941757,
+        "day_bootstrap_95_hkd": [
+          -590.5591621639027,
+          16832.285670742927
+        ],
+        "positive_days": 13,
+        "negative_days": 6,
+        "equal_days": 0
+      },
+      "new_vs_old": {
+        "net_delta_hkd": -1131.181626283957,
+        "day_bootstrap_95_hkd": [
+          -5291.491108917889,
+          2092.881006955543
+        ],
+        "positive_days": 6,
+        "negative_days": 4,
+        "equal_days": 9
+      },
+      "new_vs_no_drift": {
+        "net_delta_hkd": -4758.826855788293,
+        "day_bootstrap_95_hkd": [
+          -14581.152269801985,
+          5530.5447219658745
+        ],
+        "positive_days": 7,
+        "negative_days": 12,
+        "equal_days": 0
+      }
+    },
+    "AS_touch_None_l3_available": {
+      "old_vs_deeplob": {
+        "net_delta_hkd": 8212.023626320426,
+        "day_bootstrap_95_hkd": [
+          2044.6492654371334,
+          14122.625917614543
+        ],
+        "positive_days": 8,
+        "negative_days": 2,
+        "equal_days": 0
+      },
+      "new_vs_old": {
+        "net_delta_hkd": -1131.181626283957,
+        "day_bootstrap_95_hkd": [
+          -5187.586568507283,
+          2104.8492942642124
+        ],
+        "positive_days": 6,
+        "negative_days": 4,
+        "equal_days": 0
+      },
+      "new_vs_no_drift": {
+        "net_delta_hkd": 146.09373846640483,
+        "day_bootstrap_95_hkd": [
+          -7686.523472699059,
+          8383.34928036473
+        ],
+        "positive_days": 5,
+        "negative_days": 5,
+        "equal_days": 0
+      }
+    },
+    "GP_through_5.0_all": {
+      "old_vs_deeplob": {
+        "net_delta_hkd": 98.25821478523244,
+        "day_bootstrap_95_hkd": [
+          -499.2937323236517,
+          856.8972072585158
+        ],
+        "positive_days": 5,
+        "negative_days": 8,
+        "equal_days": 6
+      },
+      "new_vs_old": {
+        "net_delta_hkd": 75.04788191546632,
+        "day_bootstrap_95_hkd": [
+          -17.901465354461585,
+          233.0150013206481
+        ],
+        "positive_days": 3,
+        "negative_days": 2,
+        "equal_days": 14
+      },
+      "new_vs_no_drift": {
+        "net_delta_hkd": -1377.6455671853264,
+        "day_bootstrap_95_hkd": [
+          -3433.752971924942,
+          58.11166820521296
+        ],
+        "positive_days": 2,
+        "negative_days": 12,
+        "equal_days": 5
+      }
+    },
+    "GP_through_5.0_l3_available": {
+      "old_vs_deeplob": {
+        "net_delta_hkd": 13.277172390381295,
+        "day_bootstrap_95_hkd": [
+          -272.79892615012653,
+          309.1661905575876
+        ],
+        "positive_days": 4,
+        "negative_days": 3,
+        "equal_days": 3
+      },
+      "new_vs_old": {
+        "net_delta_hkd": 75.04788191546632,
+        "day_bootstrap_95_hkd": [
+          -17.901465354461585,
+          227.51318450181583
+        ],
+        "positive_days": 3,
+        "negative_days": 2,
+        "equal_days": 5
+      },
+      "new_vs_no_drift": {
+        "net_delta_hkd": 14.13547497130493,
+        "day_bootstrap_95_hkd": [
+          -183.3827597761334,
+          279.24508522602844
+        ],
+        "positive_days": 2,
+        "negative_days": 6,
+        "equal_days": 2
+      }
+    },
+    "GP_through_3.125_all": {
+      "old_vs_deeplob": {
+        "net_delta_hkd": -161.21452677223974,
+        "day_bootstrap_95_hkd": [
+          -917.6272915555347,
+          544.1345593967308
+        ],
+        "positive_days": 3,
+        "negative_days": 9,
+        "equal_days": 7
+      },
+      "new_vs_old": {
+        "net_delta_hkd": 100.68558981133364,
+        "day_bootstrap_95_hkd": [
+          -17.797944708923296,
+          304.533152834956
+        ],
+        "positive_days": 3,
+        "negative_days": 2,
+        "equal_days": 14
+      },
+      "new_vs_no_drift": {
+        "net_delta_hkd": -1590.974590304947,
+        "day_bootstrap_95_hkd": [
+          -3964.2576367648726,
+          64.59822679178394
+        ],
+        "positive_days": 3,
+        "negative_days": 11,
+        "equal_days": 5
+      }
+    },
+    "GP_through_3.125_l3_available": {
+      "old_vs_deeplob": {
+        "net_delta_hkd": -49.24647000769815,
+        "day_bootstrap_95_hkd": [
+          -385.07698978025235,
+          251.0279510170526
+        ],
+        "positive_days": 2,
+        "negative_days": 4,
+        "equal_days": 4
+      },
+      "new_vs_old": {
+        "net_delta_hkd": 100.68558981133364,
+        "day_bootstrap_95_hkd": [
+          -17.90146535446158,
+          300.4616098017224
+        ],
+        "positive_days": 3,
+        "negative_days": 2,
+        "equal_days": 5
+      },
+      "new_vs_no_drift": {
+        "net_delta_hkd": 11.295102833373122,
+        "day_bootstrap_95_hkd": [
+          -198.6420577340609,
+          280.73849515477696
+        ],
+        "positive_days": 3,
+        "negative_days": 5,
+        "equal_days": 2
+      }
+    },
+    "GP_touch_5.0_all": {
+      "old_vs_deeplob": {
+        "net_delta_hkd": 6156.647258649849,
+        "day_bootstrap_95_hkd": [
+          21.324103506307086,
+          15960.587755477587
+        ],
+        "positive_days": 8,
+        "negative_days": 4,
+        "equal_days": 7
+      },
+      "new_vs_old": {
+        "net_delta_hkd": 101.7521585122317,
+        "day_bootstrap_95_hkd": [
+          -6.461200070282011,
+          292.5432082017648
+        ],
+        "positive_days": 3,
+        "negative_days": 1,
+        "equal_days": 15
+      },
+      "new_vs_no_drift": {
+        "net_delta_hkd": -11870.609002351324,
+        "day_bootstrap_95_hkd": [
+          -29565.740779368083,
+          -64.78287442849334
+        ],
+        "positive_days": 1,
+        "negative_days": 11,
+        "equal_days": 7
+      }
+    },
+    "GP_touch_5.0_l3_available": {
+      "old_vs_deeplob": {
+        "net_delta_hkd": 58.49445603110329,
+        "day_bootstrap_95_hkd": [
+          -3.8237581517945785,
+          133.66817809323638
+        ],
+        "positive_days": 4,
+        "negative_days": 2,
+        "equal_days": 4
+      },
+      "new_vs_old": {
+        "net_delta_hkd": 101.7521585122317,
+        "day_bootstrap_95_hkd": [
+          -6.461200070282011,
+          282.54927582481173
+        ],
+        "positive_days": 3,
+        "negative_days": 1,
+        "equal_days": 6
+      },
+      "new_vs_no_drift": {
+        "net_delta_hkd": -77.21103870323229,
+        "day_bootstrap_95_hkd": [
+          -176.79124548625092,
+          5.99829289975498
+        ],
+        "positive_days": 1,
+        "negative_days": 6,
+        "equal_days": 3
+      }
+    },
+    "GP_touch_3.125_all": {
+      "old_vs_deeplob": {
+        "net_delta_hkd": 1457.3606326980193,
+        "day_bootstrap_95_hkd": [
+          -25.568672554492473,
+          3852.9972781904767
+        ],
+        "positive_days": 7,
+        "negative_days": 5,
+        "equal_days": 7
+      },
+      "new_vs_old": {
+        "net_delta_hkd": 111.74942664863765,
+        "day_bootstrap_95_hkd": [
+          -6.461200070281983,
+          322.53501261098256
+        ],
+        "positive_days": 3,
+        "negative_days": 1,
+        "equal_days": 15
+      },
+      "new_vs_no_drift": {
+        "net_delta_hkd": -14913.531309279302,
+        "day_bootstrap_95_hkd": [
+          -37512.028577678604,
+          -22.891985133513497
+        ],
+        "positive_days": 3,
+        "negative_days": 11,
+        "equal_days": 5
+      }
+    },
+    "GP_touch_3.125_l3_available": {
+      "old_vs_deeplob": {
+        "net_delta_hkd": -3.543787738740342,
+        "day_bootstrap_95_hkd": [
+          -54.02660804155006,
+          46.61394584974493
+        ],
+        "positive_days": 3,
+        "negative_days": 3,
+        "equal_days": 4
+      },
+      "new_vs_old": {
+        "net_delta_hkd": 111.74942664863765,
+        "day_bootstrap_95_hkd": [
+          -6.461200070281983,
+          312.54108023402955
+        ],
+        "positive_days": 3,
+        "negative_days": 1,
+        "equal_days": 6
+      },
+      "new_vs_no_drift": {
+        "net_delta_hkd": -69.06145093457785,
+        "day_bootstrap_95_hkd": [
+          -203.65519389952104,
+          72.29519960990109
+        ],
+        "positive_days": 1,
+        "negative_days": 6,
+        "equal_days": 3
+      }
+    }
+  },
+  "checks": "train dates prior; matched quotes; probabilities; exact L3 fallback; PnL identities; GP quote counts; old no-drift baseline reconciliation; hard -1/0/+1 argmax mapping"
+}

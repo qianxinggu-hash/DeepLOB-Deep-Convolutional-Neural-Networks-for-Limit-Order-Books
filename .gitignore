@@ -22,6 +22,16 @@ Test_Dst_NoAuction_DecPre_CF_9.txt
 0824/data/
 0824/checkpoints/
 0824/output/
+0906/data/
 
 # Locally supplied research papers; keep citations/notes but do not redistribute PDFs.
 0906/papers/
+
+# Rebuildable replay caches and diagnostic tables. Keep the compact report
+# evidence in 0920report/ and the published diagnostic figure.
+0920/output/
+0913/output/gamma_0_001_grid/
+0913/output/loss_diagnostics_run.log
+0913/output/loss_diagnostics/*
+!0913/output/loss_diagnostics/README.md
+!0913/output/loss_diagnostics/loss_decomposition.png
