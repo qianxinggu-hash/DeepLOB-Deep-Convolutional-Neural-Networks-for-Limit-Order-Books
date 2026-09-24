@@ -9,6 +9,7 @@ The July endpoint labels and quote starts are identical across models.
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -23,6 +24,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 sys.path.insert(0, str(ROOT))
 from hybrid_drift_adapter import fit_probability_move_calibrator  # noqa: E402
+from hybrid_labeling import labels, prior_flat_threshold
 
 DATA = HERE / "output/direction_dataset"
 SOURCE = HERE / "output/new_hybrid_signal/predictions"
@@ -41,10 +43,11 @@ def x_of(day: dict, name: str) -> np.ndarray:
     raise ValueError(name)
 
 
-def fit(train: list[dict], horizon: int, name: str):
+def fit(train: list[dict], horizon: int, name: str,
+        flat_threshold_ticks: float = 0.0):
     x = np.concatenate([x_of(day, name) for day in train])
-    y = np.concatenate([np.sign(day[f"move_{horizon}_ticks"]).astype(np.int8)
-                        for day in train])
+    move = np.concatenate([day[f"move_{horizon}_ticks"] for day in train])
+    y = labels(move, flat_threshold_ticks)
     model = make_pipeline(
         StandardScaler(),
         LogisticRegression(C=0.05, solver="lbfgs", max_iter=300,
@@ -79,15 +82,22 @@ def metrics(y: np.ndarray, p: np.ndarray) -> dict:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--label-mode", choices=("zero_only", "balanced"),
+                        default="zero_only")
+    parser.add_argument("--output-dir", type=Path)
+    args = parser.parse_args()
+    out = args.output_dir or (OUT if args.label_mode == "zero_only" else
+                              HERE / "output/aligned_direction_comparison_balanced")
     manifest = json.loads((DATA / "manifest.json").read_text())
     dates = [row["date"] for row in manifest["dates"]]
     data = {}
     for date in dates:
         with np.load(DATA / f"day_{date}.npz", allow_pickle=False) as a:
             data[date] = {k: a[k].copy() for k in a.files}
-    OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / "per_day").mkdir(exist_ok=True)
-    (OUT / "signals").mkdir(exist_ok=True)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "per_day").mkdir(exist_ok=True)
+    (out / "signals").mkdir(exist_ok=True)
     daily = []
     for ordinal, date in enumerate(dates[1:], 1):
         test = data[date]
@@ -98,13 +108,16 @@ def main() -> None:
         train = [data[d] for d in prior]
         per_horizon = {}
         for horizon in HORIZONS:
-            y = np.sign(test[f"move_{horizon}_ticks"]).astype(np.int8)
+            train_move = np.concatenate([d[f"move_{horizon}_ticks"] for d in train])
+            threshold = (prior_flat_threshold(train_move)
+                         if args.label_mode == "balanced" else 0.0)
+            y = labels(test[f"move_{horizon}_ticks"], threshold)
             probabilities = {}
             for name in FEATURES:
                 if name == "new_l3_hybrid" and not clean:
                     probabilities[name] = probabilities["old_hybrid"].copy()
                     continue
-                model = fit(train, horizon, name)
+                model = fit(train, horizon, name, threshold)
                 probabilities[name] = model.predict_proba(x_of(test, name))
                 if horizon == 20:
                     past_probs = np.concatenate([
@@ -135,13 +148,14 @@ def main() -> None:
             if horizon == 20 and not clean:
                 per_horizon["new_l3_hybrid"] = per_horizon["old_hybrid"]
             np.savez_compressed(
-                OUT / "per_day" / f"{date}_h{horizon}.npz",
-                actual=y,
+                out / "per_day" / f"{date}_h{horizon}.npz",
+                actual=y, flat_threshold_ticks=np.asarray(threshold),
                 **{f"p_{name}": p.astype(np.float32)
                    for name, p in probabilities.items()},
             )
             daily.append({
                 "date": date, "horizon": horizon, "prior_dates": prior,
+                "flat_threshold_ticks": threshold,
                 "l3_available": clean,
                 "models": {name: metrics(y, p) for name, p in probabilities.items()},
             })
@@ -187,7 +201,7 @@ def main() -> None:
         if not clean and not np.array_equal(signals["expected_old_hybrid_ticks"],
                                             signals["expected_new_l3_hybrid_ticks"]):
             raise AssertionError("L3 gap fallback differs")
-        np.savez_compressed(OUT / "signals" / f"day_{date}.npz", **signals)
+        np.savez_compressed(out / "signals" / f"day_{date}.npz", **signals)
         print("DAY", date, "done", flush=True)
     summary = []
     for horizon in HORIZONS:
@@ -198,7 +212,7 @@ def main() -> None:
             for name in FEATURES:
                 y, p = [], []
                 for row in selected:
-                    with np.load(OUT / "per_day" /
+                    with np.load(out / "per_day" /
                                  f"{row['date']}_h{horizon}.npz", allow_pickle=False) as a:
                         y.append(a["actual"])
                         p.append(a[f"p_{name}"])
@@ -207,6 +221,7 @@ def main() -> None:
                                 **metrics(np.concatenate(y), np.concatenate(p))})
     result = {
         "protocol": "same quote starts and endpoint labels; at most five prior complete days",
+        "label_mode": args.label_mode,
         "architecture": "shared frozen pre-July 64-D DeepLOB encoder; separately retrained 3-class logistic heads",
         "features": {
             "deeplob": "64-D DeepLOB embedding",
@@ -217,7 +232,7 @@ def main() -> None:
         "probability_to_ticks": "past-only in-sample ridge calibration, predictions clipped to +/-3 ticks",
         "summary": summary, "daily": daily,
     }
-    (OUT / "results.json").write_text(json.dumps(result, indent=2, allow_nan=False) + "\n")
+    (out / "results.json").write_text(json.dumps(result, indent=2, allow_nan=False) + "\n")
     print(json.dumps([s for s in summary if s["subset"] == "all"], indent=2), flush=True)
 
 

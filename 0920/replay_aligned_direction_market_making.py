@@ -47,6 +47,7 @@ def compact(result: dict) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", type=Path, default=OUT)
+    parser.add_argument("--signals-dir", type=Path, default=SIGNALS)
     parser.add_argument("--limit-test-days", type=int)
     parser.add_argument("--gammas", type=float, nargs="+", default=(5.0, 3.125))
     parser.add_argument("--tick-map", choices=("calibrated", "hard_one_tick"),
@@ -81,6 +82,9 @@ def main() -> None:
             if any(row.get("tick_map", "calibrated") != args.tick_map
                    for row in cached):
                 raise AssertionError(f"{date}: cached replay uses another tick map")
+            if any(Path(row.get("signals_dir", SIGNALS)).resolve() !=
+                   args.signals_dir.resolve() for row in cached):
+                raise AssertionError(f"{date}: cached replay uses another signals directory")
             gp_quote_count = next(r["quote_decisions"] for r in cached
                                   if r["family"] == "GP")
             for row in cached:
@@ -92,7 +96,7 @@ def main() -> None:
             continue
         expected_prior = [d for d in dates[:ordinal]
                           if prepared[d].zero_recorded_errors][-5:]
-        with np.load(SIGNALS / f"day_{date}.npz", allow_pickle=False) as a:
+        with np.load(args.signals_dir / f"day_{date}.npz", allow_pickle=False) as a:
             cache = {k: a[k].copy() for k in a.files}
         if list(cache["prior_dates"].astype(str)) != expected_prior:
             raise AssertionError(f"{date}: prior dates differ")
@@ -153,6 +157,7 @@ def main() -> None:
                 rows.append({"date": date, "family": "AS", "fill_mode": fill_mode,
                              "gamma": None, "model": name, "l3_available": clean,
                              "tick_map": args.tick_map,
+                             "signals_dir": str(args.signals_dir.resolve()),
                              "prior_dates": expected_prior,
                              **{**result, "quote_decisions": len(indices)}})
             for gamma in args.gammas:
@@ -180,6 +185,7 @@ def main() -> None:
                     rows.append({"date": date, "family": "GP", "fill_mode": fill_mode,
                                  "gamma": gamma, "model": name, "l3_available": clean,
                                  "tick_map": args.tick_map,
+                                 "signals_dir": str(args.signals_dir.resolve()),
                                  "prior_dates": expected_prior,
                                  "regime_interval_seconds": intervals.get(name),
                                  **result})
@@ -212,6 +218,7 @@ def main() -> None:
                    if args.tick_map == "hard_one_tick" else
                    "aligned 3-class probabilities, prior-only in-sample probability-to-tick calibration"),
         "tick_map": args.tick_map,
+        "signals_dir": str(args.signals_dir),
         "gap_inventory": "carry",
         "gammas": args.gammas,
         "test_dates": dates[1:], "daily": daily, "summary": summary,

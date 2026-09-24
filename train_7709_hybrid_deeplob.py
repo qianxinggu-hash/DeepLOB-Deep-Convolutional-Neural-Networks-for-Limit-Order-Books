@@ -85,6 +85,8 @@ def parse_args() -> argparse.Namespace:
         args.batch_size,
     ) < 1:
         parser.error("k, sequence, stride, epochs, and batch size must be positive")
+    if not 0 < args.stationary_share < 1:
+        parser.error("stationary-share must be between zero and one")
     return args
 
 
@@ -370,7 +372,7 @@ def main() -> None:
         )
         if day.date in train_dates:
             calibration.append(returns[day.date][indices[day.date]])
-    alpha = float(np.quantile(np.abs(np.concatenate(calibration)), 1 / 3))
+    alpha = float(np.quantile(np.abs(np.concatenate(calibration)), args.stationary_share))
 
     prepared: dict[str, PreparedDay] = {}
     for day in days:
